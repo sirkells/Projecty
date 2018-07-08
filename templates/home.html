@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block content %}
+
+
+    <!-- list table -->
+
+    <table class="ui very basic padded striped four column table accordion">
+      <thead>
+        <tr>
+          <th class="thirteen wide">Titel</th>
+          <th class="one wide">Veröffentlichung</th>
+          <th class="one wide">Ort</th>
+          <!--            <th class="one wide">Kategorie</th> -->
+          <th class="one wide">Quelle</th>
+          <th class="one wide">Cockpit</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for pro in projects %}
+          <tr>
+            <td>
+              <div class="title">
+                <i class="dropdown icon"></i>
+                <b>{{ pro['title'] }}</b>
+              </div>
+              <div class="content">
+                      <div class="ui relaxed divided items">
+                          <div class="item">
+                              <div class="description">
+                                  {{ pro['description'][:100] }} <a href="{{ pro['url'] }}" target="_blank">[...]</a>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+            </td>
+            <td>{{ moment(pro.filter_date_post).fromNow() }}</td>
+            <td>{{ pro['location'] }}</td>
+            <td>
+              <a href="{{ pro['url'] }}" target="_blank">{{ pro['source'] }}</a>
+            </td>
+            <td class="center aligned">
+                      <i class="blue plus square outline big icon" data-id="12"></i>
+            </td>
+
+          </tr>
+      {% endfor %}
+
+      </tbody>
+    </table>
+
+
+
+    <br>
+
+{% endblock content %}

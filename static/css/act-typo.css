@@ -1,0 +1,9 @@
+@font-face {
+font-family: "AzoSansBold";
+src: url("typo/AzoSans-Bold.otf") format('opentype');
+}
+
+@font-face {
+font-family: "AzoSansRegular";
+src: url("typo/AzoSans-Regular.otf") format('opentype');
+}

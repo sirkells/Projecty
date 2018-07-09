@@ -6,7 +6,7 @@ from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
 from flask_mail import Mail
 import os
-from blog.config import Config
+from app.config import Config
 
 #MAIL_PWD and MAIL_USER are set using nano .bash_profile in the home dir
 

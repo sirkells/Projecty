@@ -21,13 +21,13 @@
             <td>
               <div class="title">
                 <i class="dropdown icon"></i>
-                <b>{{ pro['title'] }}</b>
+                <a href="{{ pro['url'] }}" target="_blank"><b>{{ pro['title'] }}</b></a>
               </div>
               <div class="content">
                       <div class="ui relaxed divided items">
                           <div class="item">
                               <div class="description">
-                                  {{ pro['description'][:100] }} <a href="{{ pro['url'] }}" target="_blank">[...]</a>
+                                  {{ pro['description'][:150] }} 
                               </div>
                           </div>
                       </div>

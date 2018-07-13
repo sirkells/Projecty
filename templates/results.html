@@ -1,7 +1,12 @@
 {% extends "base.html" %}
 {% block content %}
 
-
+  <p>
+    <div class="ui blue labels">
+      <a href="#" class="badge badge-primary">{{ search_term }}</a>
+      <span class="badge badge-pill badge-info">{{ count }}</span>
+    </div>
+  </p>
     <!-- list table -->
 
     <table class="ui very basic padded striped four column table accordion">
@@ -27,7 +32,7 @@
                       <div class="ui relaxed divided items">
                           <div class="item">
                               <div class="description">
-                                  {{ pro['description'][:150] }} 
+                                  {{ pro['description'][:150] }}
                               </div>
                           </div>
                       </div>

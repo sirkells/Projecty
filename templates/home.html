@@ -16,27 +16,27 @@
         </tr>
       </thead>
       <tbody>
-      {% for pro in projects %}
+      {% for hit in res['hits']['hits'] %}
           <tr>
             <td>
               <div class="title">
                 <i class="dropdown icon"></i>
-                <a href="{{ pro['url'] }}" target="_blank"><b>{{ pro['title'] }}</b></a>
+                <a href="{{ hit['_source']['url'] }}" target="_blank"><b>{{ hit['_source']['title'] }}</b></a>
               </div>
               <div class="content">
                       <div class="ui relaxed divided items">
                           <div class="item">
                               <div class="description">
-                                  {{ pro['description'][:150] }}
+                                  {{ hit['_source']['description'][:150] }}
                               </div>
                           </div>
                       </div>
                   </div>
             </td>
-            <td>{{ moment(pro.filter_date_post).fromNow() }}</td>
-            <td>{{ pro['location'] }}</td>
+            <td>{{ hit['_source']['filter_date_post'] }}</td>
+            <td>{{ hit['_source']['location'] }}</td>
             <td>
-              <a href="{{ pro['url'] }}" target="_blank">{{ pro['source'] }}</a>
+              <a href="{{ hit['_source']['url'] }}" target="_blank">{{ hit['_source']['source'] }}</a>
             </td>
             <td class="center aligned">
               <i class="blue plus square outline big icon"></i>
@@ -47,9 +47,5 @@
 
       </tbody>
     </table>
-
-
-
-    <br>
 
 {% endblock content %}

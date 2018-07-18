@@ -5,47 +5,47 @@
     <!-- list table -->
 
     <table class="ui very basic padded striped four column table accordion">
-      <thead>
-        <tr>
-          <th class="thirteen wide">Titel</th>
-          <th class="one wide">Veröffentlichung</th>
-          <th class="one wide">Ort</th>
-          <!--            <th class="one wide">Kategorie</th> -->
-          <th class="one wide">Quelle</th>
-          <th class="one wide">Cockpit</th>
-        </tr>
-      </thead>
-      <tbody>
-      {% for hit in res['hits']['hits'] %}
+        <thead>
           <tr>
-            <td>
-              <div class="title">
-                <i class="dropdown icon"></i>
-                <a href="{{ hit['_source']['url'] }}" target="_blank"><b>{{ hit['_source']['title'] }}</b></a>
-              </div>
-              <div class="content">
-                      <div class="ui relaxed divided items">
-                          <div class="item">
-                              <div class="description">
-                                  {{ hit['_source']['description'][:150] }}
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-            </td>
-            <td>{{ hit['_source']['filter_date_post'] }}</td>
-            <td>{{ hit['_source']['location'] }}</td>
-            <td>
-              <a href="{{ hit['_source']['url'] }}" target="_blank">{{ hit['_source']['source'] }}</a>
-            </td>
-            <td class="center aligned">
-              <i class="blue plus square outline big icon"></i>
-            </td>
-
+            <th class="thirteen wide">Titel</th>
+            <th class="one wide">Veröffentlichung</th>
+            <th class="one wide">Ort</th>
+            <!--            <th class="one wide">Kategorie</th> -->
+            <th class="one wide">Quelle</th>
+            <th class="one wide">Cockpit</th>
           </tr>
-      {% endfor %}
+        </thead>
+        <tbody>
+        {% for hit in res %}
+            <tr>
+              <td>
+                <div class="title">
+                  <i class="dropdown icon"></i>
+                  <a href="{{hit.url }}" target="_blank"><b>{{ hit.title }}</b></a>
+                </div>
+                <div class="content">
+                        <div class="ui relaxed divided items">
+                            <div class="item">
+                                <div class="description">
+                                    {{ hit.description[:150] }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+              </td>
+              <td>{{ moment(hit.filter_date_post).fromNow() }}</td>
+              <td>{{ hit.location }}</td>
+              <td>
+                <a href="{{ hit.url}}" target="_blank">{{ hit.source }}</a>
+              </td>
+              <td class="center aligned">
+                        <i class="blue plus square outline big icon" data-id="12"></i>
+              </td>
 
-      </tbody>
-    </table>
+            </tr>
+        {% endfor %}
 
-{% endblock content %}
+        </tbody>
+      </table>
+
+  {% endblock content %}

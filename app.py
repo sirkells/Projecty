@@ -78,7 +78,9 @@ def search_request():
             "query": {
               "multi_match": {
                 "query": search_term,
-                "fields": ["description", "title", "skills", "category"]
+                "fields": ["description", "title", "skills.keywords^2", "category"],
+                "fuzziness" : "AUTO",
+                "prefix_length" : 2
               }
             }
           }

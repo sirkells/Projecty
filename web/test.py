@@ -1,27 +1,30 @@
 from flask import Flask, render_template, url_for, request, session, redirect
 from flask_pymongo import PyMongo
-import bcrypt
+from pymongo import MongoClient
+from flask_bcrypt import Bcrypt
 from flask_moment import Moment
+from forms import RegistrationForm, LoginForm
 
 app = Flask(__name__)
 moment = Moment(app)
 
-app.config['MONGO_DBNAME'] = 'projectfinder'
-app.config['MONGO_URI'] = 'mongodb://127.0.0.1:27017/projectfinder'
+def connect():
+    connection = MongoClient('127.0.0.1', 27017)
+    handle = connection["projectfinder"]
+    return handle
 
-mongo = PyMongo(app)
+bcrypt= Bcrypt()
+handle = connect()
 
 @app.route('/')
 def index():
-    if 'username' in session:
-        return 'You are logged in as ' + session['username']
 
     return render_template('index.html')
 
 @app.route('/login', methods=['POST'])
 def login():
-    users = mongo.db.users
-    login_user = users.find_one({'name' : request.form['username']})
+    users = handle.users
+    login_user = users.find({'name' : request.form['username']})
 
     if login_user:
         if bcrypt.hashpw(request.form['pass'].encode('utf-8'), login_user['password'].encode('utf-8')) == login_user['password'].encode('utf-8'):
@@ -33,8 +36,8 @@ def login():
 @app.route('/register', methods=['POST', 'GET'])
 def register():
     if request.method == 'POST':
-        users = mongo.db.users
-        existing_user = users.find_one({'name' : request.form['username']})
+        users = handle.users
+        existing_user = users.findOne({'name' : request.form['username']})
 
         if existing_user is None:
             hashpass = bcrypt.hashpw(request.form['pass'].encode('utf-8'), bcrypt.gensalt())

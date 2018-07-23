@@ -13,9 +13,12 @@ def connect():
 
 app = Flask(__name__)
 moment = Moment(app)
+app.config['SECRET_KEY'] = 'password'
 app.config['ELASTICSEARCH_URL'] = 'http://127.0.0.1:9200/'
 es =  Elasticsearch([app.config['ELASTICSEARCH_URL']])
 handle = connect()
+
+
 
 
 @app.route('/')

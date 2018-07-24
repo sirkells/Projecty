@@ -1,12 +1,29 @@
 {% extends "base.html" %}
-{% block content %}
 
-  <p>
-    <div class="ui blue labels">
-      <a href="#" class="badge badge-primary">{{ search_term }}</a>
-      <span class="badge badge-pill badge-info">{{ count }}</span>
+{% block content %}
+  <div class="ui container">
+    <select id="sampleSelect" onchange="location = this.value;" >
+      <option value="0">Location</option>
+      <option value="{{ url_for('koln') }}">Köln</option>
+      <option value="{{ url_for('ddorf') }}">Düsseldorf</option>
+      <option value="{{ url_for('bonn') }}">Bonn</option>
+      <option value="{{ url_for('mun') }}">Münster</option>
+      <option value="{{ url_for('dui') }}">Duisburg</option>
+    </select>
+    <div class="btn-group">
+      <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Location
+      </button>
+      <div class="dropdown-menu">
+        <a class="dropdown-item" href="{{ url_for('koln') }}">Köln</a>
+        <a class="dropdown-item" href="{{ url_for('ddorf') }}">Düsseldorf</a>
+        <a class="dropdown-item" href="{{ url_for('bonn') }}">Bonn</a>
+        <a class="dropdown-item" href="{{ url_for('mun') }}">Münster</a>
+        <a class="dropdown-item" href="{{ url_for('dui') }}">Duisburg</a>
+      </div>
     </div>
-  </p>
+  </div>
+
     <!-- list table -->
 
     <table class="ui very basic padded striped four column table accordion">

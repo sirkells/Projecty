@@ -1,0 +1,35 @@
+2018-07-23 15:14:44,598 [ALWAYS] mongo_connector.connector:51 - Starting mongo-connector version: 2.5.1
+2018-07-23 15:14:44,599 [ALWAYS] mongo_connector.connector:51 - Python version: 3.6.5 |Anaconda, Inc.| (default, Apr 26 2018, 08:42:37) 
+[GCC 4.2.1 Compatible Clang 4.0.1 (tags/RELEASE_401/final)]
+2018-07-23 15:14:44,613 [ALWAYS] mongo_connector.connector:51 - Platform: Darwin-17.5.0-x86_64-i386-64bit
+2018-07-23 15:14:44,613 [ALWAYS] mongo_connector.connector:51 - pymongo version: 3.7.1
+2018-07-23 15:14:44,613 [WARNING] mongo_connector.connector:167 - MongoConnector: Can't find /Users/kells/Documents/projects/exp/projectfinder/web/oplog.timestamp, attempting to create an empty progress log
+2018-07-23 15:14:44,618 [ALWAYS] mongo_connector.connector:51 - Source MongoDB version: 4.0.0
+2018-07-23 15:14:44,618 [ALWAYS] mongo_connector.connector:51 - Target DocManager: mongo_connector.doc_managers.elastic2_doc_manager version: 0.3.0
+2018-07-23 16:54:04,096 [ERROR] mongo_connector.oplog_manager:320 - Cursor closed due to an exception. Will attempt to reconnect.
+Traceback (most recent call last):
+  File "/Users/kells/Documents/projects/exp/venv/lib/python3.6/site-packages/mongo_connector/oplog_manager.py", line 221, in run
+    for n, entry in enumerate(cursor):
+  File "/Users/kells/Documents/projects/exp/venv/lib/python3.6/site-packages/pymongo/cursor.py", line 1189, in next
+    if len(self.__data) or self._refresh():
+  File "/Users/kells/Documents/projects/exp/venv/lib/python3.6/site-packages/pymongo/cursor.py", line 1126, in _refresh
+    self.__send_message(g)
+  File "/Users/kells/Documents/projects/exp/venv/lib/python3.6/site-packages/pymongo/cursor.py", line 931, in __send_message
+    operation, exhaust=self.__exhaust, address=self.__address)
+  File "/Users/kells/Documents/projects/exp/venv/lib/python3.6/site-packages/pymongo/mongo_client.py", line 1145, in _send_message_with_response
+    exhaust)
+  File "/Users/kells/Documents/projects/exp/venv/lib/python3.6/site-packages/pymongo/mongo_client.py", line 1156, in _reset_on_error
+    return func(*args, **kwargs)
+  File "/Users/kells/Documents/projects/exp/venv/lib/python3.6/site-packages/pymongo/server.py", line 106, in send_message_with_response
+    reply = sock_info.receive_message(request_id)
+  File "/Users/kells/Documents/projects/exp/venv/lib/python3.6/site-packages/pymongo/pool.py", line 612, in receive_message
+    self._raise_connection_failure(error)
+  File "/Users/kells/Documents/projects/exp/venv/lib/python3.6/site-packages/pymongo/pool.py", line 745, in _raise_connection_failure
+    raise error
+  File "/Users/kells/Documents/projects/exp/venv/lib/python3.6/site-packages/pymongo/pool.py", line 610, in receive_message
+    self.max_message_size)
+  File "/Users/kells/Documents/projects/exp/venv/lib/python3.6/site-packages/pymongo/network.py", line 173, in receive_message
+    _receive_data_on_socket(sock, 16))
+  File "/Users/kells/Documents/projects/exp/venv/lib/python3.6/site-packages/pymongo/network.py", line 238, in _receive_data_on_socket
+    raise AutoReconnect("connection closed")
+pymongo.errors.AutoReconnect: connection closed

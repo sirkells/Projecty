@@ -416,6 +416,55 @@ def koln():
 
     return render_template('results.html', res=projects, now=datetime.utcnow())
 
+@app.route('/koln', methods=['GET', 'POST'])
+def kolnhom():
+    #skill = "python"
+    #search_term = request.form["input"]
+    body = {
+        "query": {
+            "bool": {
+                "filter": {
+                  "term": {
+                    "location": "köln"
+                  }
+                }
+            }
+        }
+     }
+
+    result = es.search(
+        index='projectfinder',
+        body=body
+        )
+    try:
+        # clean up
+        docs = [{
+            'source': doc['_source'],
+            'score': doc['_score'],
+            'id': doc['_id']
+        } for doc in result['hits']['hits']]
+    except KeyError:
+        # return message
+        return render_template('noresult.html')
+
+    projects = [{
+        'id': hit['id'],
+        'title': hit['source']['title'],
+        'description': hit['source']['description'][:600],
+        'filter_date_post': datetime.strptime(hit['source']['filter_date_post'], '%Y-%m-%dT%H:%M:%S') if hit['source']['filter_date_post'] else datetime.utcnow(),
+        #'cockpit': True if hit['id'] in cockpit_set else False,
+        'url': hit['source']['url'],
+        'count': hit['source']['person_count'],
+        'duration': hit['source']['duration'],
+        'location': hit['source']['location'],
+        'source': hit['source']['source'],
+        'score': '{:.2f}'.format(hit['score'])
+                } for hit in docs]
+    projects = sorted(projects, key=lambda p: p['filter_date_post'], reverse=True)
+
+    count = result['hits']['total']
+
+    return render_template('results.html', res=projects, now=datetime.utcnow())
 @app.route('/ddorf/', methods=['GET', 'POST'])
 def ddorf():
     #skill = "python"

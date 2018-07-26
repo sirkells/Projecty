@@ -23,10 +23,8 @@
 # ``shelve``, ``marshal``, ``anydbm``, & ``bsddb``
 # (among others).
 
-web/templates/errors/* linguist-vendored
-web/templates/reset/* linguist-vendored
-web/templates/base.html* linguist-vendored
-web/templates/about.html* linguist-vendored
+web/errors/* linguist-vendored
+web/static/* linguist-vendored
 web/templates/* linguist-vendored
 #.py linguist-vendored=false
 # Documents

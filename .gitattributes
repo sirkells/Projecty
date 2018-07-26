@@ -25,7 +25,12 @@
 
 web/errors/* linguist-vendored
 web/static/* linguist-vendored
-web/templates/* linguist-vendored
+web/templates/add.html* linguist-vendored
+web/templates/layout.html* linguist-vendored
+web/templates/index.html* linguist-vendored
+web/templates/test.html* linguist-vendored
+web/templates/register.html* linguist-vendored
+
 #.py linguist-vendored=false
 # Documents
 *.doc	 diff=astextplain

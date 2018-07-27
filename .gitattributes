@@ -1,3 +1,4 @@
+
 # Basic .gitattributes for a python repo.
 
 # Source files
@@ -22,12 +23,15 @@
 # ``shelve``, ``marshal``, ``anydbm``, & ``bsddb``
 # (among others).
 
-static/* linguist-vendored
-#blog/templates/reset/* linguist-vendored
-#blog/templates/base.html* linguist-vendored
-#blog/templates/about.html* linguist-vendored
-#blog/templates/* linguist-vendored
-.py linguist-vendored=false
+web/errors/* linguist-vendored
+web/static/* linguist-vendored
+web/templates/add.html* linguist-vendored
+web/templates/layout.html* linguist-vendored
+web/templates/index.html* linguist-vendored
+web/templates/test.html* linguist-vendored
+web/templates/register.html* linguist-vendored
+
+#.py linguist-vendored=false
 # Documents
 *.doc	 diff=astextplain
 *.DOC	 diff=astextplain

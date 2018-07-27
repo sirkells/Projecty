@@ -70,16 +70,16 @@ def search():
     return render_template('search.html')
 
 
-@app.route('/search/results', methods=['GET', 'POST'])
+@app.route('/search/results', methods=['GET', 'POST']) 
 def search_request():
     global search_term
-    search_term = request.form["input"]
+    search_term = request.form["input"] + " "
     body = {
             "size" : 50,
             "query": {
               "multi_match": {
                 "query": search_term,
-                "fields": ["description", "title", "skills.keywords^2", "category"],
+                "fields": ["title", "skills^2"],
                 "fuzziness" : "AUTO",
                 "prefix_length" : 2
               }
@@ -371,7 +371,7 @@ def koln():
         "query": {
             "bool": {
                 "must": [
-                    {"match": {"title": search_term}}
+                    {"match": {"skills": search_term}}
                 ],
                 "filter": {
                   "term": {
@@ -473,7 +473,7 @@ def ddorf():
         "query": {
             "bool": {
                 "must": [
-                    {"match": {"title": search_term}}
+                    {"match": {"skills": search_term}}
                 ],
                 "filter": {
                   "term": {
@@ -526,7 +526,7 @@ def bonn():
         "query": {
             "bool": {
                 "must": [
-                    {"match": {"title": search_term}}
+                    {"match": {"skills": search_term}}
                 ],
                 "filter": {
                   "term": {
@@ -579,7 +579,7 @@ def mun():
         "query": {
             "bool": {
                 "must": [
-                    {"match": {"title": search_term}}
+                    {"match": {"skills": search_term}}
                 ],
                 "filter": {
                   "term": {
@@ -632,7 +632,7 @@ def dui():
         "query": {
             "bool": {
                 "must": [
-                    {"match": {"title": search_term}}
+                    {"match": {"skills": search_term}}
                 ],
                 "filter": {
                   "term": {

@@ -35,4 +35,20 @@
             ]
         }
     }
+    ,
+  "aggs": {
+    "Location": {
+      "terms": {
+        "field": "location.keyword",
+        "size": 10
+     
+      }
+    },
+    "Skills": {
+      "terms": {
+        "field": "skills.keyword",
+        "size": 10
+      }
+    }
+  }
 }

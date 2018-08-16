@@ -23,7 +23,7 @@ location = ["Frankfurt", "Köln", "Bonn", "München", "Hamburg", "Berlin", "Stut
                "Tuttlingen", "Magedeburg", "Hüttenberg", "Lohfelden", "Meckenheim", "Loßburg", "Rosenheim", "Gilching", "Germersheim", "Rastede", "Leichlingen", "Höchberg", "Bamberg", "Saarland", "Hilden", "Borken", "Bayreuth", "Heppenheim", "Mülheim", "Crailsheim", 
                "Böblingen",  "Kempten", "Sossenheim", "Weissach", "Lahr", "Vechta", "Bischofsheim", "Konstanz", "Warstein", "Genthin", "Dreilinden", "Brandenburg", "Husum", "Spelle", "Rheine", "Meerbusch", "Münzenberg", "Luterbach", "Herzogenaurach", "Siegen", "Ahrensburg",
                "Herne", "Eschwege", "Bottrop", "Cadolzburg", "Minden", "Kroppach", "Meschede", "Gummersbach", "Rimpar", "Oberpfalz", "Philippsburg", "Steinhausen", "Willich", "Offenburg", "Nordrhein-Westfalen", "D7", "D6", "D8", "D3", "D9", "D5", "D2","D0","D4","D1",'Baden-Württemberg', "Krefeld", "Deutschland",
-               "CH",'Rheinland-Pfalz', 'Rhein-Main-Gebiet','Schleswig-Holstein','Ostwestfalen', "Neckar", "Leon", 'Fürth', "Solingen"]
+               "CH",'Rheinland-Pfalz', 'Rhein-Main-Gebiet','Schleswig-Holstein','Ostwestfalen', "Neckar", "Leon", 'Fürth', "Solingen", "None"]
 for city in location:
     db.itproject2.update({"location":{"$regex": '^.*' + city,"$options": 'i' }}, {"$set":{"region": city}}, multi=True)
 db.itproject2.update({"location":{"$regex": '^.*Munich', "$options": 'i'}}, {"$set":{"region": "München"}}, multi=True)
@@ -33,7 +33,7 @@ db.itproject2.update({"location":{"$regex": '^.*Duesseldorf', "$options": 'i'}},
 db.itproject2.update({"location":{"$regex": '^.*Dusseldorf', "$options": 'i'}}, {"$set":{"region": "Düsseldorf"}}, multi=True)
 db.itproject2.update({"location":{"$regex": '^.*DE', "$options": 'i'}}, {"$set":{"region": "Deutschland"}}, multi=True)
 db.itproject2.update({"location":{"$regex": '^.*Nuremberg', "$options": 'i'}}, {"$set":{"region": "Nüremberg"}}, multi=True)
-db.itproject2.update({"location":{"$regex": '^.*frankfurt', "$options": 'i'}}, {"$set":{"region": "Frankfurt"}}, multi=True)
+db.itproject2.update({"location":{"$regex": '^.*North', "$options": 'i'}}, {"$set":{"region": "Nordrhein-Westfalen"}}, multi=True)
 db.itproject2.update({"location":{"$regex": '^.*Sachsen', "$options": 'i'}}, {"$set":{"region": "Niedersachsen"}}, multi=True)
 db.itproject2.update({"location":{"$regex": '^.*NRW', "$options": 'i'}}, {"$set":{"region": "Nordrhein-Westfalen"}}, multi=True)
 db.itproject2.update({"location":{"$regex": '^.*Nordrhein', "$options": 'i'}}, {"$set":{"region": "Nordrhein-Westfalen"}}, multi=True)
@@ -48,7 +48,8 @@ db.itproject2.update({"location":{"$regex": '^.*hesse', "$options": 'i'}}, {"$se
 
 
 
-
+#include this if you want to clean all fields
+"""
 unknown = []
 cleaned = []
 for d in data:
@@ -66,4 +67,4 @@ for d in data:
 print(len(unknown))
 print(len(cleaned))
 for (u, c) in zip(unknown, cleaned):
-    db.itproject2.update({"location": u}, {"$set":{"region": c}}, multi=True)
+    db.itproject2.update({"location": u}, {"$set":{"region": c}}, multi=True)"""

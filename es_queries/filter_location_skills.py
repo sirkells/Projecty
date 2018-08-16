@@ -14,3 +14,25 @@
         }
     }
 }
+
+
+#multiple skills search with multiple location filter
+#GET /projectfinder/_search
+{
+    "query": {
+        "bool": {
+            "must": [
+                {"match": {
+                  "skills": {
+                  "query": "[Python, Django, java]",
+                  "operator": "and"
+                }}},
+                {"match": {
+                  "location": {
+                  "query": "[Münster, Berlin, Bonn]",
+                  "operator": "or"
+                }}}
+            ]
+        }
+    }
+}

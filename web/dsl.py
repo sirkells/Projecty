@@ -22,13 +22,16 @@ def dsl():
     s.aggs.bucket('Location', 'terms', field='region.keyword')
 
     response = s.execute()
-    print(len(response))
+    
 
-    for hit in response:
+    print(len(response))
+    return render_template('noresult.html', res=response, now=datetime.utcnow())
+
+    """for hit in response:
         print(hit.location, hit.title)
 
     for tag in response.aggregations.Location.buckets:
-        print(tag.key, tag.doc_count)
+        print(tag.key, tag.doc_count)"""
 
 @app.route('/')
 @app.route('/home')

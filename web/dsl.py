@@ -19,13 +19,27 @@ def dsl():
     s = Search(using=client, index="projectfinder") \
         .query("match", skills="python")
 
-    s.aggs.bucket('Location', 'terms', field='region.keyword')
+    #s.aggs.bucket('Location', 'terms', field='region.keyword')
 
     response = s.execute()
+    #method a for removing duplicates
+    unique_data = []
+    for d in response:
+        data_exists = False
+        for ud in unique_data:
+            if ud['pid'] == d['pid']:
+              data_exists = True
+              break
+        if not data_exists:
+            unique_data.append(d)
+    print(unique_data)
+    #method b for removing duplicates
+    al = { d['pid']:d for d in response }.values()
+
     
 
     print(len(response))
-    return render_template('noresult.html', res=response, now=datetime.utcnow())
+    return render_template('noresult.html', res=al, now=datetime.utcnow())
 
     """for hit in response:
         print(hit.location, hit.title)

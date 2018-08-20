@@ -56,7 +56,7 @@ def home():
         'url': hit['source']['url'],
         'count': hit['source']['person_count'],
         'duration': hit['source']['duration'],
-        'location': hit['source']['location'],
+        'region': hit['source']['region'],
         'source': hit['source']['source'],
         'score': '{:.2f}'.format(hit['score'])
                 } for hit in docs]
@@ -109,14 +109,16 @@ def search_request():
         'url': hit['source']['url'],
         'count': hit['source']['person_count'],
         'duration': hit['source']['duration'],
-        'location': hit['source']['location'],
+        'location': hit['source']['region'],
         'source': hit['source']['source'],
-        'score': '{:.2f}'.format(hit['score'])
+        'score': '{:.2f}'.format(hit['score']),
+        'pid': hit['source']['pid']
                 } for hit in docs]
     projects = sorted(projects, key=lambda p: p['filter_date_post'], reverse=True)
+    al = { d['title']:d for d in projects }.values()
 
     count = result['hits']['total']
-    return render_template('results.html', res=projects, search_term=search_term, count=count, now=datetime.utcnow())
+    return render_template('results.html', res=al, search_term=search_term, count=count, now=datetime.utcnow())
 
 @app.route('/python/', methods=['GET', 'POST'])
 def python():
@@ -157,7 +159,7 @@ def python():
         'url': hit['source']['url'],
         'count': hit['source']['person_count'],
         'duration': hit['source']['duration'],
-        'location': hit['source']['location'],
+        'location': hit['source']['region'],
         'source': hit['source']['source'],
         'score': '{:.2f}'.format(hit['score'])
                 } for hit in docs]
@@ -205,7 +207,7 @@ def java():
         'url': hit['source']['url'],
         'count': hit['source']['person_count'],
         'duration': hit['source']['duration'],
-        'location': hit['source']['location'],
+        'location': hit['source']['region'],
         'source': hit['source']['source'],
         'score': '{:.2f}'.format(hit['score'])
                 } for hit in docs]
@@ -254,7 +256,7 @@ def dataSc():
         'url': hit['source']['url'],
         'count': hit['source']['person_count'],
         'duration': hit['source']['duration'],
-        'location': hit['source']['location'],
+        'location': hit['source']['region'],
         'source': hit['source']['source'],
         'score': '{:.2f}'.format(hit['score'])
                 } for hit in docs]
@@ -303,7 +305,7 @@ def sql():
         'url': hit['source']['url'],
         'count': hit['source']['person_count'],
         'duration': hit['source']['duration'],
-        'location': hit['source']['location'],
+        'location': hit['source']['region'],
         'source': hit['source']['source'],
         'score': '{:.2f}'.format(hit['score'])
                 } for hit in docs]
@@ -352,7 +354,7 @@ def hadoop():
         'url': hit['source']['url'],
         'count': hit['source']['person_count'],
         'duration': hit['source']['duration'],
-        'location': hit['source']['location'],
+        'location': hit['source']['region'],
         'source': hit['source']['source'],
         'score': '{:.2f}'.format(hit['score'])
                 } for hit in docs]
@@ -406,7 +408,7 @@ def koln():
         'url': hit['source']['url'],
         'count': hit['source']['person_count'],
         'duration': hit['source']['duration'],
-        'location': hit['source']['location'],
+        'location': hit['source']['region'],
         'source': hit['source']['source'],
         'score': '{:.2f}'.format(hit['score'])
                 } for hit in docs]
@@ -456,7 +458,7 @@ def kolnhom():
         'url': hit['source']['url'],
         'count': hit['source']['person_count'],
         'duration': hit['source']['duration'],
-        'location': hit['source']['location'],
+        'location': hit['source']['region'],
         'source': hit['source']['source'],
         'score': '{:.2f}'.format(hit['score'])
                 } for hit in docs]
@@ -508,7 +510,7 @@ def ddorf():
         'url': hit['source']['url'],
         'count': hit['source']['person_count'],
         'duration': hit['source']['duration'],
-        'location': hit['source']['location'],
+        'location': hit['source']['region'],
         'source': hit['source']['source'],
         'score': '{:.2f}'.format(hit['score'])
                 } for hit in docs]

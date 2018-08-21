@@ -57,6 +57,7 @@ def home():
         'count': hit['source']['person_count'],
         'duration': hit['source']['duration'],
         'region': hit['source']['region'],
+        'location': hit['source']['location'],
         'source': hit['source']['source'],
         'score': '{:.2f}'.format(hit['score'])
                 } for hit in docs]
@@ -115,10 +116,10 @@ def search_request():
         'pid': hit['source']['pid']
                 } for hit in docs]
     projects = sorted(projects, key=lambda p: p['filter_date_post'], reverse=True)
-    al = { d['title']:d for d in projects }.values()
+    projects_unique = { d['title']:d for d in projects }.values()
 
     count = result['hits']['total']
-    return render_template('results.html', res=al, search_term=search_term, count=count, now=datetime.utcnow())
+    return render_template('results.html', res=projects_unique, search_term=search_term, count=count, now=datetime.utcnow())
 
 @app.route('/python/', methods=['GET', 'POST'])
 def python():

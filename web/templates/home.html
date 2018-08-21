@@ -1,47 +1,47 @@
 {% extends "base.html" %}
 {% block content %}
-<div class="ui container">
-  <select id="sampleSelect" onchange="location = this.value;" >
-    <option value="0">Skills</option>
-    <option value="{{ url_for('dataSc') }}">Data Science</option>
-    <option value="{{ url_for('python') }}">Python</option>
-    <option value="{{ url_for('java') }}">Java</option>
-    <option value="{{ url_for('hadoop') }}">Hadoop</option>
-    <option value="{{ url_for('sql') }}">SQL</option>
-  </select>
-  <div class="btn-group">
-    <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-      Skills
-    </button>
-    <div class="dropdown-menu">
-      <a class="dropdown-item" href="{{ url_for('python') }}">Python</a>
-      <a class="dropdown-item" href="{{ url_for('java') }}">Java</a>
-      <a class="dropdown-item" href="{{ url_for('sql') }}">SQL</a>
-      <a class="dropdown-item" href="{{ url_for('hadoop') }}">Hadoop</a>
-      <a class="dropdown-item" href="{{ url_for('dataSc') }}">Data Science</a>
-    </div>
-  </div>
+  <div class="ui container">
     <select id="sampleSelect" onchange="location = this.value;" >
-      <option value="0">Location</option>
-      <option value="{{ url_for('kolnhom') }}">Köln</option>
-      <option value="{{ url_for('ddorf') }}">Düsseldorf</option>
-      <option value="{{ url_for('bonn') }}">Bonn</option>
-      <option value="{{ url_for('mun') }}">Münster</option>
-      <option value="{{ url_for('dui') }}">Duisburg</option>
+      <option value="0">Skills</option>
+      <option value="{{ url_for('dataSc') }}">Data Science</option>
+      <option value="{{ url_for('python') }}">Python</option>
+      <option value="{{ url_for('java') }}">Java</option>
+      <option value="{{ url_for('hadoop') }}">Hadoop</option>
+      <option value="{{ url_for('sql') }}">SQL</option>
     </select>
     <div class="btn-group">
       <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        Location
+        Skills
       </button>
       <div class="dropdown-menu">
-        <a class="dropdown-item" href="{{ url_for('kolnhom') }}">Köln</a>
-        <a class="dropdown-item" href="{{ url_for('ddorf') }}">Düsseldorf</a>
-        <a class="dropdown-item" href="{{ url_for('bonn') }}">Bonn</a>
-        <a class="dropdown-item" href="{{ url_for('mun') }}">Münster</a>
-        <a class="dropdown-item" href="{{ url_for('dui') }}">Duisburg</a>
+        <a class="dropdown-item" href="{{ url_for('python') }}">Python</a>
+        <a class="dropdown-item" href="{{ url_for('java') }}">Java</a>
+        <a class="dropdown-item" href="{{ url_for('sql') }}">SQL</a>
+        <a class="dropdown-item" href="{{ url_for('hadoop') }}">Hadoop</a>
+        <a class="dropdown-item" href="{{ url_for('dataSc') }}">Data Science</a>
       </div>
     </div>
-</div>
+      <select id="sampleSelect" onchange="location = this.value;" >
+        <option value="0">Location</option>
+        <option value="{{ url_for('kolnhom') }}">Köln</option>
+        <option value="{{ url_for('ddorf') }}">Düsseldorf</option>
+        <option value="{{ url_for('bonn') }}">Bonn</option>
+        <option value="{{ url_for('mun') }}">Münster</option>
+        <option value="{{ url_for('dui') }}">Duisburg</option>
+      </select>
+      <div class="btn-group">
+        <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Location
+        </button>
+        <div class="dropdown-menu">
+          <a class="dropdown-item" href="{{ url_for('kolnhom') }}">Köln</a>
+          <a class="dropdown-item" href="{{ url_for('ddorf') }}">Düsseldorf</a>
+          <a class="dropdown-item" href="{{ url_for('bonn') }}">Bonn</a>
+          <a class="dropdown-item" href="{{ url_for('mun') }}">Münster</a>
+          <a class="dropdown-item" href="{{ url_for('dui') }}">Duisburg</a>
+        </div>
+      </div>
+  </div>
 <br>
 
     <!-- list table -->

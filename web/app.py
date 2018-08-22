@@ -116,6 +116,7 @@ def search_request():
         'pid': hit['source']['pid']
                 } for hit in docs]
     projects = sorted(projects, key=lambda p: p['filter_date_post'], reverse=True)
+    #remove duplicates
     projects_unique = { d['title']:d for d in projects }.values()
 
     count = result['hits']['total']

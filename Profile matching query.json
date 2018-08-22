@@ -1,0 +1,73 @@
+#use this for user skills and projects skills matching. save skills as a string of words and put it in the search query
+GET /projectfinder/_search
+{
+  "query": {
+    "multi_match": {
+      "query": "python unix sql softwareentwick",
+      "fields": ["description", "title", "skills.keyword^2", "category"]
+    }
+  }
+}
+###########################################
+DELETE /mongodb_meta
+GET _cat/indices?v
+
+GET /projectfinder/_search
+{
+  "query": {
+    "multi_match": {
+      "query": "python unix softwareentwic",
+      "fields": ["description", "title", "skills", "category"]
+    }
+  }
+}
+
+
+PUT /projectfinder
+{
+    "settings": {
+        "number_of_shards": 1, 
+        "analysis": {
+            "filter": {
+                "autocomplete_filter": { 
+                    "type":     "edge_ngram",
+                    "min_gram": 2,
+                    "max_gram": 20
+                }
+            },
+            "analyzer": {
+                "autocomplete": {
+                    "type":      "custom",
+                    "tokenizer": "standard",
+                    "filter": [
+                        "lowercase",
+                        "autocomplete_filter" 
+                    ]
+                }
+            }
+        }
+    }
+}
+
+GET /projectfinder_opt/_analyze
+{
+  "analyzer": "autocomplete",
+  "text": "python"
+}
+
+
+PUT /projectfinder/_mapping/itproject
+{
+  "itproject": {
+    "properties": {
+      "title": {
+        "type": "text",
+        "analyzer": "autocomplete"
+      },
+      "description": {
+        "type": "text"
+      }
+    }
+  }
+}
+

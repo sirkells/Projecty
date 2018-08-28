@@ -9,8 +9,13 @@ def connect():
     return handle
 db = connect()
 data = db.itproject.find({"region": None }) #None gets all doc without region field
+frontEnd = ['javascript', 'html', 'css', 'jquery', 'html5', 'react', 'angular', 'vue', 'frontend' ]
+a = db.itproject.find({"skill_summary":{"$regex": 'react', "$options": 'i'}})
+print(a.count())
+print(a[:20]['skill_summary'])
 
-location = ["Frankfurt", "Köln", "Bonn", "München", "Hamburg", "Berlin", "Stuttgart", "Düsseldorf", "Nürnberg", "Bayern", "Hannover", "Hessen", "Niedersachsen", "Karlsruhe",
+
+"""location = ["Frankfurt", "Köln", "Bonn", "München", "Hamburg", "Berlin", "Stuttgart", "Düsseldorf", "Nürnberg", "Bayern", "Hannover", "Hessen", "Niedersachsen", "Karlsruhe",
              "Wiesbaden", "Bremen", "Mannheim", "Kiel", "Essen", "Ingolstadt", "Braunschweig", "Friedrichshafen", 
               "Leverkusen", "Dortmund", "Sailauf", "Darmstadt", "Dresden", "Münster", "Aschaffenburg", "Leipzig",
               "Heidelberg", "Wolfsburg", "Ulm", "Heilbronn", "Bielefeld", "Mainz", "Potsdam", "Eschborn", "Oldenburg", "Ludwigsburg",
@@ -57,8 +62,11 @@ frontEnd = ['javascript', 'html', 'css', 'jquery', 'html5', 'react', 'angular', 
 backEnd = ['nodejs', 'python', 'java', 'php', 'go', 'flask', 'django', 'express', 'docker', 'backend', 'aws', 'git']
 fullStack = [frontEnd, backEnd]
 devOps = ['docker', 'kubernetes', 'ci', 'cd', 'jenkins', 'gitlab', 'devops', 'dev ops']
-db.itproject.update({"skill_summary":{"$regex": '^.*Munich', "$options": 'i'}}, {"$set":{"region": "München"}}, multi=True)
-
+dscience = ['machine learning', 'data science', 'nlp', 'natural language', 'machine']
+bigdata = ['hadoop', 'spark', 'bigdata', 'big data', 'aws', 'azure']
+sap = ['sap']
+db.itproject.update({"skill_summary":{"$regex": '', "$options": 'i'}}, {"$set":{"region": "München"}}, multi=True)
+"""
 
 
 #include this if you want to clean all fields

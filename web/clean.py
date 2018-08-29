@@ -59,6 +59,8 @@ db.itproject.update({"location":{"$regex": '^.*hesse', "$options": 'i'}}, {"$set
 #(?:[\s]|^)(java|node|nodejs|or|python)(?=[\s]|$)
 #{skill_summary: {$all: ['java', 'js']}, title: RegExp('Java|Fullstack Java|Java Fullstack')}
 
+
+#java fullstack
 db.itproject.update({"skill_summary": {"$all": ['java', 'js']},"title":{"$regex": '(Java|Fullstack Java|Java Fullstack)', "$options": 'i'}}, {"$set":{"stack": "Fullstack"}}, multi=True)
 db.itproject.update({"skill_summary": {"$all": ['java', 'javascript']},"title":{"$regex": '(Java|Fullstack Java|Java Fullstack)', "$options": 'i'}}, {"$set":{"stack": "Fullstack"}}, multi=True)
 db.itproject.update({"skill_summary": {"$all": ['java', 'html']},"title":{"$regex": '(Java|Fullstack Java|Java Fullstack)', "$options": 'i'}}, {"$set":{"stack": "Fullstack"}}, multi=True)
@@ -72,6 +74,41 @@ db.itproject.update({"skill_summary": {"$all": ['java', 'vuejs']},"title":{"$reg
 db.itproject.update({"skill_summary": {"$all": ['java', 'jquery']},"title":{"$regex": '(Java|Fullstack Java|Java Fullstack)', "$options": 'i'}}, {"$set":{"stack": "Fullstack"}}, multi=True)
 db.itproject.update({"skill_summary": {"$all": ['java', 'html5']},"title":{"$regex": '(Java|Fullstack Java|Java Fullstack)', "$options": 'i'}}, {"$set":{"stack": "Fullstack"}}, multi=True)
 db.itproject.update({"skill_summary": {"$all": ['java', 'bootstrap']},"title":{"$regex": '(Java|Fullstack Java|Java Fullstack)', "$options": 'i'}}, {"$set":{"stack": "Fullstack"}}, multi=True)
+
+
+#python full stack
+db.itproject.update({"skill_summary": {"$all": ['python', 'js']},"title":{"$regex": '(Python|Fullstack Python|Python Fullstack)', "$options": 'i'}}, {"$set":{"stack": "Fullstack"}}, multi=True)
+db.itproject.update({"skill_summary": {"$all": ['python', 'javascript']},"title":{"$regex": '(Python|Fullstack Python|Python Fullstack)', "$options": 'i'}}, {"$set":{"stack": "Fullstack"}}, multi=True)
+db.itproject.update({"skill_summary": {"$all": ['python', 'html']},"title":{"$regex": '(Python|Fullstack Python|Python Fullstack)', "$options": 'i'}}, {"$set":{"stack": "Fullstack"}}, multi=True)
+db.itproject.update({"skill_summary": {"$all": ['python', 'css']},"title":{"$regex": '(Python|Fullstack Python|Python Fullstack)', "$options": 'i'}}, {"$set":{"stack": "Fullstack"}}, multi=True)
+db.itproject.update({"skill_summary": {"$all": ['python', 'react']},"title":{"$regex": '(Python|Fullstack Python|Python Fullstack)', "$options": 'i'}}, {"$set":{"stack": "Fullstack"}}, multi=True)
+db.itproject.update({"skill_summary": {"$all": ['python', 'reactjs']},"title":{"$regex": '(Python|Fullstack Python|Python Fullstack)', "$options": 'i'}}, {"$set":{"stack": "Fullstack"}}, multi=True)
+db.itproject.update({"skill_summary": {"$all": ['python', 'angular']},"title":{"$regex": '(Python|Fullstack Python|Python Fullstack)', "$options": 'i'}}, {"$set":{"stack": "Fullstack"}}, multi=True)
+db.itproject.update({"skill_summary": {"$all": ['python', 'angularjs']},"title":{"$regex": '(Python|Fullstack Python|Python Fullstack)', "$options": 'i'}}, {"$set":{"stack": "Fullstack"}}, multi=True)
+db.itproject.update({"skill_summary": {"$all": ['python', 'vue']},"title":{"$regex": '(Python|Fullstack Python|Python Fullstack)', "$options": 'i'}}, {"$set":{"stack": "Fullstack"}}, multi=True)
+db.itproject.update({"skill_summary": {"$all": ['python', 'vuejs']},"title":{"$regex": '(Python|Fullstack Python|Python Fullstack)', "$options": 'i'}}, {"$set":{"stack": "Fullstack"}}, multi=True)
+db.itproject.update({"skill_summary": {"$all": ['python', 'jquery']},"title":{"$regex": '(Python|Fullstack Python|Python Fullstack)', "$options": 'i'}}, {"$set":{"stack": "Fullstack"}}, multi=True)
+db.itproject.update({"skill_summary": {"$all": ['python', 'html5']},"title":{"$regex": '(Python|Fullstack Python|Python Fullstack)', "$options": 'i'}}, {"$set":{"stack": "Fullstack"}}, multi=True)
+db.itproject.update({"skill_summary": {"$all": ['python', 'bootstrap']},"title":{"$regex": '(Python|Fullstack Python|Python Fullstack)', "$options": 'i'}}, {"$set":{"stack": "Fullstack"}}, multi=True)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 #db.itproject.update({"skill_summary":{"$regex": '(?:[\s]|^)(java)(?=[\s]|$)', "$options": 'i'}}, {"$set":{"stack": "Java Developer"}}, multi=True)
 #db.itproject.update({"skill_summary":{"$regex": 'react|angular|vue|jquery|frontend', "$options": 'm'}}, {"$set":{"stack": "Frontend"}}, multi=True)
 

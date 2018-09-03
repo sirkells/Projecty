@@ -10,6 +10,10 @@ def connect():
 db = connect()
 data = db.itproject.find({"region": None }) #None gets all doc without region field
 
+
+db.itproject.update({"region":{"$exists": True }}, {"$unset":{"region": ""}}, multi=True)
+
+
 location = ["Frankfurt", "Köln", "Bonn", "München", "Hamburg", "Berlin", "Stuttgart", "Düsseldorf", "Nürnberg", "Bayern", "Hannover", "Hessen", "Niedersachsen", "Karlsruhe",
              "Wiesbaden", "Bremen", "Mannheim", "Kiel", "Essen", "Ingolstadt", "Braunschweig", "Friedrichshafen", 
               "Leverkusen", "Dortmund", "Sailauf", "Darmstadt", "Dresden", "Münster", "Aschaffenburg", "Leipzig",
@@ -22,7 +26,7 @@ location = ["Frankfurt", "Köln", "Bonn", "München", "Hamburg", "Berlin", "Stut
                "Turgi", "Flensburg",  "Oberhausen", "Schwaben", "Aßlar", "Lindau", "Aurich", "Karlsfeld", "Kenzingen", "Künzelsau", "Schwerin", "Rastatt", "Passau", "Poing", "Schopfloch", "Elmshorn", 
                "Tuttlingen", "Magedeburg", "Hüttenberg", "Lohfelden", "Meckenheim", "Loßburg", "Rosenheim", "Gilching", "Germersheim", "Rastede", "Leichlingen", "Höchberg", "Bamberg", "Saarland", "Hilden", "Borken", "Bayreuth", "Heppenheim", "Mülheim", "Crailsheim", 
                "Böblingen",  "Kempten", "Sossenheim", "Weissach", "Lahr", "Vechta", "Bischofsheim", "Konstanz", "Warstein", "Genthin", "Dreilinden", "Brandenburg", "Husum", "Spelle", "Rheine", "Meerbusch", "Münzenberg", "Luterbach", "Herzogenaurach", "Siegen", "Ahrensburg",
-               "Herne", "Eschwege", "Bottrop", "Cadolzburg", "Minden", "Kroppach", "Meschede", "Gummersbach", "Rimpar", "Oberpfalz", "Philippsburg", "Steinhausen", "Willich", "Offenburg", "Nordrhein-Westfalen", "D7", "D6", "D8", "D3", "D9", "D5", "D2","D0","D4","D1",'Baden-Württemberg', "Krefeld", "Deutschland",
+               "Herne", "Eschwege", "Bottrop", "Cadolzburg", "Minden", "Kroppach", "Meschede", "Gummersbach", "Rimpar", "Oberpfalz", "Philippsburg", "Steinhausen", "Willich", "Offenburg", "Nordrhein-Westfalen", "D7", "D6", "D8", "D3", "D9", "D5", "D2","D0","D4","D1",'Baden-Württemberg', "Krefeld",
                "CH",'Rheinland-Pfalz', 'Rhein-Main-Gebiet','Schleswig-Holstein','Ostwestfalen', "Neckar", "Leon", 'Fürth', "Solingen", "None"]
 
 #add region field using location value
@@ -32,6 +36,7 @@ for city in location:
 
 #region field with complicated location value
 db.itproject.update({"location":{"$regex": '^.*Munich', "$options": 'i'}}, {"$set":{"region": "München"}}, multi=True)
+
 db.itproject.update({"location":{"$regex": '^.*Muenchen', "$options": 'i'}}, {"$set":{"region": "München"}}, multi=True)
 db.itproject.update({"location":{"$regex": '^.*Cologne', "$options": 'i'}}, {"$set":{"region": "Köln"}}, multi=True)
 db.itproject.update({"location":{"$regex": '^.*Duesseldorf', "$options": 'i'}}, {"$set":{"region": "Düsseldorf"}}, multi=True)
@@ -51,8 +56,8 @@ db.itproject.update({"location":{"$regex": '^.*Inter', "$options": 'i'}}, {"$set
 db.itproject.update({"location":{"$regex": '^.*kein', "$options": 'i'}}, {"$set":{"region": "None"}}, multi=True)
 db.itproject.update({"location":{"$regex": '^.*hesse', "$options": 'i'}}, {"$set":{"region": "Hessen"}}, multi=True)
 db.itproject.update({"location":{"$regex": '^.*rheinland', "$options": 'i'}}, {"$set":{"region": "Rheinland-Pfalz"}}, multi=True)
-
-
+db.itproject.update({"location":{"$regex": '^.*münchen', "$options": 'i'}}, {"$set":{"region": "München"}}, multi=True)
+db.itproject.update({"location":{"$regex": r'(?:[\s]|^)(münchen)(?=[\s]|$)', "$options": 'i'}}, {"$set":{"region": "München"}}, multi=True)
 #unset field
 db.itproject.update({"stack":{"$exists": True }}, {"$unset":{"stack": ""}}, multi=True)
 
@@ -288,7 +293,6 @@ db.itproject.update({"skill_summary": {"$all": ['nodejs', 'jquery']}}, {"$set":{
 db.itproject.update({"skill_summary": {"$all": ['nodejs', 'html5']}}, {"$set":{"stack": "Fullstack"}}, multi=True)
 db.itproject.update({"skill_summary": {"$all": ['nodejs', 'bootstrap']}}, {"$set":{"stack": "Fullstack"}}, multi=True)
 db.itproject.update({"skill_summary": {"$all": ['nodejs', 'express']}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-
 
 
 

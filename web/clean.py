@@ -61,10 +61,11 @@ db.itproject.update({"location":{"$regex": '^.*hesse', "$options": 'i'}}, {"$set
 db.itproject.update({"location":{"$regex": '^.*rheinland', "$options": 'i'}}, {"$set":{"region": "Rheinland-Pfalz"}}, multi=True)
 db.itproject.update({"location":{"$regex": '^.*münchen', "$options": 'i'}}, {"$set":{"region": "München"}}, multi=True)
 
-
+#naming regions with locations not above
 data = db.itproject.find({"region": None })
 for loc in data:
     a = loc['location']
+    
     db.itproject.update({"region": None}, {"$set":{"region": a}})
 
 #db.itproject.update({"location":{"$regex": r'(?:[\s]|^)(münchen)(?=[\s]|$)', "$options": 'i'}}, {"$set":{"region": "München"}}, multi=True)

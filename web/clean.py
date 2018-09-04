@@ -8,11 +8,13 @@ def connect():
     handle = connection["projectfinder"]
     return handle
 db = connect()
-data = db.itproject.find({"region": None }) #None gets all doc without region field
+#data = db.itproject.find({"region": None }) #None gets all doc without region field
 
-
+#unset field
+#unset region
 db.itproject.update({"region":{"$exists": True }}, {"$unset":{"region": ""}}, multi=True)
-
+#unset stack
+db.itproject.update({"stack":{"$exists": True }}, {"$unset":{"stack": ""}}, multi=True)
 
 location = ["Frankfurt", "Köln", "Bonn", "München", "Hamburg", "Berlin", "Stuttgart", "Düsseldorf", "Nürnberg", "Bayern", "Hannover", "Hessen", "Niedersachsen", "Karlsruhe",
              "Wiesbaden", "Bremen", "Mannheim", "Kiel", "Essen", "Ingolstadt", "Braunschweig", "Friedrichshafen", 
@@ -39,9 +41,10 @@ db.itproject.update({"location":{"$regex": '^.*Munich', "$options": 'i'}}, {"$se
 
 db.itproject.update({"location":{"$regex": '^.*Muenchen', "$options": 'i'}}, {"$set":{"region": "München"}}, multi=True)
 db.itproject.update({"location":{"$regex": '^.*Cologne', "$options": 'i'}}, {"$set":{"region": "Köln"}}, multi=True)
+db.itproject.update({"location":{"$regex": '^koe', "$options": 'i'}}, {"$set":{"region": "Köln"}}, multi=True)
 db.itproject.update({"location":{"$regex": '^.*Duesseldorf', "$options": 'i'}}, {"$set":{"region": "Düsseldorf"}}, multi=True)
 db.itproject.update({"location":{"$regex": '^.*Dusseldorf', "$options": 'i'}}, {"$set":{"region": "Düsseldorf"}}, multi=True)
-db.itproject.update({"location":{"$regex": '^.*DE', "$options": 'i'}}, {"$set":{"region": "Deutschland"}}, multi=True)
+db.itproject.update({"location":{"$regex": '^DE', "$options": 'i'}}, {"$set":{"region": "Deutschland"}}, multi=True)
 db.itproject.update({"location":{"$regex": '^.*Nuremberg', "$options": 'i'}}, {"$set":{"region": "Nüremberg"}}, multi=True)
 db.itproject.update({"location":{"$regex": '^.*North', "$options": 'i'}}, {"$set":{"region": "Nordrhein-Westfalen"}}, multi=True)
 db.itproject.update({"location":{"$regex": '^.*Sachsen', "$options": 'i'}}, {"$set":{"region": "Niedersachsen"}}, multi=True)
@@ -57,13 +60,16 @@ db.itproject.update({"location":{"$regex": '^.*kein', "$options": 'i'}}, {"$set"
 db.itproject.update({"location":{"$regex": '^.*hesse', "$options": 'i'}}, {"$set":{"region": "Hessen"}}, multi=True)
 db.itproject.update({"location":{"$regex": '^.*rheinland', "$options": 'i'}}, {"$set":{"region": "Rheinland-Pfalz"}}, multi=True)
 db.itproject.update({"location":{"$regex": '^.*münchen', "$options": 'i'}}, {"$set":{"region": "München"}}, multi=True)
-db.itproject.update({"location":{"$regex": r'(?:[\s]|^)(münchen)(?=[\s]|$)', "$options": 'i'}}, {"$set":{"region": "München"}}, multi=True)
 
 
+data = db.itproject.find({"region": None })
+for loc in data:
+    a = loc['location']
+    db.itproject.update({"region": None}, {"$set":{"region": a}})
 
-#unset field
-db.itproject.update({"stack":{"$exists": True }}, {"$unset":{"stack": ""}}, multi=True)
+#db.itproject.update({"location":{"$regex": r'(?:[\s]|^)(münchen)(?=[\s]|$)', "$options": 'i'}}, {"$set":{"region": "München"}}, multi=True)
 
+#db.itproject.update({"stack":{"$exists": True }}, {"$unset":{"stack": ""}}, multi=True)
 
 #add project stack
 #(?:[\s]|^)(java|node|nodejs|or|python)(?=[\s]|$)

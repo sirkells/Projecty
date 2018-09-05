@@ -16,7 +16,7 @@ db = connect()
 db.itproject.update({"region":{"$exists": True }}, {"$unset":{"region": ""}}, multi=True)
 db.itproject.update({"stack":{"$exists": True }}, {"$unset":{"stack": ""}}, multi=True)
 
-"""location = ["Frankfurt", "Köln", "Bonn", "München", "Hamburg", "Berlin", "Stuttgart", "Düsseldorf", "Nürnberg", "Bayern", "Hannover", "Hessen", "Niedersachsen", "Karlsruhe",
+location = ["Frankfurt", "Köln", "Bonn", "München", "Hamburg", "Berlin", "Stuttgart", "Düsseldorf", "Nürnberg", "Bayern", "Hannover", "Hessen", "Niedersachsen", "Karlsruhe",
              "Wiesbaden", "Bremen", "Mannheim", "Kiel", "Essen", "Ingolstadt", "Braunschweig", "Friedrichshafen", 
               "Leverkusen", "Dortmund", "Sailauf", "Darmstadt", "Dresden", "Münster", "Aschaffenburg", "Leipzig",
               "Heidelberg", "Wolfsburg", "Ulm", "Heilbronn", "Bielefeld", "Mainz", "Potsdam", "Eschborn", "Oldenburg", "Ludwigsburg",
@@ -37,21 +37,21 @@ for city in location:
 
 
 #region field with complicated location value
-db.itproject.update({"location":{"$regex": '(^.*munich|^.*muenchen|^.*münchen|munich|muenchen|münich|^.*m&u)', "$options": 'i'}}, {"$set":{"region": "München"}}, multi=True)
-db.itproject.update({"location":{"$regex": '(^.*cologne|^.*koel|^.*koln|koe|cologne|koln)', "$options": 'i'}}, {"$set":{"region": "Köln"}}, multi=True)
-db.itproject.update({"location":{"$regex": '(^.*duesseldorf|^.*dusseldorf|^.*dusse|duesseldorf|dusseldorf)', "$options": 'i'}}, {"$set":{"region": "Düsseldorf"}}, multi=True)
-db.itproject.update({"location":{"$regex": '^DE', "$options": 'i'}}, {"$set":{"region": "Deutschland"}}, multi=True)
-db.itproject.update({"location":{"$regex": '^.*Nuremberg', "$options": 'i'}}, {"$set":{"region": "Nüremberg"}}, multi=True)
-db.itproject.update({"location":{"$regex": '(^.*north|^.*nrw|^.*nordrhein|north|nrw|nordrhein)', "$options": 'i'}}, {"$set":{"region": "Nordrhein-Westfalen"}}, multi=True)
-db.itproject.update({"location":{"$regex": '^.*Sachsen', "$options": 'i'}}, {"$set":{"region": "Niedersachsen"}}, multi=True)
-db.itproject.update({"location":{"$regex": '^.*remote', "$options": 'i'}}, {"$set":{"region": "Remote"}}, multi=True)
-db.itproject.update({"location":{"$regex": '^.*D-4', "$options": 'i'}}, {"$set":{"region": "D4"}}, multi=True)
-db.itproject.update({"location":{"$regex": '^.*D-6', "$options": 'i'}}, {"$set":{"region": "D6"}}, multi=True)
-db.itproject.update({"location":{"$regex": '^.*D-3', "$options": 'i'}}, {"$set":{"region": "D3"}}, multi=True)
-db.itproject.update({"location":{"$regex": '^.*Inter', "$options": 'i'}}, {"$set":{"region": "Intl"}}, multi=True)
-db.itproject.update({"location":{"$regex": '^.*kein', "$options": 'i'}}, {"$set":{"region": "None"}}, multi=True)
-db.itproject.update({"location":{"$regex": '^.*hesse', "$options": 'i'}}, {"$set":{"region": "Hessen"}}, multi=True)
-db.itproject.update({"location":{"$regex": '^.*rheinland', "$options": 'i'}}, {"$set":{"region": "Rheinland-Pfalz"}}, multi=True)
+db.itproject.update({ "$and": [ {"region": None},{"location":{"$regex": '(^.*munich|^.*muenchen|^.*münchen|munich|muenchen|münich|^.*m&u)', "$options": 'i'}}]}, {"$set":{"region": "München"}}, multi=True)
+db.itproject.update({ "$and": [ {"region": None},{"location":{"$regex": '(^.*cologne|^.*koel|^.*koln|koe|cologne|koln)', "$options": 'i'}}]}, {"$set":{"region": "Köln"}}, multi=True)
+db.itproject.update({ "$and": [ {"region": None},{"location":{"$regex": '(^.*duesseldorf|^.*dusseldorf|^.*dusse|duesseldorf|dusseldorf)', "$options": 'i'}}]}, {"$set":{"region": "Düsseldorf"}}, multi=True)
+db.itproject.update({ "$and": [ {"region": None},{"location":{"$regex": '^DE', "$options": 'i'}}]}, {"$set":{"region": "Deutschland"}}, multi=True)
+db.itproject.update({ "$and": [ {"region": None},{"location":{"$regex": '^.*Nuremberg', "$options": 'i'}}]}, {"$set":{"region": "Nüremberg"}}, multi=True)
+db.itproject.update({ "$and": [ {"region": None},{"location":{"$regex": '(^.*north|^.*nrw|^.*nordrhein|north|nrw|nordrhein)', "$options": 'i'}}]}, {"$set":{"region": "Nordrhein-Westfalen"}}, multi=True)
+db.itproject.update({ "$and": [ {"region": None},{"location":{"$regex": '^.*Sachsen', "$options": 'i'}}]}, {"$set":{"region": "Niedersachsen"}}, multi=True)
+db.itproject.update({ "$and": [ {"region": None},{"location":{"$regex": '^.*remote', "$options": 'i'}}]}, {"$set":{"region": "Remote"}}, multi=True)
+db.itproject.update({ "$and": [ {"region": None},{"location":{"$regex": '^.*D-4', "$options": 'i'}}]}, {"$set":{"region": "D4"}}, multi=True)
+db.itproject.update({ "$and": [ {"region": None},{"location":{"$regex": '^.*D-6', "$options": 'i'}}]}, {"$set":{"region": "D6"}}, multi=True)
+db.itproject.update({ "$and": [ {"region": None},{"location":{"$regex": '^.*D-3', "$options": 'i'}}]}, {"$set":{"region": "D3"}}, multi=True)
+db.itproject.update({ "$and": [ {"region": None},{"location":{"$regex": '^.*Inter', "$options": 'i'}}]}, {"$set":{"region": "Intl"}}, multi=True)
+db.itproject.update({ "$and": [ {"region": None},{"location":{"$regex": '^.*kein', "$options": 'i'}}]}, {"$set":{"region": "None"}}, multi=True)
+db.itproject.update({ "$and": [ {"region": None},{"location":{"$regex": '^.*hesse', "$options": 'i'}}]}, {"$set":{"region": "Hessen"}}, multi=True)
+db.itproject.update({ "$and": [ {"region": None},{"location":{"$regex": '^.*rheinland', "$options": 'i'}}]}, {"$set":{"region": "Rheinland-Pfalz"}}, multi=True)
 
 
 #naming regions with locations not above
@@ -60,23 +60,84 @@ for loc in data:
     a = loc['location']
     db.itproject.update({"region": None}, {"$set":{"region": a}})
 
-"""
+
 
 #fullstack skills with title
-db.itproject.update({ "$and": [ { "skill_summary": {"$regex": '(python|django|flask|pyramid)'} }, { "skill_summary": {"$regex": '(^js|javascript|react|angular|vue|css|html|bootstrap|jquery)'} } ], "title":{"$regex": '(Python|Fullstack Python|Python Fullstack)', "$options": 'i'}}, {"$set":{"stack": ["Fullstack", "Python"]}}, multi=True)
-db.itproject.update({ "$and": [ { "skill_summary": {"$regex": r'(?:[\s]|^)(java|spring|j2ee)(?=[\s]|$)'} }, { "skill_summary": {"$regex": '(^js|javascript|react|angular|vue|css|html|bootstrap|jquery|frontend)'} } ], "title":{"$regex": '(Java|Fullstack Java|Java Fullstack)', "$options": 'i'}}, {"$set":{"stack": ["Fullstack", "Java"]}}, multi=True)
-db.itproject.update({ "$and": [ { "skill_summary": {"$regex": '(php|laravel)'} }, { "skill_summary": {"$regex": '(^js|javascript|react|angular|vue|css|html|bootstrap|jquery)'} } ], "title":{"$regex": '(php|Fullstack php|php Fullstack|laravel)', "$options": 'i'}}, {"$set":{"stack": ["Fullstack", "PHP"]}}, multi=True)
-db.itproject.update({ "$and": [ { "skill_summary": {"$regex": '(node|express)'} }, { "skill_summary": {"$regex": '(react|angular|vue|css|express|html|bootstrap|jquery)'} } ], "title":{"$regex": '(php|Fullstack php|php Fullstack|laravel)', "$options": 'i'}}, {"$set":{"stack": ["Fullstack", "Nodejs"]}}, multi=True)
+db.itproject.update({ "$and": [ {"stack": None},{ "skill_summary": {"$regex": '(php|laravel)'} }, { "skill_summary": {"$regex": '(^js|javascript|react|angular|vue|css|html|bootstrap|jquery)'} } ], "title":{"$regex": '(php|Fullstack php|php Fullstack|laravel)', "$options": 'i'}}, {"$set":{"stack": ["Fullstack", "PHP"]}}, multi=True)
+db.itproject.update({ "$and": [ {"stack": None},{ "skill_summary": {"$regex": r'(?:[\s]|^)(java|spring|j2ee)(?=[\s]|$)'} }, { "skill_summary": {"$regex": '(^js|javascript|react|angular|vue|css|html|bootstrap|jquery|frontend)'} } ], "title":{"$regex": '(Java|Fullstack Java|Java Fullstack)', "$options": 'i'}}, {"$set":{"stack": ["Fullstack", "Java"]}}, multi=True)
+db.itproject.update({ "$and": [ {"stack": None},{ "skill_summary": {"$regex": '(node|express)'} }, { "skill_summary": {"$regex": '(react|angular|vue|css|express|html|bootstrap|jquery)'} } ], "title":{"$regex": '(php|Fullstack php|php Fullstack|laravel)', "$options": 'i'}}, {"$set":{"stack": ["Fullstack", "Nodejs"]}}, multi=True)
+db.itproject.update({ "$and": [ {"stack": None},{ "skill_summary": {"$regex": '(python|django|flask|pyramid)'} }, { "skill_summary": {"$regex": '(^js|javascript|react|angular|vue|css|html|bootstrap|jquery)'} } ], "title":{"$regex": '(Python|Fullstack Python|Python Fullstack)', "$options": 'i'}}, {"$set":{"stack": ["Fullstack", "Python"]}}, multi=True)
 #sap stack
-db.itproject.update({"skill_summary": {"$regex": 'sap', "$options": 'i'}}, {"$set":{"stack": ["SAP"]}}, multi=True)
-db.itproject.update({"title": {"$regex": r'(?:[\s]|^)(sap)(?=[\s]|$)', "$options": 'i'}}, {"$set":{"stack": ["SAP"]}}, multi=True)
+db.itproject.update({ "$and": [ {"stack": None},{"skill_summary": {"$regex": 'sap', "$options": 'i'}}]}, {"$set":{"stack": ["SAP"]}}, multi=True)
+db.itproject.update({ "$and": [ {"stack": None},{"title": {"$regex": r'(?:[\s]|^)(sap)(?=[\s]|$)', "$options": 'i'}}]}, {"$set":{"stack": ["SAP"]}}, multi=True)
 #fullstack skills without title
-db.itproject.update({ "$and": [ { "skill_summary": {"$regex": r'(?:[\s]|^)(java|spring|j2ee)(?=[\s]|$)'} }, { "skill_summary": {"$regex": '(^js|javascript|react|angular|vue|css|html|bootstrap|jquery)'} } ] }, {"$set":{"stack": ["Fullstack", "Java"]}}, multi=True)
-db.itproject.update({ "$and": [ { "skill_summary": {"$regex": '(python|django|flask|pyramid)'} }, { "skill_summary": {"$regex": '(^js|javascript|react|angular|vue|css|html|bootstrap|jquery)'} } ] }, {"$set":{"stack": ["Fullstack", "Python"]}}, multi=True)
-db.itproject.update({ "$and": [ { "skill_summary": {"$regex": '(php|laravel)'} }, { "skill_summary": {"$regex": '(^js|javascript|react|angular|vue|css|html|bootstrap|jquery)'} } ]}, {"$set":{"stack": ["Fullstack", "PHP"]}}, multi=True)
-db.itproject.update({ "$and": [ { "skill_summary": {"$regex": '(node|express)'} }, { "skill_summary": {"$regex": '(react|angular|vue|css|html|bootstrap|jquery|express)'} } ]}, {"$set":{"stack": ["Fullstack", "Nodejs"]}}, multi=True)
-db.itproject.update({ "$and": [ { "skill_summary": {"$regex": r'(?:[\s]|^)(c|c\++)(?=[\s]|$)'} }, { "skill_summary": {"$regex": '(^js|javascript|react|angular|vue|css|html|bootstrap|jquery|express)'} } ]}, {"$set":{"stack": ["Fullstack", "C", "C++"]}}, multi=True)
-db.itproject.update({ "$and": [ { "skill_summary": {"$regex": r'(?:[\s]|^)(\.net|asp.net|c#|asp)(?=[\s]|$)'} }, { "skill_summary": {"$regex": '(^js|javascript|react|angular|vue|css|html|bootstrap|jquery|express)'} }, { "skill_summary": { "$not": re.compile(r'(?:[\s]|^)(java|spring|j2ee|python|django|flask|pyramid|php|laravel|node|express|sap|node.js|nodejs|c\++)(?=[\s]|$)') } } ]}, {"$set":{"stack": ["Fullstack", "C#", "Asp.net"]}}, multi=True)
+db.itproject.update({ "$and": [ {"stack": None},{ "skill_summary": {"$regex": r'(?:[\s]|^)(java|spring|j2ee)(?=[\s]|$)'} }, { "skill_summary": {"$regex": '(^js|javascript|react|angular|vue|css|html|bootstrap|jquery)'} } ] }, {"$set":{"stack": ["Fullstack", "Java"]}}, multi=True)
+db.itproject.update({ "$and": [ {"stack": None},{ "skill_summary": {"$regex": '(python|django|flask|pyramid)'} }, { "skill_summary": {"$regex": '(^js|javascript|react|angular|vue|css|html|bootstrap|jquery)'} } ] }, {"$set":{"stack": ["Fullstack", "Python"]}}, multi=True)
+db.itproject.update({ "$and": [ {"stack": None},{ "skill_summary": {"$regex": '(php|laravel)'} }, { "skill_summary": {"$regex": '(^js|javascript|react|angular|vue|css|html|bootstrap|jquery)'} } ]}, {"$set":{"stack": ["Fullstack", "PHP"]}}, multi=True)
+db.itproject.update({ "$and": [ {"stack": None},{ "skill_summary": {"$regex": '(node|express)'} }, { "skill_summary": {"$regex": '(react|angular|vue|css|html|bootstrap|jquery|express)'} } ]}, {"$set":{"stack": ["Fullstack", "Nodejs"]}}, multi=True)
+db.itproject.update({ "$and": [ {"stack": None},{ "skill_summary": {"$regex": r'(?:[\s]|^)(c|c\++)(?=[\s]|$)'} }, { "skill_summary": {"$regex": '(^js|javascript|react|angular|vue|css|html|bootstrap|jquery|express)'} } ]}, {"$set":{"stack": ["Fullstack", "C", "C++"]}}, multi=True)
+db.itproject.update({ "$and": [ {"stack": None},{ "skill_summary": {"$regex": r'(?:[\s]|^)(\.net|asp.net|c#|asp)(?=[\s]|$)'} }, { "skill_summary": {"$regex": '(^js|javascript|react|angular|vue|css|html|bootstrap|jquery|express)'} }, { "skill_summary": { "$not": re.compile(r'(?:[\s]|^)(java|spring|j2ee|python|django|flask|pyramid|php|laravel|node|express|sap|node.js|nodejs|c\++)(?=[\s]|$)') } } ]}, {"$set":{"stack": ["Fullstack", "C#", "Asp.net"]}}, multi=True)
+
+
+
+#frontend
+db.itproject.update({ "$and": [{"stack": None},{ "skill_summary": {"$regex": '(^js$|javascript|react|angular|vue|css|html|bootstrap|jquery|frontend)'} }, { "skill_summary": { "$not": re.compile(r'(?:[\s]|^)(java|spring|j2ee|python|django|flask|pyramid|php|laravel|node|express|sap|c|c#|node.js|nodejs|c\++)(?=[\s]|$)') } }]}, {"$set":{"stack": ["Frontend"]}}, multi=True)
+
+#backend
+db.itproject.update({ "$and": [{"stack": None},{ "skill_summary": {"$regex": r'(?:[\s]|^)(java|spring|j2ee)(?=[\s]|$)'} }, { "skill_summary": { "$not": re.compile('(^js$|javascript|react|angular|vue|css|html|bootstrap|jquery)') } }]}, {"$set":{"stack": ["Backend", "Java"]}}, multi=True)
+db.itproject.update({ "$and": [{"stack": None},{ "skill_summary": {"$regex": '(python|django|flask|pyramid)'} }, { "skill_summary": { "$not": re.compile('(^js$|javascript|react|angular|vue|css|html|bootstrap|jquery)') } }]}, {"$set":{"stack": ["Backend", "Python"]}}, multi=True)
+db.itproject.update({ "$and": [{"stack": None},{ "skill_summary": {"$regex": '(php|laravel)'} }, { "skill_summary": { "$not": re.compile('(^js$|javascript|react|angular|vue|css|html|bootstrap|jquery)') } }]}, {"$set":{"stack": ["Backend", "PHP"]}}, multi=True)
+db.itproject.update({ "$and": [{"stack": None},{ "skill_summary": {"$regex": r'(?:[\s]|^)(node|nodejs|node.js)(?=[\s]|$)'} }, { "skill_summary": { "$not": re.compile('(react|angular|vue|css|html|bootstrap|jquery)') } }]}, {"$set":{"stack": ["Backend", "Nodejs"]}}, multi=True)
+db.itproject.update({ "$and": [{"stack": None},{ "skill_summary": {"$regex": r'(?:[\s]|^)(c|c\++)(?=[\s]|$)'} }, { "skill_summary": { "$not": re.compile('(^js$|javascript|react|angular|vue|css|html|bootstrap|jquery)') } }]}, {"$set":{"stack": ["Backend", "C", "C++"]}}, multi=True)
+db.itproject.update({ "$and": [{"stack": None},{ "skill_summary": {"$regex": r'(?:[\s]|^)(\.net|asp.net|c#|asp)(?=[\s]|$)'} }, { "skill_summary": { "$not": re.compile('(^js$|javascript|react|angular|vue|css|html|bootstrap|jquery)') } }]}, {"$set":{"stack": ["Backend", "C#", "Asp.net"]}}, multi=True)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 #frontend
 #db.itproject.update({ "$and": [ { "skill_summary": {"$regex": r'(?:[\s]|^)(java|spring|j2ee)(?=[\s]|$)'} }, { "skill_summary": {"$regex": '(^js|javascript|react|angular|vue|css|html|bootstrap|jquery)'} } ] }, {"$set":{"stack": ["Fullstack", "Java"]}}, multi=True)
@@ -92,18 +153,6 @@ db.itproject.update({ "$and": [ { "skill_summary": {"$regex": r'(?:[\s]|^)(\.net
 
 
 #{ "$not": re.compile("^p.*") }
-
-#frontend
-db.itproject.update({ "$and": [{ "skill_summary": {"$regex": '(^js$|javascript|react|angular|vue|css|html|bootstrap|jquery|frontend)'} }, { "skill_summary": { "$not": re.compile(r'(?:[\s]|^)(java|spring|j2ee|python|django|flask|pyramid|php|laravel|node|express|sap|c|c#|node.js|nodejs|c\++)(?=[\s]|$)') } }]}, {"$set":{"stack": ["Frontend"]}}, multi=True)
-
-#backend
-db.itproject.update({ "$and": [{ "skill_summary": {"$regex": r'(?:[\s]|^)(java|spring|j2ee)(?=[\s]|$)'} }, { "skill_summary": { "$not": re.compile('(^js$|javascript|react|angular|vue|css|html|bootstrap|jquery)') } }]}, {"$set":{"stack": ["Backend", "Java"]}}, multi=True)
-db.itproject.update({ "$and": [{ "skill_summary": {"$regex": '(python|django|flask|pyramid)'} }, { "skill_summary": { "$not": re.compile('(^js$|javascript|react|angular|vue|css|html|bootstrap|jquery)') } }]}, {"$set":{"stack": ["Backend", "Python"]}}, multi=True)
-db.itproject.update({ "$and": [{ "skill_summary": {"$regex": '(php|laravel)'} }, { "skill_summary": { "$not": re.compile('(^js$|javascript|react|angular|vue|css|html|bootstrap|jquery)') } }]}, {"$set":{"stack": ["Backend", "PHP"]}}, multi=True)
-db.itproject.update({ "$and": [{ "skill_summary": {"$regex": r'(?:[\s]|^)(node|nodejs|node.js)(?=[\s]|$)'} }, { "skill_summary": { "$not": re.compile('(react|angular|vue|css|html|bootstrap|jquery)') } }]}, {"$set":{"stack": ["Backend", "Nodejs"]}}, multi=True)
-db.itproject.update({ "$and": [{ "skill_summary": {"$regex": r'(?:[\s]|^)(c|c\++)(?=[\s]|$)'} }, { "skill_summary": { "$not": re.compile('(^js$|javascript|react|angular|vue|css|html|bootstrap|jquery)') } }]}, {"$set":{"stack": ["Backend", "C", "C++"]}}, multi=True)
-db.itproject.update({ "$and": [{ "skill_summary": {"$regex": r'(?:[\s]|^)(\.net|asp.net|c#|asp)(?=[\s]|$)'} }, { "skill_summary": { "$not": re.compile('(^js$|javascript|react|angular|vue|css|html|bootstrap|jquery)') } }]}, {"$set":{"stack": ["Backend", "C#", "Asp.net"]}}, multi=True)
-
 
 #db.itproject.update({"location":{"$regex": r'(?:[\s]|^)(münchen)(?=[\s]|$)', "$options": 'i'}}, {"$set":{"region": "München"}}, multi=True)
 

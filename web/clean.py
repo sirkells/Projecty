@@ -10,10 +10,10 @@ def connect():
 db = connect()
 #data = db.itproject.find({"region": None }) #None gets all doc without region field
 
-#unset field
-#unset region
-db.itproject.update({"region":{"$exists": True }}, {"$unset":{"region": ""}}, multi=True)
+
+#db.itproject.update({"region1":{"$exists": True }}, {"$unset":{"region1": ""}}, multi=True)
 #unset stack
+db.itproject.update({"region":{"$exists": True }}, {"$unset":{"region": ""}}, multi=True)
 db.itproject.update({"stack":{"$exists": True }}, {"$unset":{"stack": ""}}, multi=True)
 
 location = ["Frankfurt", "Köln", "Bonn", "München", "Hamburg", "Berlin", "Stuttgart", "Düsseldorf", "Nürnberg", "Bayern", "Hannover", "Hessen", "Niedersachsen", "Karlsruhe",
@@ -78,232 +78,19 @@ for loc in data:
 #Java = {"$regex": '(Java|Fullstack Java|Java Fullstack)', "$options": 'i'}, {"$set":{"stack": "Fullstack"}}
 
 
+#skills with title
+db.itproject.update({ "$and": [ { "skill_summary": {"$regex": '(python|django|flask|pyramid)'} }, { "skill_summary": {"$regex": '(^js|javascript|react|angular|vue|css|html|bootstrap|jquery)'} } ], "title":{"$regex": '(Python|Fullstack Python|Python Fullstack)', "$options": 'i'}}, {"$set":{"stack": ["Fullstack", "Python"]}}, multi=True)
+db.itproject.update({ "$and": [ { "skill_summary": {"$regex": r'(?:[\s]|^)(java|spring|j2ee)(?=[\s]|$)'} }, { "skill_summary": {"$regex": '(^js|javascript|react|angular|vue|css|html|bootstrap|jquery)'} } ], "title":{"$regex": '(Java|Fullstack Java|Java Fullstack)', "$options": 'i'}}, {"$set":{"stack": ["Fullstack", "Java"]}}, multi=True)
+db.itproject.update({ "$and": [ { "skill_summary": {"$regex": '(php|laravel)'} }, { "skill_summary": {"$regex": '(^js|javascript|react|angular|vue|css|html|bootstrap|jquery)'} } ], "title":{"$regex": '(php|Fullstack php|php Fullstack|laravel)', "$options": 'i'}}, {"$set":{"stack": ["Fullstack", "PHP"]}}, multi=True)
+db.itproject.update({ "$and": [ { "skill_summary": {"$regex": '(node|express)'} }, { "skill_summary": {"$regex": '(^js|javascript|react|angular|vue|css|express|html|bootstrap|jquery)'} } ], "title":{"$regex": '(php|Fullstack php|php Fullstack|laravel)', "$options": 'i'}}, {"$set":{"stack": ["Fullstack", "Node"]}}, multi=True)
 #sap stack
-db.itproject.update({"skill_summary": {"$all": ['sap']}}, {"$set":{"stack": "SAP"}}, multi=True)
-db.itproject.update({"title": {"$regex": r'(?:[\s]|^)(sap)(?=[\s]|$)', "$options": 'i'}}, {"$set":{"stack": "SAP"}}, multi=True)
-
-
-
-#java fullstack
-db.itproject.update({"skill_summary": {"$all": ['java', 'js']},"title":{"$regex": '(Java|Fullstack Java|Java Fullstack)', "$options": 'i'}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['java', 'javascript']},"title":{"$regex": '(Java|Fullstack Java|Java Fullstack)', "$options": 'i'}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['java', 'html']},"title":{"$regex": '(Java|Fullstack Java|Java Fullstack)', "$options": 'i'}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['java', 'css']},"title":{"$regex": '(Java|Fullstack Java|Java Fullstack)', "$options": 'i'}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['java', 'react']},"title":{"$regex": '(Java|Fullstack Java|Java Fullstack)', "$options": 'i'}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['java', 'reactjs']},"title":{"$regex": '(Java|Fullstack Java|Java Fullstack)', "$options": 'i'}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['java', 'react.js']},"title":{"$regex": '(Java|Fullstack Java|Java Fullstack)', "$options": 'i'}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['java', 'angular']},"title":{"$regex": '(Java|Fullstack Java|Java Fullstack)', "$options": 'i'}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['java', 'angular2']},"title":{"$regex": '(Java|Fullstack Java|Java Fullstack)', "$options": 'i'}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['java', 'angular4']},"title":{"$regex": '(Java|Fullstack Java|Java Fullstack)', "$options": 'i'}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['java', 'angularjs']},"title":{"$regex": '(Java|Fullstack Java|Java Fullstack)', "$options": 'i'}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['java', 'angular.js']},"title":{"$regex": '(Java|Fullstack Java|Java Fullstack)', "$options": 'i'}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['java', 'vue']},"title":{"$regex": '(Java|Fullstack Java|Java Fullstack)', "$options": 'i'}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['java', 'vuejs']},"title":{"$regex": '(Java|Fullstack Java|Java Fullstack)', "$options": 'i'}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['java', 'jquery']},"title":{"$regex": '(Java|Fullstack Java|Java Fullstack)', "$options": 'i'}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['java', 'html5']},"title":{"$regex": '(Java|Fullstack Java|Java Fullstack)', "$options": 'i'}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['java', 'bootstrap']},"title":{"$regex": '(Java|Fullstack Java|Java Fullstack)', "$options": 'i'}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-
-
-
-
-#python full stack
-db.itproject.update({"skill_summary": {"$all": ['python', 'js']},"title":{"$regex": '(Python|Fullstack Python|Python Fullstack)', "$options": 'i'}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['python', 'javascript']},"title":{"$regex": '(Python|Fullstack Python|Python Fullstack)', "$options": 'i'}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['python', 'html']},"title":{"$regex": '(Python|Fullstack Python|Python Fullstack)', "$options": 'i'}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['python', 'css']},"title":{"$regex": '(Python|Fullstack Python|Python Fullstack)', "$options": 'i'}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['python', 'react']},"title":{"$regex": '(Python|Fullstack Python|Python Fullstack)', "$options": 'i'}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['python', 'reactjs']},"title":{"$regex": '(Python|Fullstack Python|Python Fullstack)', "$options": 'i'}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['python', 'react.js']},"title":{"$regex": '(Python|Fullstack Python|Python Fullstack)', "$options": 'i'}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['python', 'angular']},"title":{"$regex": '(Python|Fullstack Python|Python Fullstack)', "$options": 'i'}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['python', 'angular2']},"title":{"$regex": '(Python|Fullstack Python|Python Fullstack)', "$options": 'i'}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['python', 'angular4']},"title":{"$regex": '(Python|Fullstack Python|Python Fullstack)', "$options": 'i'}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['python', 'angularjs']},"title":{"$regex": '(Python|Fullstack Python|Python Fullstack)', "$options": 'i'}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['python', 'angular.js']},"title":{"$regex": '(Python|Fullstack Python|Python Fullstack)', "$options": 'i'}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['python', 'vue']},"title":{"$regex": '(Python|Fullstack Python|Python Fullstack)', "$options": 'i'}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['python', 'vuejs']},"title":{"$regex": '(Python|Fullstack Python|Python Fullstack)', "$options": 'i'}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['python', 'vue.js']},"title":{"$regex": '(Python|Fullstack Python|Python Fullstack)', "$options": 'i'}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['python', 'jquery']},"title":{"$regex": '(Python|Fullstack Python|Python Fullstack)', "$options": 'i'}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['python', 'html5']},"title":{"$regex": '(Python|Fullstack Python|Python Fullstack)', "$options": 'i'}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['python', 'bootstrap']},"title":{"$regex": '(Python|Fullstack Python|Python Fullstack)', "$options": 'i'}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-
-
-
-
-#javascript fullstack
-
-db.itproject.update({"skill_summary": {"$all": ['node.js', 'js']},"title":{"$regex": '(Node|Fullstack Javascript)', "$options": 'i'}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['node.js', 'html']},"title":{"$regex": '(Node|Fullstack Javascipt)', "$options": 'i'}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['node.js', 'javascript']},"title":{"$regex": '(Node|Fullstack Javascipt)', "$options": 'i'}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['node.js', 'css']},"title":{"$regex": '(Node|Fullstack Javascipt)', "$options": 'i'}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['node.js', 'react']},"title":{"$regex": '(Node|Fullstack Javascipt)', "$options": 'i'}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['node.js', 'reactjs']},"title":{"$regex": '(Node|Fullstack Javascipt)', "$options": 'i'}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['node.js', 'react.js']},"title":{"$regex": '(Node|Fullstack Javascipt)', "$options": 'i'}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['node.js', 'angular']},"title":{"$regex": '(Node|Fullstack Javascipt)', "$options": 'i'}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['node.js', 'angular2']},"title":{"$regex": '(Node|Fullstack Javascipt)', "$options": 'i'}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['node.js', 'angular4']},"title":{"$regex": '(Node|Fullstack Javascipt)', "$options": 'i'}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['node.js', 'angularjs']},"title":{"$regex": '(Node|Fullstack Javascipt)', "$options": 'i'}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['node.js', 'angular.js']},"title":{"$regex": '(Node|Fullstack Javascipt)', "$options": 'i'}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['node.js', 'vue']},"title":{"$regex": '(Node|Fullstack Javascipt)', "$options": 'i'}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['node.js', 'vuejs']},"title":{"$regex": '(Node|Fullstack Javascipt)', "$options": 'i'}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['node.js', 'vue.js']},"title":{"$regex": '(Node|Fullstack Javascipt)', "$options": 'i'}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['node.js', 'jquery']},"title":{"$regex": '(Node|Fullstack Javascipt)', "$options": 'i'}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['node.js', 'html5']},"title":{"$regex": '(Node|Fullstack Javascipt)', "$options": 'i'}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['node.js', 'bootstrap']},"title":{"$regex": '(Node|Fullstack Javascipt)', "$options": 'i'}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['node.js', 'express']},"title":{"$regex": '(Node|Fullstack Javascipt)', "$options": 'i'}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-
-
-db.itproject.update({"skill_summary": {"$all": ['nodejs', 'js']},"title":{"$regex": '(Node|Fullstack Javascript)', "$options": 'i'}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['nodejs', 'html']},"title":{"$regex": '(Node|Fullstack Javascipt)', "$options": 'i'}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['nodejs', 'javascript']},"title":{"$regex": '(Node|Fullstack Javascipt)', "$options": 'i'}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['nodejs', 'css']},"title":{"$regex": '(Node|Fullstack Javascipt)', "$options": 'i'}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['nodejs', 'react']},"title":{"$regex": '(Node|Fullstack Javascipt)', "$options": 'i'}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['nodejs', 'reactjs']},"title":{"$regex": '(Node|Fullstack Javascipt)', "$options": 'i'}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['nodejs', 'react.js']},"title":{"$regex": '(Node|Fullstack Javascipt)', "$options": 'i'}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['nodejs', 'angular']},"title":{"$regex": '(Node|Fullstack Javascipt)', "$options": 'i'}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['nodejs', 'angular2']},"title":{"$regex": '(Node|Fullstack Javascipt)', "$options": 'i'}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['nodejs', 'angular4']},"title":{"$regex": '(Node|Fullstack Javascipt)', "$options": 'i'}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['nodejs', 'angularjs']},"title":{"$regex": '(Node|Fullstack Javascipt)', "$options": 'i'}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['nodejs', 'angular.js']},"title":{"$regex": '(Node|Fullstack Javascipt)', "$options": 'i'}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['nodejs', 'vue']},"title":{"$regex": '(Node|Fullstack Javascipt)', "$options": 'i'}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['nodejs', 'vuejs']},"title":{"$regex": '(Node|Fullstack Javascipt)', "$options": 'i'}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['nodejs', 'vue.js']},"title":{"$regex": '(Node|Fullstack Javascipt)', "$options": 'i'}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['nodejs', 'jquery']},"title":{"$regex": '(Node|Fullstack Javascipt)', "$options": 'i'}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['nodejs', 'html5']},"title":{"$regex": '(Node|Fullstack Javascipt)', "$options": 'i'}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['nodejs', 'bootstrap']},"title":{"$regex": '(Node|Fullstack Javascipt)', "$options": 'i'}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['nodejs', 'express']},"title":{"$regex": '(Node|Fullstack Javascipt)', "$options": 'i'}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-
-
-
-db.itproject.update({"skill_summary": {"$all": ['node', 'js']},"title":{"$regex": '(Node|Fullstack Javascript)', "$options": 'i'}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['node', 'html']},"title":{"$regex": '(Node|Fullstack Javascipt)', "$options": 'i'}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['node', 'javascript']},"title":{"$regex": '(Node|Fullstack Javascipt)', "$options": 'i'}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['node', 'css']},"title":{"$regex": '(Node|Fullstack Javascipt)', "$options": 'i'}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['node', 'react']},"title":{"$regex": '(Node|Fullstack Javascipt)', "$options": 'i'}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['node', 'reactjs']},"title":{"$regex": '(Node|Fullstack Javascipt)', "$options": 'i'}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['node', 'react.js']},"title":{"$regex": '(Node|Fullstack Javascipt)', "$options": 'i'}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['node', 'angular2']},"title":{"$regex": '(Node|Fullstack Javascipt)', "$options": 'i'}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['node', 'angular4']},"title":{"$regex": '(Node|Fullstack Javascipt)', "$options": 'i'}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['node', 'angular']},"title":{"$regex": '(Node|Fullstack Javascipt)', "$options": 'i'}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['node', 'angularjs']},"title":{"$regex": '(Node|Fullstack Javascipt)', "$options": 'i'}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['node', 'angular.js']},"title":{"$regex": '(Node|Fullstack Javascipt)', "$options": 'i'}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['node', 'vue']},"title":{"$regex": '(Node|Fullstack Javascipt)', "$options": 'i'}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['node', 'vuejs']},"title":{"$regex": '(Node|Fullstack Javascipt)', "$options": 'i'}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['node', 'vue.js']},"title":{"$regex": '(Node|Fullstack Javascipt)', "$options": 'i'}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['node', 'jquery']},"title":{"$regex": '(Node|Fullstack Javascipt)', "$options": 'i'}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['node', 'html5']},"title":{"$regex": '(Node|Fullstack Javascipt)', "$options": 'i'}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['node', 'bootstrap']},"title":{"$regex": '(Node|Fullstack Javascipt)', "$options": 'i'}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['node', 'express']},"title":{"$regex": '(Node|Fullstack Javascipt)', "$options": 'i'}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-
-
-
-
-
-db.itproject.update({"skill_summary": {"$all": ['java', 'js']}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['java', 'javascript']}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['java', 'html']}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['java', 'css']}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['java', 'react']}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['java', 'reactjs']}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['java', 'react.js']}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['java', 'angular']}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['java', 'angular2']}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['java', 'angular4']}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['java', 'angularjs']}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['java', 'angular.js']}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['java', 'vue']}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['java', 'vuejs']}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['java', 'jquery']}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['java', 'html5']}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['java', 'bootstrap']}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-
-
-db.itproject.update({"skill_summary": {"$all": ['python', 'js']}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['python', 'javascript']}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['python', 'html']}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['python', 'css']}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['python', 'react']}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['python', 'reactjs']}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['python', 'react.js']}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['python', 'angular']}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['python', 'angular2']}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['python', 'angular4']}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['python', 'angularjs']}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['python', 'angular.js']}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['python', 'vue']}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['python', 'vuejs']}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['python', 'jquery']}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['python', 'html5']}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['python', 'bootstrap']}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-
-
-
-
-db.itproject.update({"skill_summary": {"$all": ['node.js', 'js']}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['node.js', 'html']}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['node.js', 'javascript']}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['node.js', 'css']}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['node.js', 'react']}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['node.js', 'reactjs']}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['node.js', 'react.js']}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['node.js', 'angular']}},{"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['node.js', 'angular2']}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['node.js', 'angular4']}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['node.js', 'angularjs']}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['node.js', 'angular.js']}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['node.js', 'vue']}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['node.js', 'vuejs']}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['node.js', 'vue.js']}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['node.js', 'jquery']}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['node.js', 'html5']}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['node.js', 'bootstrap']}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['node.js', 'express']}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-
-
-
-
-
-
-db.itproject.update({"skill_summary": {"$all": ['node', 'js']}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['node', 'html']}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['node', 'javascript']}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['node', 'css']}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['node', 'react']}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['node', 'reactjs']}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['node', 'react.js']}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['node', 'angular']}},{"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['node', 'angular2']}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['node', 'angular4']}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['node', 'angularjs']}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['node', 'angular.js']}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['node', 'vue']}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['node', 'vuejs']}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['node', 'vue.js']}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['node', 'jquery']}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['node', 'html5']}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['node', 'bootstrap']}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['node', 'express']}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-
-
-db.itproject.update({"skill_summary": {"$all": ['nodejs', 'js']}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['nodejs', 'html']}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['nodejs', 'javascript']}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['nodejs', 'css']}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['nodejs', 'react']}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['nodejs', 'reactjs']}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['nodejs', 'react.js']}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['nodejs', 'angular']}},{"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['nodejs', 'angular2']}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['nodejs', 'angular4']}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['nodejs', 'angularjs']}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['nodejs', 'angular.js']}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['nodejs', 'vue']}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['nodejs', 'vuejs']}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['nodejs', 'vue.js']}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['nodejs', 'jquery']}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['nodejs', 'html5']}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['nodejs', 'bootstrap']}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-db.itproject.update({"skill_summary": {"$all": ['nodejs', 'express']}}, {"$set":{"stack": "Fullstack"}}, multi=True)
-
+db.itproject.update({"skill_summary": {"$regex": 'sap', "$options": 'i'}}, {"$set":{"stack": ["SAP"]}}, multi=True)
+db.itproject.update({"title": {"$regex": r'(?:[\s]|^)(sap)(?=[\s]|$)', "$options": 'i'}}, {"$set":{"stack": ["SAP"]}}, multi=True)
+#skills without title
+db.itproject.update({ "$and": [ { "skill_summary": {"$regex": r'(?:[\s]|^)(java|spring|j2ee)(?=[\s]|$)'} }, { "skill_summary": {"$regex": '(^js|javascript|react|angular|vue|css|html|bootstrap|jquery)'} } ] }, {"$set":{"stack": ["Fullstack", "Java"]}}, multi=True)
+db.itproject.update({ "$and": [ { "skill_summary": {"$regex": '(python|django|flask|pyramid)'} }, { "skill_summary": {"$regex": '(^js|javascript|react|angular|vue|css|html|bootstrap|jquery)'} } ] }, {"$set":{"stack": ["Fullstack", "Python"]}}, multi=True)
+db.itproject.update({ "$and": [ { "skill_summary": {"$regex": '(php|laravel)'} }, { "skill_summary": {"$regex": '(^js|javascript|react|angular|vue|css|html|bootstrap|jquery)'} } ]}, {"$set":{"stack": ["Fullstack", "PHP"]}}, multi=True)
+db.itproject.update({ "$and": [ { "skill_summary": {"$regex": '(node|express)'} }, { "skill_summary": {"$regex": '(^js|javascript|react|angular|vue|css|html|bootstrap|jquery|express)'} } ]}, {"$set":{"stack": ["Fullstack", "Node"]}}, multi=True)
 
 
 

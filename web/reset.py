@@ -45,7 +45,7 @@ db.itproject.update({ "$and": [ { "skill_summary": {"$regex": '(python|django|fl
 db.itproject.update({ "$and": [ { "skill_summary": {"$regex": '(php|laravel)'} }, { "skill_summary": {"$regex": '(^js|javascript|react|angular|vue|css|html|bootstrap|jquery)'} } ]}, {"$set":{"stack": ["Fullstack", "PHP"]}}, multi=True)
 db.itproject.update({ "$and": [ { "skill_summary": {"$regex": '(node|express)'} }, { "skill_summary": {"$regex": '(^js|javascript|react|angular|vue|css|html|bootstrap|jquery|express)'} } ]}, {"$set":{"stack": ["Fullstack", "Node"]}}, multi=True)
 
-
+db.itproject.update({ "$and": [{ "skill_summary": {"$regex": '(^js$|javascript|react|angular|vue|css|html|bootstrap|jquery)'} }, { "skill_summary": { "$not": re.compile(r'(?:[\s]|^)(java|spring|j2ee|python|django|flask|pyramid|php|laravel|node|express|sap|c|c#|node.js|nodejs)(?=[\s]|$)') } }]}, {"$set":{"stack": ["Frontend"]}}, multi=True)
 
 #db.itproject.update({ "$and": [ { "stack": 'Fullstack'}, { "skill_summary": {"$regex": '(php|laravel)'} } ]}, {"$set":{"fullstack_type": "PHP"}}, multi=True)
 #db.itproject.update({ "$and": [ { "stack": 'Fullstack'}, { "skill_summary": {"$regex": r'(?:[\s]|^)(java|spring|j2ee)(?=[\s]|$)'} } ]}, {"$set":{"fullstack_type": "Java"}}, multi=True)

@@ -1,10 +1,10 @@
 from pymongo import MongoClient
 import datetime
 import re
-
+from bundesland import Baden_Württemberg, Bayern, Berlin, Brandenburg, Bremen, Hamburg, Hessen, Mecklenburg_Vorpommern, Niedersachsen, Nordrhein_Westfalen, Rheinland_Pfalz, Saarland, Sachsen, Sachsen_Anhalt, Schleswig_Holstein, Thüringen
 
 def connect():
-    connection = MongoClient('172.16.11.200', 27017)
+    connection = MongoClient('127.0.0.1', 27017)
     handle = connection["projectfinder"]
     return handle
 db = connect()
@@ -16,7 +16,7 @@ db = connect()
 db.itproject.update({"region":{"$exists": True }}, {"$unset":{"region": ""}}, multi=True)
 db.itproject.update({"stack":{"$exists": True }}, {"$unset":{"stack": ""}}, multi=True)
 
-location = ["Frankfurt", "Köln", "Bonn", "München", "Hamburg", "Berlin", "Stuttgart", "Düsseldorf", "Nürnberg", "Bayern", "Hannover", "Hessen", "Niedersachsen", "Karlsruhe",
+"""location = ["Frankfurt", "Köln", "Bonn", "München", "Hamburg", "Berlin", "Stuttgart", "Düsseldorf", "Nürnberg", "Bayern", "Hannover", "Hessen", "Niedersachsen", "Karlsruhe",
              "Wiesbaden", "Bremen", "Mannheim", "Kiel", "Essen", "Ingolstadt", "Braunschweig", "Friedrichshafen", 
               "Leverkusen", "Dortmund", "Sailauf", "Darmstadt", "Dresden", "Münster", "Aschaffenburg", "Leipzig",
               "Heidelberg", "Wolfsburg", "Ulm", "Heilbronn", "Bielefeld", "Mainz", "Potsdam", "Eschborn", "Oldenburg", "Ludwigsburg",
@@ -30,9 +30,58 @@ location = ["Frankfurt", "Köln", "Bonn", "München", "Hamburg", "Berlin", "Stut
                "Böblingen",  "Kempten", "Sossenheim", "Weissach", "Lahr", "Vechta", "Bischofsheim", "Konstanz", "Warstein", "Genthin", "Dreilinden", "Brandenburg", "Husum", "Spelle", "Rheine", "Meerbusch", "Münzenberg", "Luterbach", "Herzogenaurach", "Siegen", "Ahrensburg",
                "Herne", "Eschwege", "Bottrop", "Cadolzburg", "Minden", "Kroppach", "Meschede", "Gummersbach", "Rimpar", "Oberpfalz", "Philippsburg", "Steinhausen", "Willich", "Offenburg", "Nordrhein-Westfalen", "D7", "D6", "D8", "D3", "D9", "D5", "D2","D0","D4","D1",'Baden-Württemberg', "Krefeld",
                 'Rheinland-Pfalz', 'Rhein-Main-Gebiet','Schleswig-Holstein','Ostwestfalen', "Neckar", "Leon", 'Fürth', "Solingen", "None"]
-
+"""
+location = [Baden_Württemberg, Bayern, Berlin, Brandenburg, Bremen, Hamburg, Hessen, Mecklenburg_Vorpommern, Niedersachsen, Nordrhein_Westfalen, Rheinland_Pfalz, Saarland, Sachsen, Sachsen_Anhalt, Schleswig_Holstein, Thüringen]
 #add region field using location value
-for city in location:
+BW = location[0]
+for city in Baden_Württemberg:
+    db.itproject.update({"location":{"$regex": r'(?:[\s]|^)' + city + '(?=[\s]|$)'}}, {"$set":{"region": ["Baden Wüttemburg", city]}}, multi=True)
+#r'(?:[\s]|^)' + city '(?=[\s]|$)'
+for city in Bayern:
+    db.itproject.update({"location":{"$regex": r'(?:[\s]|^)' + city + '(?=[\s]|$)'}}, {"$set":{"region": ["Bayern", city]}}, multi=True)
+#print(len(BW))
+for city in Berlin:
+    db.itproject.update({"location":{"$regex": r'(?:[\s]|^)' + city + '(?=[\s]|$)'}}, {"$set":{"region": ["Berlin", city]}}, multi=True)
+#for state in location[0]:
+for city in Brandenburg:
+    db.itproject.update({"location":{"$regex": r'(?:[\s]|^)' + city + '(?=[\s]|$)'}}, {"$set":{"region": ["Brandenburg", city]}}, multi=True)
+    #print(len(state))
+for city in Bremen:
+    db.itproject.update({"location":{"$regex": r'(?:[\s]|^)' + city + '(?=[\s]|$)'}}, {"$set":{"region": ["Bremen", city]}}, multi=True)
+        #db.itproject.update({"location":{"$regex": '^.*' + city,"$options": 'i' }}, {"$set":{"region": [state, city]}}, multi=True)
+for city in Hamburg:
+    db.itproject.update({"location":{"$regex": r'(?:[\s]|^)' + city + '(?=[\s]|$)'}}, {"$set":{"region": ["Hamburg", city]}}, multi=True)
+#
+for city in Hessen:
+    db.itproject.update({"location":{"$regex": r'(?:[\s]|^)' + city + '(?=[\s]|$)'}}, {"$set":{"region": ["Hessen", city]}}, multi=True)
+#
+for city in Mecklenburg_Vorpommern:
+    db.itproject.update({"location":{"$regex": r'(?:[\s]|^)' + city + '(?=[\s]|$)'}}, {"$set":{"region": ["Mecklenburg Vorpommern", city]}}, multi=True)
+#
+for city in Niedersachsen:
+    db.itproject.update({"location":{"$regex": r'(?:[\s]|^)' + city + '(?=[\s]|$)'}}, {"$set":{"region": ["Niedersachsen", city]}}, multi=True)
+#
+for city in Nordrhein_Westfalen:
+    db.itproject.update({"location":{"$regex": r'(?:[\s]|^)' + city + '(?=[\s]|$)'}}, {"$set":{"region": ["Nordrhein Westfalen", city]}}, multi=True)
+#
+for city in Rheinland_Pfalz:
+    db.itproject.update({"location":{"$regex": r'(?:[\s]|^)' + city + '(?=[\s]|$)'}}, {"$set":{"region": ["Rheinland Pfalz", city]}}, multi=True)
+#
+for city in Saarland:
+    db.itproject.update({"location":{"$regex": r'(?:[\s]|^)' + city + '(?=[\s]|$)'}}, {"$set":{"region": ["Saarland", city]}}, multi=True)
+#
+for city in Sachsen:
+    db.itproject.update({"location":{"$regex": r'(?:[\s]|^)' + city + '(?=[\s]|$)'}}, {"$set":{"region": ["Sachsen", city]}}, multi=True)
+#
+for city in Sachsen_Anhalt:
+    db.itproject.update({"location":{"$regex": r'(?:[\s]|^)' + city + '(?=[\s]|$)'}}, {"$set":{"region": ["Sachsen_Anhalt", city]}}, multi=True)
+#
+for city in Schleswig_Holstein:
+    db.itproject.update({"location":{"$regex": r'(?:[\s]|^)' + city + '(?=[\s]|$)'}}, {"$set":{"region": ["Schleswig Holstein", city]}}, multi=True)
+#
+for city in Thüringen:
+    db.itproject.update({"location":{"$regex": r'(?:[\s]|^)' + city + '(?=[\s]|$)'}}, {"$set":{"region": ["Thüringen", city]}}, multi=True)
+"""for city in location:
     db.itproject.update({"location":{"$regex": '^.*' + city,"$options": 'i' }}, {"$set":{"region": [city]}}, multi=True)
 
 
@@ -135,8 +184,8 @@ db.itproject.update({ "$and": [ {"stack": None},{ "title": {"$regex": r'(?:[\s]|
 #saas
 db.itproject.update({ "$and": [ {"stack": None},{ "title": {"$regex": '(citrix)', "$options": 'i'} } ]}, {"$set":{"stack": ["Saas", "Citrix"]}}, multi=True)
 
-from bundesland import Baden_Württemberg, Bayern, Berlin, Brandenburg, Bremen, Hamburg, Hessen, Mecklenburg_Vorpommern, Niedersachsen, Nordrhein_Westfalen, Rheinland_Pfalz, Saarland, Sachsen, Sachsen_Anhalt, Schleswig_Holstein, Thüringen
-print(Bremen)
+
+
 #Aggregate
 pipeline = [{"$match": {"stack": None}}, {"$out": "NoStack"}]
 db.itproject.aggregate(pipeline)
@@ -147,7 +196,7 @@ db.itproject.aggregate(pipeline1)
 db.itproject.update({"stack":{"$exists": True }}, {"$unset":{"stack": ""}}, multi=True)
 db.itproject.update({"region":{"$exists": True }}, {"$unset":{"region": ""}}, multi=True)
 
-
+"""
 
 
 

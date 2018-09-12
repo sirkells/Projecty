@@ -61,6 +61,12 @@ for loc in data:
     db.itproject.update({"region": None}, {"$set":{"region": [a]}})
 
 
+
+
+#cisco
+db.itproject.update({ "$and": [ {"stack": None},{"title": {"$regex": '(cisco|ccna|ccnp|netzwerk)', "$options": 'i'}}, { "skill_summary": { "$regex": '(cisco|ccna|ccnp)', "$options": 'i' } }]}, {"$set":{"stack": ["Netzwerk Administrator", "Cisco"]}}, multi=True)
+
+
 #devops
 db.itproject.update({ "$and": [ {"stack": None},{"title": {"$regex": '(devop|kuber|jenk)', "$options": 'i'}}, { "skill_summary": { "$not": re.compile('(^sap)') } }]}, {"$set":{"stack": "DevOps"}}, multi=True)
 
@@ -69,9 +75,6 @@ db.itproject.update({"$or": [{"category": {"$regex": '(Big Data|data|daten)', "$
 db.itproject.update({ "$and": [{"stack": None},{ "skill_summary": {"$regex": '(big data|hadoop|spark)', "$options": 'i'} }, { "skill_summary": { "$not": re.compile('(^sap)') } }]}, {"$set":{"stack": ["Data Science", "Big Data"]}}, multi=True)
 db.itproject.update({ "$and": [{"stack": None},{ "title": {"$regex": '(data scien|nlp|Regression|machine learning|tensorflow|tensor flow|^ml|datenanalyse|data analysis|daten analyse)', "$options": 'i'} }, { "skill_summary": { "$not": re.compile('(^sap)') } }]}, {"$set":{"stack": ["Data Science", "Machine Learning"]}}, multi=True)
 
-
-#data science
-#db.itproject.update({ "$and": [ {"stack": None},{ "skill_summary": {"$regex": '(data|daten)'} }, { "skill_summary": {"$regex": '(^js|javascript|react|angular|vue|css|html|bootstrap|jquery)'} } ], "title":{"$regex": '(php|Fullstack php|php Fullstack|laravel)', "$options": 'i'}}, {"$set":{"stack": ["Fullstack", "PHP"]}}, multi=True)
 #mobile app
 db.itproject.update({ "$and": [{"stack": None},{ "skill_summary": {"$regex": '(^ios|swift|objectiv)'} }, { "skill_summary": {"$regex": '(^android|kotlin)'} }, { "skill_summary": { "$not": re.compile(r'(?:[\s]|^)(j2ee|python|django|flask|pyramid|php|laravel|node|express|sap|c|c#|node.js|nodejs|c\++|^js$|javascript|react|angular|vue|bootstrap|jquery)(?=[\s]|$)') } }]}, {"$set":{"stack": ["Mobile", "Native", "IOS", "Android"]}}, multi=True)
 db.itproject.update({ "$and": [{"stack": None},{ "skill_summary": {"$regex": '(^ios|swift|objectiv)'} }, { "skill_summary": { "$not": re.compile('(^js$|javascript|react|angular|vue|css|html|bootstrap|jquery|java|spring|j2ee|python|django|flask|pyramid|php|laravel|node|express|sap|c#|node.js|nodejs)') } }]}, {"$set":{"stack": ["Mobile", "IOS", "Native"]}}, multi=True)
@@ -116,8 +119,8 @@ db.itproject.update({ "$and": [{"stack": None},{ "skill_summary": {"$regex": r'(
 db.itproject.update({ "$and": [{"stack": None},{ "skill_summary": {"$regex": r'(?:[\s]|^)(\.net|asp.net|c#|asp)(?=[\s]|$)'} }, { "skill_summary": { "$not": re.compile('(^js$|javascript|react|angular|vue|css|html|bootstrap|jquery)') } }]}, {"$set":{"stack": ["Backend", "C#", "Asp.net"]}}, multi=True)
 
 
-
-
+#system admin
+db.itproject.update({ "$and": [ {"stack": None},{"title": {"$regex": '(system)', "$options": 'i'}}]}, {"$set":{"stack": ["System Administrator"]}}, multi=True)
 
 
 

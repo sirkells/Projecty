@@ -86,6 +86,7 @@ db.itproject.update({ "$and": [{"stack": None},{ "skill_summary": {"$regex": '(r
 #fullstack skills with title
 db.itproject.update({ "$and": [ {"stack": None},{ "skill_summary": {"$regex": '(php|laravel)'} }, { "skill_summary": {"$regex": '(^js|javascript|react|angular|vue|css|html|bootstrap|jquery)'} } ], "title":{"$regex": '(php|Fullstack php|php Fullstack|laravel)', "$options": 'i'}}, {"$set":{"stack": ["Fullstack", "PHP"]}}, multi=True)
 db.itproject.update({ "$and": [ {"stack": None},{ "skill_summary": {"$regex": r'(?:[\s]|^)(java|spring|j2ee|jvm)(?=[\s]|$)'} }, { "skill_summary": {"$regex": '(^js|javascript|react|angular|vue|css|html|bootstrap|jquery|frontend)'} } ], "title":{"$regex": '(Java|Fullstack Java|Java Fullstack)', "$options": 'i'}}, {"$set":{"stack": ["Fullstack", "Java"]}}, multi=True)
+
 db.itproject.update({ "$and": [ {"stack": None},{ "skill_summary": {"$regex": '(node|express)'} }, { "skill_summary": {"$regex": '(react|angular|vue|css|express|html|bootstrap|jquery)'} } ], "title":{"$regex": '(php|Fullstack php|php Fullstack|laravel)', "$options": 'i'}}, {"$set":{"stack": ["Fullstack", "Nodejs"]}}, multi=True)
 db.itproject.update({ "$and": [ {"stack": None},{ "skill_summary": {"$regex": '(python|django|flask|pyramid)'} }, { "skill_summary": {"$regex": '(^js|javascript|react|angular|vue|css|html|bootstrap|jquery)'} } ], "title":{"$regex": '(Python|Fullstack Python|Python Fullstack)', "$options": 'i'}}, {"$set":{"stack": ["Fullstack", "Python"]}}, multi=True)
 #sap stack
@@ -124,23 +125,27 @@ db.itproject.update({ "$and": [{"stack": None},{ "skill_summary": {"$regex": r'(
 #system admin
 db.itproject.update({ "$and": [ {"stack": None},{"title": {"$regex": '(system)', "$options": 'i'}}, {"skill_summary": {"$regex": '(linux)', "$options": 'i'}}]}, {"$set":{"stack": ["System Administrator", "Linux"]}}, multi=True)
 db.itproject.update({ "$and": [ {"stack": None},{"title": {"$regex": '(system|window|support)', "$options": 'i'}}, {"skill_summary": {"$regex": '(exchange|sql|windows|outlook|microsoft|admin)', "$options": 'i'}}]}, {"$set":{"stack": ["System Administrator", "Microsoft"]}}, multi=True)
-#db.itproject.update({ "$and": [ {"stack": None},{"title": {"$regex": '(window)', "$options": 'i'}}]}, {"$set":{"stack": ["Netzwerk Administrator", "Others"]}}, multi=True)
-
+db.itproject.update({ "$and": [ {"stack": None},{"title": {"$regex": '(sharepoint)', "$options": 'i'}}]}, {"$set":{"stack": ["System Administrator", "Microsoft", "Sharepoint"]}}, multi=True)
+db.itproject.update({ "$and": [ {"stack": None},{"skill_summary": {"$regex": '(sharepoint)', "$options": 'i'}}]}, {"$set":{"stack": ["System Administrator", "Microsoft", "Sharepoint"]}}, multi=True)
 #IT support
 db.itproject.update({ "$and": [{"stack": None},{ "skill_summary": {"$regex": '(itil)', "$options": 'i'} }, { "skill_summary": { "$not": re.compile('(^sap)') } }]}, {"$set":{"stack": ["IT", "Service Management"]}}, multi=True)
+db.itproject.update({ "$and": [{"stack": None},{ "title": {"$regex": '(oracle)', "$options": 'i'} }, { "skill_summary": { "$not": re.compile('(^sap)') } }]}, {"$set":{"stack": ["IT", "Oracle Administrator"]}}, multi=True)
+#java titles
+db.itproject.update({ "$and": [ {"stack": None},{ "title": {"$regex": r'(?:[\s]|^)(java|spring|j2ee|jvm|Java)(?=[\s]|$)'} } ]}, {"$set":{"stack": ["Fullstack", "Java"]}}, multi=True)
+#saas
+db.itproject.update({ "$and": [ {"stack": None},{ "title": {"$regex": '(citrix)', "$options": 'i'} } ]}, {"$set":{"stack": ["Saas", "Citrix"]}}, multi=True)
 
 
+
+#Aggregate
 pipeline = [{"$match": {"stack": None}}, {"$out": "NoStack"}]
 db.itproject.aggregate(pipeline)
 pipeline1 = [{"$match": {"stack": {"$ne": None}}}, {"$out": "itproject_clean"}]
 db.itproject.aggregate(pipeline1)
 
-
-db.itproject.update({"region":{"$exists": True }}, {"$unset":{"region": ""}}, multi=True)
-
 #unset stack
 db.itproject.update({"stack":{"$exists": True }}, {"$unset":{"stack": ""}}, multi=True)
-
+db.itproject.update({"region":{"$exists": True }}, {"$unset":{"region": ""}}, multi=True)
 
 
 

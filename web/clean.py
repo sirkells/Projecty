@@ -135,8 +135,8 @@ db.itproject.update({ "$and": [ {"stack": None},{ "title": {"$regex": r'(?:[\s]|
 #saas
 db.itproject.update({ "$and": [ {"stack": None},{ "title": {"$regex": '(citrix)', "$options": 'i'} } ]}, {"$set":{"stack": ["Saas", "Citrix"]}}, multi=True)
 
-
-
+from bundesland import Baden_Württemberg, Bayern, Berlin, Brandenburg, Bremen, Hamburg, Hessen, Mecklenburg_Vorpommern, Niedersachsen, Nordrhein_Westfalen, Rheinland_Pfalz, Saarland, Sachsen, Sachsen_Anhalt, Schleswig_Holstein, Thüringen
+print(Bremen)
 #Aggregate
 pipeline = [{"$match": {"stack": None}}, {"$out": "NoStack"}]
 db.itproject.aggregate(pipeline)

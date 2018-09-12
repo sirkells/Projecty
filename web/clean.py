@@ -65,7 +65,8 @@ for loc in data:
 
 #cisco
 db.itproject.update({ "$and": [ {"stack": None},{"title": {"$regex": '(cisco|ccna|ccnp|netzwerk)', "$options": 'i'}}, { "skill_summary": { "$regex": '(cisco|ccna|ccnp)', "$options": 'i' } }]}, {"$set":{"stack": ["Netzwerk Administrator", "Cisco"]}}, multi=True)
-
+db.itproject.update({ "$and": [ {"stack": None},{"title": {"$regex": '(netzpla)', "$options": 'i'}}]}, {"$set":{"stack": ["Netzwerk Administrator", "Telekommunikation"]}}, multi=True)
+db.itproject.update({ "$and": [ {"stack": None},{"title": {"$regex": '(netzwerk)', "$options": 'i'}}]}, {"$set":{"stack": ["Netzwerk Administrator", "Others"]}}, multi=True)
 
 #devops
 db.itproject.update({ "$and": [ {"stack": None},{"title": {"$regex": '(devop|kuber|jenk)', "$options": 'i'}}, { "skill_summary": { "$not": re.compile('(^sap)') } }]}, {"$set":{"stack": "DevOps"}}, multi=True)
@@ -74,6 +75,7 @@ db.itproject.update({ "$and": [ {"stack": None},{"title": {"$regex": '(devop|kub
 db.itproject.update({"$or": [{"category": {"$regex": '(Big Data|data|daten)', "$options": 'i'}}, {"title": {"$regex": '(Big Data|hadoop|spark)', "$options": 'i'}}]}, {"$set":{"stack": ["Data Science", "Big Data"]}}, multi=True)
 db.itproject.update({ "$and": [{"stack": None},{ "skill_summary": {"$regex": '(big data|hadoop|spark)', "$options": 'i'} }, { "skill_summary": { "$not": re.compile('(^sap)') } }]}, {"$set":{"stack": ["Data Science", "Big Data"]}}, multi=True)
 db.itproject.update({ "$and": [{"stack": None},{ "title": {"$regex": '(data scien|nlp|Regression|machine learning|tensorflow|tensor flow|^ml|datenanalyse|data analysis|daten analyse)', "$options": 'i'} }, { "skill_summary": { "$not": re.compile('(^sap)') } }]}, {"$set":{"stack": ["Data Science", "Machine Learning"]}}, multi=True)
+db.itproject.update({ "$and": [{"stack": None},{ "title": {"$regex": '(business inte|business anal|businessana)', "$options": 'i'} }, { "skill_summary": { "$not": re.compile('(^sap)') } }]}, {"$set":{"stack": ["Data Science", "Business Intelligence"]}}, multi=True)
 
 #mobile app
 db.itproject.update({ "$and": [{"stack": None},{ "skill_summary": {"$regex": '(^ios|swift|objectiv)'} }, { "skill_summary": {"$regex": '(^android|kotlin)'} }, { "skill_summary": { "$not": re.compile(r'(?:[\s]|^)(j2ee|python|django|flask|pyramid|php|laravel|node|express|sap|c|c#|node.js|nodejs|c\++|^js$|javascript|react|angular|vue|bootstrap|jquery)(?=[\s]|$)') } }]}, {"$set":{"stack": ["Mobile", "Native", "IOS", "Android"]}}, multi=True)
@@ -120,16 +122,24 @@ db.itproject.update({ "$and": [{"stack": None},{ "skill_summary": {"$regex": r'(
 
 
 #system admin
-db.itproject.update({ "$and": [ {"stack": None},{"title": {"$regex": '(system)', "$options": 'i'}}]}, {"$set":{"stack": ["System Administrator"]}}, multi=True)
+db.itproject.update({ "$and": [ {"stack": None},{"title": {"$regex": '(system)', "$options": 'i'}}, {"skill_summary": {"$regex": '(linux)', "$options": 'i'}}]}, {"$set":{"stack": ["System Administrator", "Linux"]}}, multi=True)
+db.itproject.update({ "$and": [ {"stack": None},{"title": {"$regex": '(system|window|support)', "$options": 'i'}}, {"skill_summary": {"$regex": '(exchange|sql|windows|outlook|microsoft|admin)', "$options": 'i'}}]}, {"$set":{"stack": ["System Administrator", "Microsoft"]}}, multi=True)
+#db.itproject.update({ "$and": [ {"stack": None},{"title": {"$regex": '(window)', "$options": 'i'}}]}, {"$set":{"stack": ["Netzwerk Administrator", "Others"]}}, multi=True)
+
+#IT support
+db.itproject.update({ "$and": [{"stack": None},{ "skill_summary": {"$regex": '(itil)', "$options": 'i'} }, { "skill_summary": { "$not": re.compile('(^sap)') } }]}, {"$set":{"stack": ["IT", "Service Management"]}}, multi=True)
 
 
+pipeline = [{"$match": {"stack": None}}, {"$out": "NoStack"}]
+db.itproject.aggregate(pipeline)
+pipeline1 = [{"$match": {"stack": {"$ne": None}}}, {"$out": "itproject_clean"}]
+db.itproject.aggregate(pipeline1)
 
 
+db.itproject.update({"region":{"$exists": True }}, {"$unset":{"region": ""}}, multi=True)
 
-
-
-
-
+#unset stack
+db.itproject.update({"stack":{"$exists": True }}, {"$unset":{"stack": ""}}, multi=True)
 
 
 

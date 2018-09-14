@@ -4,7 +4,7 @@ import re
 from bundesland import Baden_Württemberg, Bayern, Berlin, Brandenburg, Bremen, Hamburg, Hessen, Mecklenburg_Vorpommern, Niedersachsen, Nordrhein_Westfalen, Rheinland_Pfalz, Saarland, Sachsen, Sachsen_Anhalt, Schleswig_Holstein, Thüringen, Ausland
 
 def connect():
-    connection = MongoClient('127.0.0.1', 27017)
+    connection = MongoClient('172.16.11.200', 27017)
     handle = connection["projectfinder"]
     return handle
 db = connect()
@@ -174,7 +174,7 @@ db.itproject.update({ "$and": [ {"stack": None},{ "title": {"$regex": r'(?:[\s]|
 db.itproject.update({ "$and": [ {"stack": None},{ "title": {"$regex": '(citrix)', "$options": 'i'} } ]}, {"$set":{"stack": ["Saas", "Citrix"]}}, multi=True)
 
 
-"""
+
 #Aggregate
 pipeline = [{"$match": {"stack": None}}, {"$out": "NoStack"}]
 db.itproject.aggregate(pipeline)
@@ -184,7 +184,7 @@ db.itproject.aggregate(pipeline1)
 #unset stack
 db.itproject.update({"stack":{"$exists": True }}, {"$unset":{"stack": ""}}, multi=True)
 db.itproject.update({"region":{"$exists": True }}, {"$unset":{"region": ""}}, multi=True)
-"""
+
 
 
 

@@ -50,21 +50,22 @@ TH = """Abtsbessingen Ahlstädt Albersdorf Alkersleben Allendorf Alperstedt Alte
 AUS = "CH Zurich Basel"
 
 
-Baden_Württemberg = list(set(BW.split()))      
-Bayern = list(set(BY.split()))      
-Berlin = list(set(BE.split()))      
-Brandenburg = list(set(BB.split()))      
-Bremen = list(set(BR.split() ))     
-Hamburg = list(set(HH.split()))      
-Hessen = list(set(HE.split()))      
-Mecklenburg_Vorpommern = list(set(MV.split()))      
-Niedersachsen = list(set(NS.split() ))     
-Nordrhein_Westfalen = list(set(NRW.split()))      
-Rheinland_Pfalz = list(set(RP.split()))      
-Saarland = list(set(SL.split()))      
-Sachsen = list(set(SN.split()))      
-Sachsen_Anhalt = list(set(SA.split()))      
-Schleswig_Holstein = list(set(SH.split()))      
-Thüringen = list(set(TH.split()))      
-Ausland =  list(set(AUS.split()))            
-print(len(Baden_Württemberg))
+Baden_Württemberg = [x.lower() for x in (list(set(BW.split()))) ]          
+Bayern = [x.lower() for x in (list(set(BY.split()))) ]
+Berlin = [x.lower() for x in (list(set(BE.split()))) ]
+Brandenburg = [x.lower() for x in (list(set(BB.split()))) ]
+Bremen =  [x.lower() for x in (list(set(BR.split()))) ]
+Hamburg = [x.lower() for x in (list(set(HH.split()))) ]      
+Hessen = [x.lower() for x in (list(set(HE.split()))) ]      
+Mecklenburg_Vorpommern = [x.lower() for x in (list(set(MV.split()))) ]      
+Niedersachsen = [x.lower() for x in (list(set(NS.split()))) ]    
+Nordrhein_Westfalen = [x.lower() for x in (list(set(NRW.split()))) ]      
+Rheinland_Pfalz = [x.lower() for x in (list(set(RP.split()))) ]      
+Saarland = [x.lower() for x in (list(set(SL.split()))) ]      
+Sachsen = [x.lower() for x in (list(set(SN.split()))) ]      
+Sachsen_Anhalt = [x.lower() for x in (list(set(SA.split()))) ]      
+Schleswig_Holstein = [x.lower() for x in (list(set(SH.split()))) ]      
+Thüringen = [x.lower() for x in (list(set(TH.split()))) ]      
+Ausland =  [x.lower() for x in (list(set(AUS.split()))) ]            
+print(Bremen)
+

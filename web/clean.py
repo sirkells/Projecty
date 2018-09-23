@@ -4,7 +4,7 @@ import re
 from bundesland import Baden_Württemberg, Bayern, Berlin, Brandenburg, Bremen, Hamburg, Hessen, Mecklenburg_Vorpommern, Niedersachsen, Nordrhein_Westfalen, Rheinland_Pfalz, Saarland, Sachsen, Sachsen_Anhalt, Schleswig_Holstein, Thüringen, Ausland
 
 def connect():
-    connection = MongoClient('172.16.11.200', 27017)
+    connection = MongoClient('127.0.0.1', 27017)
     handle = connection["projectfinder"]
     return handle
 db = connect()
@@ -19,59 +19,96 @@ db.itproject.update({"stack":{"$exists": True }}, {"$unset":{"stack": ""}}, mult
 
 location = [Baden_Württemberg, Bayern, Berlin, Brandenburg, Bremen, Hamburg, Hessen, Mecklenburg_Vorpommern, Niedersachsen, Nordrhein_Westfalen, Rheinland_Pfalz, Saarland, Sachsen, Sachsen_Anhalt, Schleswig_Holstein, Thüringen]
 #add region field using location value
-BW = location[0]
+germany = {'Baden_Württemberg': Baden_Württemberg,'Bayern': Bayern,'Berlin': Berlin, "Brandenburg": Brandenburg, 
+         "Bremen": Bremen, "Hamburg": Hamburg, "Hessen": Hessen, "Mecklenburg_Vorpommern": Mecklenburg_Vorpommern,
+         "Niedersachsen": Niedersachsen, "Nordrhein_Westfalen": Nordrhein_Westfalen, "Rheinland_Pfalz": Rheinland_Pfalz, 
+         "Saarland": Saarland, "Sachsen": Sachsen, "Sachsen_Anhalt": Sachsen_Anhalt, "Schleswig_Holstein": Schleswig_Holstein, 
+         "Thüringen": Thüringen, "Ausland": Ausland}
+data = db.itproject.find()
+#{ $push: { scores: { $each: [ 90, 92, 85 ] } }
+for d in data:
+    a = d['location']
+    if d['location'] in Baden_Württemberg:
+        print("yes")
+    else: 
+        pass
+"""for state, cities in germany.items():
+   for city in cities:
+       try:
+           result = db.itproject.update_many({"location":{"$regex": r'(?:[\s]|^)' + city + '(?=[\s]|$)'}}, {"$push":{"region": {"$each": [state, city]} }})
+           print(result.matched_count)
+           print(result.modified_count)
+       except KeyError:
+           print("Hi")
+      
+       #db.itproject.update({"location":{"$regex": r'(?:[\s]|^)' + city + '(?=[\s]|$)'}}, {"$set":{"region": [state, city]}}, multi=True)
+
 for city in Baden_Württemberg:
     db.itproject.update({"location":{"$regex": r'(?:[\s]|^)' + city + '(?=[\s]|$)'}}, {"$set":{"region": ["Baden-Wüttemburg", city]}}, multi=True)
 #r'(?:[\s]|^)' + city '(?=[\s]|$)'
+print(1)
 for city in Bayern:
     db.itproject.update({"location":{"$regex": r'(?:[\s]|^)' + city + '(?=[\s]|$)'}}, {"$set":{"region": ["Bayern", city]}}, multi=True)
 #print(len(BW))
+print(1)
 for city in Berlin:
     db.itproject.update({"location":{"$regex": r'(?:[\s]|^)' + city + '(?=[\s]|$)'}}, {"$set":{"region": ["Berlin", city]}}, multi=True)
 #for state in location[0]:
+print(1)
 for city in Brandenburg:
     db.itproject.update({"location":{"$regex": r'(?:[\s]|^)' + city + '(?=[\s]|$)'}}, {"$set":{"region": ["Brandenburg", city]}}, multi=True)
     #print(len(state))
+print(1)
 for city in Bremen:
     db.itproject.update({"location":{"$regex": r'(?:[\s]|^)' + city + '(?=[\s]|$)'}}, {"$set":{"region": ["Bremen", city]}}, multi=True)
-        #db.itproject.update({"location":{"$regex": '^.*' + city,"$options": 'i' }}, {"$set":{"region": [state, city]}}, multi=True)
+print(1)       #db.itproject.update({"location":{"$regex": '^.*' + city,"$options": 'i' }}, {"$set":{"region": [state, city]}}, multi=True)
 for city in Hamburg:
     db.itproject.update({"location":{"$regex": r'(?:[\s]|^)' + city + '(?=[\s]|$)'}}, {"$set":{"region": ["Hamburg", city]}}, multi=True)
 #
+print(1)
 for city in Hessen:
     db.itproject.update({"location":{"$regex": r'(?:[\s]|^)' + city + '(?=[\s]|$)'}}, {"$set":{"region": ["Hessen", city]}}, multi=True)
 #
+print(1)
 for city in Mecklenburg_Vorpommern:
     db.itproject.update({"location":{"$regex": r'(?:[\s]|^)' + city + '(?=[\s]|$)'}}, {"$set":{"region": ["Mecklenburg-Vorpommern", city]}}, multi=True)
 #
+print(1)
 for city in Niedersachsen:
     db.itproject.update({"location":{"$regex": r'(?:[\s]|^)' + city + '(?=[\s]|$)'}}, {"$set":{"region": ["Niedersachsen", city]}}, multi=True)
 #
+print(1)
 for city in Nordrhein_Westfalen:
     db.itproject.update({"location":{"$regex": r'(?:[\s]|^)' + city + '(?=[\s]|$)'}}, {"$set":{"region": ["Nordrhein-Westfalen", city]}}, multi=True)
 #
+print(1)
 for city in Rheinland_Pfalz:
     db.itproject.update({"location":{"$regex": r'(?:[\s]|^)' + city + '(?=[\s]|$)'}}, {"$set":{"region": ["Rheinland-Pfalz", city]}}, multi=True)
 #
+print(1)
 for city in Saarland:
     db.itproject.update({"location":{"$regex": r'(?:[\s]|^)' + city + '(?=[\s]|$)'}}, {"$set":{"region": ["Saarland", city]}}, multi=True)
 #
+print(1)
 for city in Sachsen:
     db.itproject.update({"location":{"$regex": r'(?:[\s]|^)' + city + '(?=[\s]|$)'}}, {"$set":{"region": ["Sachsen", city]}}, multi=True)
 #
+print(1)
 for city in Sachsen_Anhalt:
     db.itproject.update({"location":{"$regex": r'(?:[\s]|^)' + city + '(?=[\s]|$)'}}, {"$set":{"region": ["Sachsen-Anhalt", city]}}, multi=True)
 #
+print(1)
 for city in Schleswig_Holstein:
     db.itproject.update({"location":{"$regex": r'(?:[\s]|^)' + city + '(?=[\s]|$)'}}, {"$set":{"region": ["Schleswig-Holstein", city]}}, multi=True)
 #
+print(1)
 for city in Thüringen:
     db.itproject.update({"location":{"$regex": r'(?:[\s]|^)' + city + '(?=[\s]|$)'}}, {"$set":{"region": ["Thüringen", city]}}, multi=True)
-
+print(1)
 #db.itproject.update({ "$and": [ {"region": None},{"location": {"$regex": '(baden|württ)', "$options": 'i'}}]}, {"$set":{"region": ["Baden Wüttemburg", "Baden Wüttemburg"]}}, multi=True)
 for city in Ausland:
     db.itproject.update({"location":{"$regex": r'(?:[\s]|^)' + city + '(?=[\s]|$)'}}, {"$set":{"region": ["Ausland", city]}}, multi=True)
-
+print(1)
 
 
 #region field with complicated location value
@@ -188,7 +225,7 @@ db.itproject.update({"region":{"$exists": True }}, {"$unset":{"region": ""}}, mu
 
 
 
-
+"""
 
 
 

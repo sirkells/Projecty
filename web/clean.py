@@ -13,27 +13,24 @@ db = connect()
 
 #db.itproject.update({"region1":{"$exists": True }}, {"$unset":{"region1": ""}}, multi=True)
 #unset stack
-db.itproject.update({"region":{"$exists": True }}, {"$unset":{"region": ""}}, multi=True)
-db.itproject.update({"stack":{"$exists": True }}, {"$unset":{"stack": ""}}, multi=True)
-
-
-location = [Baden_Württemberg, Bayern, Berlin, Brandenburg, Bremen, Hamburg, Hessen, Mecklenburg_Vorpommern, Niedersachsen, Nordrhein_Westfalen, Rheinland_Pfalz, Saarland, Sachsen, Sachsen_Anhalt, Schleswig_Holstein, Thüringen]
-#add region field using location value
-germany = {'Baden_Württemberg': Baden_Württemberg,'Bayern': Bayern,'Berlin': Berlin, "Brandenburg": Brandenburg, 
-         "Bremen": Bremen, "Hamburg": Hamburg, "Hessen": Hessen, "Mecklenburg_Vorpommern": Mecklenburg_Vorpommern,
-         "Niedersachsen": Niedersachsen, "Nordrhein_Westfalen": Nordrhein_Westfalen, "Rheinland_Pfalz": Rheinland_Pfalz, 
-         "Saarland": Saarland, "Sachsen": Sachsen, "Sachsen_Anhalt": Sachsen_Anhalt, "Schleswig_Holstein": Schleswig_Holstein, 
-         "Thüringen": Thüringen, "Ausland": Ausland}
-#data = db.itproject.find()
-
+#db.itproject.update({"region":{"$exists": True }}, {"$unset":{"region": ""}}, multi=True)
+#db.itproject.update({"stack":{"$exists": True }}, {"$unset":{"stack": ""}}, multi=True)
+db.itproject.update({"bereich":{"$exists": True }}, {"$unset":{"bereich": ""}}, multi=True)
+#db.itproject.update({"category":{"$exists": True }}, {"$unset":{"category": ""}}, multi=True)
 
       
 #db.itproject.update({"location":{"$regex": r'(?:[\s]|^)' + city + '(?=[\s]|$)'}}, {"$set":{"region": [state, city]}}, multi=True)
 
 for city in Baden_Württemberg:
-    db.itproject.update({"location":{"$regex": r'(?:[\s]|^)' + city + '(?=[\s]|$)'}}, {"$set":{"region.bundesland":"Baden-Wüttemburg", "region.stadt": city} }, multi=True)
+    db.itproject.update({"location":{"$regex": r'(?:[\s]|^)' + city + '(?=[\s]|$)'}}, 
+    {"$set":{"region.bundesland":"Baden-Wüttemburg", "region.stadt": city} }, multi=True)
 #r'(?:[\s]|^)' + city '(?=[\s]|$)'
 print(1)
+
+db.itproject.update({ "$and": [ {"bereich": None},{"title": {"$regex": '(cisco|ccna|ccnp|netzwerk)', "$options": 'i'}},
+{ "skill_summary": { "$regex": '(cisco|ccna|ccnp)', "$options": 'i' } }]}, {"$set":{"bereich.group": "Infrastructure", "bereich.type": "Netzwerk Administrator", "bereich.skill": "Cisco"}}, multi=True)
+db.itproject.update({ "$and": [ {"bereich": None},{"title": {"$regex": '(netzpla|netzwerk|network)', "$options": 'i'}}]}, 
+{"$set":{"bereich.group": "Infrastructure", "bereich.type": "Netzwerk Administrator", "bereich.skill": "Others"}}, multi=True)
 """
 for city in Bayern:
     db.itproject.update({"location":{"$regex": r'(?:[\s]|^)' + city + '(?=[\s]|$)'}}, {"$set":{"region": ["Bayern", city]}}, multi=True)
@@ -253,7 +250,14 @@ db.itproject.update({"region":{"$exists": True }}, {"$unset":{"region": ""}}, mu
                 'Rheinland-Pfalz', 'Rhein-Main-Gebiet','Schleswig-Holstein','Ostwestfalen', "Neckar", "Leon", 'Fürth', "Solingen", "None"]
 
 
-
+location = [Baden_Württemberg, Bayern, Berlin, Brandenburg, Bremen, Hamburg, Hessen, Mecklenburg_Vorpommern, Niedersachsen, Nordrhein_Westfalen, Rheinland_Pfalz, Saarland, Sachsen, Sachsen_Anhalt, Schleswig_Holstein, Thüringen]
+#add region field using location value
+germany = {'Baden_Württemberg': Baden_Württemberg,'Bayern': Bayern,'Berlin': Berlin, "Brandenburg": Brandenburg, 
+         "Bremen": Bremen, "Hamburg": Hamburg, "Hessen": Hessen, "Mecklenburg_Vorpommern": Mecklenburg_Vorpommern,
+         "Niedersachsen": Niedersachsen, "Nordrhein_Westfalen": Nordrhein_Westfalen, "Rheinland_Pfalz": Rheinland_Pfalz, 
+         "Saarland": Saarland, "Sachsen": Sachsen, "Sachsen_Anhalt": Sachsen_Anhalt, "Schleswig_Holstein": Schleswig_Holstein, 
+         "Thüringen": Thüringen, "Ausland": Ausland}
+#data = db.itproject.find()
 
 for city in location:
     db.itproject.update({"location":{"$regex": '^.*' + city,"$options": 'i' }}, {"$set":{"region": [city]}}, multi=True)

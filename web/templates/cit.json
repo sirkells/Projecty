@@ -1,0 +1,67 @@
+[
+    {
+        "id": "1",
+        "name": "USA",
+        "parent_id": "0"
+    },
+    {
+        "id": "2",
+        "name": "Canada",
+        "parent_id": "0"
+    },
+    {
+        "id": "3",
+        "name": "Australia",
+        "parent_id": "0"
+    },
+    {
+        "id": "4",
+        "name": "New York",
+        "parent_id": "1"
+    },
+    {
+        "id": "5",
+        "name": "Alabama",
+        "parent_id": "1"
+    },
+    {
+        "id": "6",
+        "name": "Carlifornia",
+        "parent_id": "1"
+    },
+    {
+        "id": "7",
+        "name": "Ontario",
+        "parent_id": "2"
+    },
+    {
+        "id": "8",
+        "name": "British Columbia",
+        "parent_id": "2"
+    },
+    {
+        "id": "9",
+        "name": "Vancouver",
+        "parent_id": "2"
+    },
+    {
+        "id": "10",
+        "name": "New South Wales",
+        "parent_id": "3"
+    },
+    {
+        "id": "11",
+        "name": "Queensland",
+        "parent_id": "3"
+    },
+    {
+        "id": "12",
+        "name": "New york city",
+        "parent_id": "4"
+    },
+    {
+        "id": "13",
+        "name": "Buffalo",
+        "parent_id": "4"
+    }
+]

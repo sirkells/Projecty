@@ -7,6 +7,15 @@
 
     <table class="ui very basic padded striped four column table accordion">
         <p>{{ amounts }} results shown out of {{ amount }}</p>
+        <div class="ui container">
+            <select id="sampleSelect" onchange="location = this.value;" >
+              <option value="0" >Skills</option>
+              <option value="{{ url_for('bereich_group', group= 'Development') }}">Group</option>
+              <option value="{{ url_for('bereich_group_type', group= 'Development', groupType = 'Web') }}">Type</option>
+              <option value="{{ url_for('bereich_group_type_stack', group= 'Development', groupType = 'Web', groupStack = 'Backend') }}">Stack</option>
+              <option value="{{ url_for('bereich_skill', group= 'Development', groupType = 'Web', groupStack = 'Backend', skill= 'Java') }}">Skill</option>
+            </select>
+          </div>
         <thead>
           <tr>
             <th class="thirteen wide">Titel</th>

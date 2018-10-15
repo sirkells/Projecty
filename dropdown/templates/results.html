@@ -2,20 +2,10 @@
   {% block content %}
 
    
-  <div class="container">
-      <div class="btn-group btn-group-justified">
-        <a href="{{ url_for('bereich_group', group= 'Development') }}" class="btn btn-primary">Development</a>
-        <a href="{{ url_for('bereich_group', group= 'Infrastructure') }}" class="btn btn-success">Infrastructure</a>
-        <a href="{{ url_for('bereich_group', group= 'Data Science') }}" class="btn btn-info">Data Science</a>
-      </div>
-
-
 
     <!-- list table -->
-    
+
     <table class="ui very basic padded striped four column table accordion">
-        <p>{{ amounts }} results shown out of {{ amount }} {{ selected }} projects </p>
-        
         <thead>
           <tr>
             <th class="thirteen wide">Titel</th>
@@ -27,7 +17,7 @@
           </tr>
         </thead>
         <tbody>
-        {% for hit in projects %}
+        {% for hit in cities %}
             <tr>
               <td>
                 <div class="title">

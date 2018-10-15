@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+    <div class="ui container">
+        <select id="sampleSelect" onchange="location = this.value;" >
+          <option value="0" >Skills</option>
+          <option value="{{ url_for('bereich_group', group= 'Development') }}">Group</option>
+          <option value="{{ url_for('bereich_group', group= 'Infrastructure') }}">Group</option>
+          <option value="{{ url_for('bereich_group', group= 'Data Science') }}">Group</option>
+          <option value="{{ url_for('bereich_group_type', group= 'Development', groupType = 'Web') }}">Type</option>
+          <option value="{{ url_for('bereich_group_type_stack', group= 'Development', groupType = 'Web', groupStack = 'Backend') }}">Stack</option>
+          <option value="{{ url_for('bereich_skill', group= 'Development', groupType = 'Web', groupStack = 'Backend', skill= 'Java') }}">Skill</option>
+        </select>
+    </div>
+    <form method="POST">
+    {{ form.csrf_token }}
+    {{ form.state }}
+    {{ form.city }}
+    <input type="submit">
+    </form>
+    <script>
+        var state_select = document.getElementById("state");
+        var city_select = document.getElementById("city");
+        state_select.onchange = function()  {
+            state = state_select.value;
+            fetch('/city/' + state).then(function(response) {
+            console.log(response)
+            })
+        }
+    </script>
+</body>
+</html>

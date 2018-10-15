@@ -37,7 +37,7 @@ def bereich_group(group):
     amount = project.count()
     amounts = len(projects)
     
-    return render_template('home.html', projects=projects, amount=amount, amounts=amounts)
+    return render_template('home.html', projects=projects, amount=amount, amounts=amounts, selected=group)
 
 
 @app.route('/<group>/<groupType>')

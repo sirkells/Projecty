@@ -9,7 +9,6 @@ elastic2-doc-manager==0.3.0
 elasticsearch==5.5.3
 Flask==1.0.2
 Flask-Bcrypt==0.7.1
-Flask-Elasticsearch==0.2.5
 flask-ldap3-login==0.9.14
 Flask-Login==0.4.1
 Flask-Mail==0.9.1

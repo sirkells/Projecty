@@ -1,0 +1,15 @@
+<!doctype html>
+<html>
+   <body>
+
+      <h2 style = "text-align: center;">Contact Form</h2>
+      <form method="POST">
+        {{ form.csrf_token }}
+        {{ form.language }}
+        {{ form.location }}
+
+        <input type="submit">
+      </form>
+
+   </body>
+</html>

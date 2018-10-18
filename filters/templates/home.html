@@ -1,24 +1,22 @@
 {% extends "base.html" %}
   {% block content %}
 
-   
+
   <div class="container">
       <div class="btn-group btn-group-justified">
         <a href="{{ url_for('bereich_group', group= 'Development') }}" class="btn btn-primary" style="width:50%">Development</a>
         <a href="{{ url_for('bereich_group', group= 'Infrastructure') }}" class="btn btn-success" style="width:30%" >Infrastructure</a>
-        <a href="{{ url_for('bereich_group', group= 'Data Science') }}" class="btn btn-info dropdown-toggle" data-toggle="dropdown" style="width:20%">Data Science</a><ul class="dropdown-menu" role="menu">
-            <li><a href="#">Tablet</a></li>
-            <li><a href="#">Smartphone</a></li>
+        <a href="{{ url_for('bereich_group', group= 'Data Science') }}" class="btn btn-info" style="width:20%">Data Science</a>
           </ul>
       </div>
 
 
 
     <!-- list table -->
-    
+
     <table class="ui very basic padded striped four column table accordion">
         <p>{{ amounts }} results shown out of {{ amount }} {{ selected }} projects </p>
-        
+
         <thead>
           <tr>
             <th class="thirteen wide">Titel</th>

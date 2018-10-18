@@ -1,8 +1,11 @@
-from flask import Flask, render_template, url_for, request, redirect, jsonify, abort, flash
+from flask import Flask, render_template, url_for, redirect, jsonify, abort, flash, json
 from pymongo import MongoClient
 from elasticsearch import Elasticsearch
 from datetime import datetime
 from flask_moment import Moment
+from bson import json_util, ObjectId
+import requests
+from flask_cors import CORS
 
 
 def connect():
@@ -13,30 +16,52 @@ def connect():
 
 app = Flask(__name__)
 moment = Moment(app)
+CORS(app)
 db = connect()
 a = db.itproject_clean.find({"region": {"$ne": None}, "bereich.group": "Development"}).count()
-print(a)
+
 @app.route('/')
-@app.route('/home')
+def index():
+    h = db.itproject_clean.find({"region": {"$ne": None}})
+    return render_template('index2.html', groups=h)
+@app.route('/home', methods=['GET'])
 def home():
     page_size = 30
-    project = db.itproject_clean.find({"region": {"$ne": None}}).limit(page_size)
+    project = db.itproject_clean.find({"region": {"$ne": None}, "bereich": {"$ne": None} }).limit(page_size)
     projects = sorted(project, key=lambda p: p['filter_date_post'], reverse=True)
     amount = project.count()
     amounts = len(projects)
-    
-    return render_template('home.html', projects=projects, amount=amount, amounts=amounts)
+
+    page_sanitized = json.dumps(json.loads(json_util.dumps(projects)))
+
+    #print(type(d))
+    #print(page_sanitized)
+    return page_sanitized
+
+    #return render_template('home.html', projects=projects, amount=amount, amounts=amounts)
 
 
 @app.route('/<group>')
-def bereich_group(group):
+def dev(group):
     page_size = 30
-    
+
     project = db.itproject_clean.find({"region": {"$ne": None}, "bereich.group": group}).limit(page_size)
     projects = sorted(project, key=lambda p: p['filter_date_post'], reverse=True)
     amount = project.count()
     amounts = len(projects)
-    
+    page_sanitized = json.dumps(json.loads(json_util.dumps(projects)))
+    return page_sanitized
+"""
+
+@app.route('/<group>')
+def bereich_group(group):
+    page_size = 30
+
+    project = db.itproject_clean.find({"region": {"$ne": None}, "bereich.group": group}).limit(page_size)
+    projects = sorted(project, key=lambda p: p['filter_date_post'], reverse=True)
+    amount = project.count()
+    amounts = len(projects)
+
     return render_template('home.html', projects=projects, amount=amount, amounts=amounts, selected=group)
 
 
@@ -56,7 +81,7 @@ def bereich_group_type_stack(group, groupType, groupStack):
     projects = sorted(project, key=lambda p: p['filter_date_post'], reverse=True)
     amount = project.count()
     amounts = len(projects)
-    
+
     return render_template('home.html', projects=projects, amount=amount, amounts=amounts)
 
 @app.route('/<group>/<groupType>/<groupStack>/<skill>')
@@ -66,8 +91,8 @@ def bereich_skill(group, groupType, groupStack, skill):
     projects = sorted(project, key=lambda p: p['filter_date_post'], reverse=True)
     amount = project.count()
     amounts = len(projects)
-    
-    return render_template('home.html', projects=projects, amount=amount, amounts=amounts)
 
+    return render_template('home.html', projects=projects, amount=amount, amounts=amounts)
+"""
 if __name__ == '__main__':
     app.run(debug=True)

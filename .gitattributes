@@ -31,11 +31,12 @@ web/templates/index.html* linguist-vendored
 web/templates/test.html* linguist-vendored
 web/templates/register.html* linguist-vendored
 filters/templates/* linguist-vendored
-filters/static/css/* linguist-vendored
-filters/static/assets/* linguist-vendored
+filters/static/* linguist-vendored
+
 
 
 #.py linguist-vendored=false
+#.js linguist-vendored=false
 # Documents
 *.doc	 diff=astextplain
 *.DOC	 diff=astextplain

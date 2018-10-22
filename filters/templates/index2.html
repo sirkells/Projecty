@@ -57,28 +57,49 @@
     </nav>
     <br>
     <div class="container" id="app">
-
+            
             <section class="callout secondary">
               <h5 class="text-center">Filter by Category</h5>
               <form>
                 <div class="row">
-                  <div class="large-6 columns">
-
-                    <select v-model="section">
-
-                        <option v-for="section in sections" :value="section">{{ section }}</option>
+                  <div class="large-12 columns">
+                    <div class="btn-group btn-group-justified" v-model="section">
+                          <a @click="getPosts('Development')" class="btn btn-primary" style="width:50%">Development</a>
+                          <a @click="getPosts('Infrastructure')" class="btn btn-info" style="width:30%">Infrastructure</a>
+                          <a @click="getPosts('Data Science')" class="btn btn-warning" style="width:15%">Data Science</a>
+                    </div>
+                   <!-- <select v-model="section">
+                      <option v-for="section in sections" :value="section">{{ section }}</option>
                     </select>
-
+                  -->
                   </div>
-                  <div class="medium-6 columns">
+                  <hr>
+                  <div class="large-12 columns" v-if="dev">
+                    <select>
+                      <option v-for="sub in subDev1" :value="sub">{{ sub }}</option>
+                    </select>
+                  </div>
+                  <div class="large-12 columns" v-else-if="inf">
+                    <select>
+                        <option v-for="sub in subInf1" :value="sub">{{ sub }}</option>
+                    </select>
+                  </div>
+                  <div class="large-12 columns" v-else-if="ds">
+                      <select>
+                          <option v-for="sub in subDs1" :value="sub">{{ sub }}</option>
+                      </select>
+                  </div>
+                  <!-- 
+                  <div class="medium-6 columns center-block" >
                     <a @click="getPosts(section)" class="button expanded">Retrieve</a>
                   </div>
+                  -->
                 </div>
               </form>
             </section>
-            <news-list :results="results"></news-list>
+            <news-list :results="results"></news-list>            
     </div>
-
+    
     <nav aria-label="Page navigation example">
       <ul class="pagination justify-content-center pagination-lg">
         <li class="page-item">
@@ -99,9 +120,9 @@
       </ul>
     </nav>
   </div>
-
+  
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="https://unpkg.com/vue"></script>
-    <script src="./static/js/app1.js"></script>
+    <script src="app1.js"></script>
 </body>
 </html>

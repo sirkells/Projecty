@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Projektfinder</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/foundation/6.3.1/css/foundation.min.css">
+
+
+</head>
+
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <a class="navbar-brand mr-auto mr-lg-0" href="#">
+        <img src="ACT-Logo.png" width="70" height="40" class="d-inline-block align-top" alt=""></a>
+      <button class="navbar-toggler p-0 border-0" type="button" data-toggle="offcanvas">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <br>
+      <div class="navbar-collapse offcanvas-collapse" id="navbarsExampleDefault">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+          </li>
+          <br>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Analytics</a>
+          </li>
+          <br>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Cockpit</a>
+          </li>
+          <br>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="https://example.com" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Kelechi Igbokwe</a>
+            <div class="dropdown-menu" aria-labelledby="dropdown01">
+              <a class="dropdown-item" href="#">Profile</a>
+              <a class="dropdown-item" href="#">Logout</a>
+            </div>
+          </li>
+        </ul>
+        <form class="form-inline my-2 my-lg-0" action="/search/results" method="post">
+          <input class="form-control mr-lg-2" name="input" type="search" placeholder="Search" aria-label="Search">
+          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </form>
+      </div>
+    </nav>
+    <br>
+    <div class="container" id="app">
+            
+            <section class="callout secondary">
+              <h5 class="text-center">Filter by Category</h5>
+              <form>
+                <div class="row">
+                  <div class="large-12 columns">
+                    <!-- <div class="btn-group btn-group-justified">
+                          <a @click="getPosts('Development')" class="btn btn-primary" style="width:50%">Development</a>
+                          <a @click="getPosts('Infrastructure')" class="btn btn-info" style="width:30%">Infrastructure</a>
+                          <a @click="getPosts('Data Science')" class="btn btn-warning" style="width:15%">Data Science</a>
+                    </div>
+                    -->
+                    <br>
+                    
+                    <div class="btn-group btn-group-justified" role="group">
+                      <a v-for="sub in section1" @click="getPosts(sub.group)" :class="sub.button" :style="sub.width + sub.count + sub.pix">{{ sub.name }}</a>
+                    </div>
+                   <!-- <select v-model="section">
+                      <option v-for="section in sections" :value="section">{{ section }}</option>
+                    </select>
+                  -->
+                  </div>
+                  <hr>
+                  <div class="large-12 columns" v-if="dev">
+                    <select>
+                      <option v-for="sub in subDev1" :value="sub">{{ sub }}</option>
+                    </select>
+                  </div>
+                  <div class="large-12 columns" v-else-if="inf">
+                    <select>
+                        <option v-for="sub in subInf1" :value="sub">{{ sub }}</option>
+                    </select>
+                  </div>
+                  <div class="large-12 columns" v-else-if="ds">
+                      <select>
+                          <option v-for="sub in subDs1" :value="sub">{{ sub }}</option>
+                      </select>
+                  </div>
+                  <!-- 
+                  <div class="medium-6 columns center-block" >
+                    <a @click="getPosts(section)" class="button expanded">Retrieve</a>
+                  </div>
+                  -->
+                </div>
+              </form>
+            </section>
+            <news-list :results="results"></news-list>            
+    </div>
+    
+    <nav aria-label="Page navigation example">
+      <ul class="pagination justify-content-center pagination-lg">
+        <li class="page-item">
+          <a class="page-link" href="#" aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>
+            <span class="sr-only">Previous</span>
+          </a>
+        </li>
+        <li class="page-item"><a class="page-link" href="#">1</a></li>
+        <li class="page-item"><a class="page-link" href="#">2</a></li>
+        <li class="page-item"><a class="page-link" href="#">3</a></li>
+        <li class="page-item">
+          <a class="page-link" href="#" aria-label="Next">
+            <span aria-hidden="true">&raquo;</span>
+            <span class="sr-only">Next</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+  
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://unpkg.com/vue"></script>
+    <script src="app1.js"></script>
+</body>
+</html>

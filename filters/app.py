@@ -25,7 +25,7 @@ app.jinja_options = jinja_options"""
 moment = Moment(app)
 CORS(app)
 db = connect()
-#a = db.itproject_clean.find({"region": {"$ne": None}, "bereich.group": "Development"}).count()
+#a = db.itproject_clean.find({"region": {"$ne": None}, "bereich.group": "Development"})
 category = ["Development", "Infrastructure", "Data Science"]
 lengths = []
 for group in category:

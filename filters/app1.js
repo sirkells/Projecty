@@ -12,6 +12,7 @@
     }
   });*/
 
+
 const SECTIONS = "Development, Infrastructure, Data Science";
 const subDev = "Web, Mobile";
 const subInf = "ERP, IT Admin/Services";
@@ -50,16 +51,6 @@ Vue.component('news-list', {
         <section>
             <table class="ui very basic padded striped four column table accordion">
                         
-                        <thead>
-                            
-                                <th class="thirteen wide">Titel</th>
-                                <th class="one wide">Veröffentlichung</th>
-                                <th class="one wide">Ort</th>
-                                <!--            <th class="one wide">Kategorie</th> -->
-                                <th class="one wide">Quelle</th>
-                                <th class="one wide">Cockpit</th>
-                            </tr>
-                        </thead>
                         <tbody>
                             <div v-for="posts in processedPosts">
                                 <div v-for="post in posts">
@@ -123,10 +114,9 @@ Vue.component('news-list', {
             }
             return chunkedArray;
         },
-        running() {
-            let section2 = [{group: "Development", button: "btn btn-primary", width: "width:", count: this.catdev, pix:"%"}, {group: "Infrastructure", button:"btn btn-info", width: "width:", count: cat2, pix:"%"}, {group:"Data Science", button: "btn btn-warning", width: "width:", count: cat3, pix:"%"}]
-            return section2
-        }
+        // showM: function() {
+        //     return this.results.length === this.total_results.length && this.results.length > 0
+        // }
     }
 });
 
@@ -167,68 +157,98 @@ var vm = new Vue({
             font: '100px'
           },
         width1: "width: 50%",
-        gg: 1
+        gg: 1,
+        items: [],
+        total_project_count: 0,
+        total_results: [],
+        loading: false,
+        loading_api: false,
+        group_selected: ''
         
 
 
     },
     mounted() {
         this.getPosts(this.section);
+        var vueInstance = this;
+        var elem = document.getElementById('product-list-bottom');
+        var watcher = scrollMonitor.create(elem);
+        watcher.enterViewport(function() {
+            console.log('hello')
+            vueInstance.appendItems()
+        })
+        
     },
     methods: {
+        appendItems: function() {
+            if (this.results.length < this.total_results.length) {
+                var next_data = this.total_results.slice(this.results.length, this.results.length + 10);
+                this.results = this.results.concat(next_data);
+            }
+        },
         getPosts(section) {
             //let url = section === "home"? buildUrl(section) : buildUrl(section) + "/" + sub;
             //let url = buildUrl(section) + "/Web";
             
             let url
             if (section === "home") {
-               url = buildUrl(section);
-               console.log(url)
-               axios.get(url).then((response) => {
-                let a = 10
-                this.gg = a
-                this.results = response.data.project_lists;
-                this.total_project_count = response.data.amount
-                console.log(this.section1[0])
-                this.section1[0].count = (100 * response.data.amount2[0])/this.total_project_count
-                this.section1[1].count = (100 * response.data.amount2[1])/this.total_project_count
-                //if ((100 * response.data.amount2[2])/this.total_project_count) < 12) {}
-                this.section1[2].count = ((100 * response.data.amount2[2])/this.total_project_count)
-                this.section1[2].count +=5
+                //this.appendItems()
+                url = buildUrl(section);
+                console.log(url)
+                this.loading = true
                 
+                axios.get(url).then((response) => {
+                 this.group_selected = "All Projects"
+                 this.total_results = response.data.project_lists
+                 this.results = response.data.project_lists.slice(0, 10);
+                 this.total_project_count = response.data.amount
+                 console.log(this.section1[0])
+                 this.section1[0].count = (100 * response.data.amount2[0])/this.total_project_count
+                 this.section1[1].count = (100 * response.data.amount2[1])/this.total_project_count
+                 this.loading = false
+
+                 //if ((100 * response.data.amount2[2])/this.total_project_count) < 12) {}
+                 this.section1[2].count = ((100 * response.data.amount2[2])/this.total_project_count)
+                 this.section1[2].count +=5
 
 
-                
-                console.log(this.section1[0].count)
-                console.log(this.section1[1].count)
-                console.log(this.section1[2].count)
-                
-                //this.cat1 = (100 * this.current_project_count)/this.total_project_count
-                /*console.log(this.total_project_count)
-                console.log(this.dev_project_count)
-                console.log(this.inf_project_count)
-                console.log(this.ds_project_count)
 
-                console.log(this.gg)*/
-                //console.log((response.data.project_lists).length)
-                }).catch(error => { console.log(error); });
-               
+
+                 console.log(this.section1[0].count)
+                 console.log(this.section1[1].count)
+                 console.log(this.section1[2].count)
+
+                 //this.cat1 = (100 * this.current_project_count)/this.total_project_count
+                 /*console.log(this.total_project_count)
+                 console.log(this.dev_project_count)
+                 console.log(this.inf_project_count)
+                 console.log(this.ds_project_count)
+
+                 console.log(this.gg)*/
+                 //console.log((response.data.project_lists).length)
+                 }).catch(error => { console.log(error); });
+                
             }
             else if (section === "Development") {
                 url = buildUrl(section);
                 console.log(url)
                 console.log(section)
+                
                 this.inf = false;
                 this.ds = false;
                 this.dev = true;
                 axios.get(url).then((response) => {
-                    this.results = response.data.project_lists;
+                    this.group_selected = section
+                    this.total_results = response.data.project_lists
+                    this.results = response.data.project_lists.slice(0, 10);
+                    this.total_project_count = response.data.amount
+                    //this.results = response.data.project_lists;
                     //this.total_project_count = response.data.amount
-                    this.current_project_count = response.data.amount2[0]
-                    this.cat1 = (100 * this.current_project_count)/this.total_project_count
-                    console.log(this.total_project_count)
-                    console.log(this.current_project_count)
-                    console.log(this.cat1)
+                    // this.current_project_count = response.data.amount2[0]
+                    // this.cat1 = (100 * this.current_project_count)/this.total_project_count
+                    // console.log(this.total_project_count)
+                    // console.log(this.current_project_count)
+                    // console.log(this.cat1)
                     //console.log((response.data.project_lists).length)
                 }).catch(error => { console.log(error); });
             }
@@ -239,31 +259,38 @@ var vm = new Vue({
                this.ds = false;
                this.inf = true;
                axios.get(url).then((response) => {
-                this.results = response.data.project_lists;
+                this.group_selected = section
+                this.total_results = response.data.project_lists
+                this.results = response.data.project_lists.slice(0, 10);
                 this.total_project_count = response.data.amount
-                this.current_project_count = response.data.amount2[1]
-                this.cat1 = (100 * this.current_project_count)/this.total_project_count
-                console.log(this.total_project_count)
-                console.log(this.current_project_count)
-                console.log(this.gg)
+                //this.current_project_count = response.data.amount2[1]
+                //this.cat1 = (100 * this.current_project_count)/this.total_project_count
+                // console.log(this.total_project_count)
+                // console.log(this.current_project_count)
+                // console.log(this.gg)
                 //console.log((response.data.project_lists).length)
                 }).catch(error => { console.log(error); });
 
             }
             else if (section === "Data Science") {
+
                url = buildUrl(section);
                console.log(url)
                this.dev = false;
                this.inf = false;
                this.ds = true;
                axios.get(url).then((response) => {
-                this.results = response.data.project_lists;
+                this.group_selected = section
+                this.total_results = response.data.project_lists
+                this.results = response.data.project_lists.slice(0, 10);
                 this.total_project_count = response.data.amount
-                this.current_project_count = response.data.amount2[2]
-                this.cat1 = (100 * this.current_project_count)/this.total_project_count
-                console.log(this.total_project_count)
-                console.log(this.current_project_count)
-                console.log(this.cat1)
+                // this.results = response.data.project_lists;
+                // this.total_project_count = response.data.amount
+                // this.current_project_count = response.data.amount2[2]
+                // this.cat1 = (100 * this.current_project_count)/this.total_project_count
+                // console.log(this.total_project_count)
+                // console.log(this.current_project_count)
+                // console.log(this.cat1)
                 //console.log((response.data.project_lists).length)
             }).catch(error => { console.log(error); });
             }
@@ -287,8 +314,10 @@ var vm = new Vue({
                 }).catch(error => { console.log(error); });
             }
         }
-    }
+    },
+    
 });
+
 //var myStringArray = ["Hello","World"];
 
 

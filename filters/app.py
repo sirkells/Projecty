@@ -40,7 +40,7 @@ def index():
 
 @app.route('/home', methods=['GET'])
 def home():
-    page_size = 30
+    page_size = 50
     project = db.itproject_clean.find({"region": {"$ne": None}, "bereich": {"$ne": None} }).limit(page_size)
     project1 = db.itproject_clean.find({"region": {"$ne": None}, "bereich": {"$ne": None} })
     projects1 = sorted(project1, key=lambda p: p['filter_date_post'], reverse=True)
@@ -48,7 +48,7 @@ def home():
     #amount = project.count()
     amounts = len(projects1)
     #amount2 = len(project)
-    ab = {"amount": amounts, "amount2": lengths}
+    #ab = {"amount": amounts, "amount2": lengths}
     #projects.insert(0,ab)
     #print(type(projects))
     b = {"amount": amounts, "amount2": lengths}
@@ -70,7 +70,7 @@ def home():
 
 @app.route('/<group>')
 def dev(group):
-    page_size = 30
+    page_size = 50
     global pro
     project = db.itproject_clean.find({"region": {"$ne": None}, "bereich.group": group}).limit(page_size)
     project1 = db.itproject_clean.find({"region": {"$ne": None}, "bereich.group": group})
@@ -82,7 +82,7 @@ def dev(group):
     #amounts = len(projects)
     amounts = len(projects1)
     #amount2 = len(project)
-    ab = {"amount": amounts, "amount2": page_size}
+    #ab = {"amount": amounts, "amount2": page_size}
     #projects.insert(0,ab)
     #print(type(projects))
     b = {"amount": amounts, "amount2": page_size}
@@ -94,7 +94,7 @@ def dev(group):
 
 @app.route('/<group>/<groupType>')
 def bereich_group_type(group, groupType):
-    page_size = 30
+    page_size = 50
     project = db.itproject_clean.find({"region": {"$ne": None}, "bereich.group": group, "bereich.group_type": groupType}).limit(page_size)
     project1 = db.itproject_clean.find({"region": {"$ne": None}, "bereich.group": group, "bereich.group_type": groupType})
     projects1 = sorted(project1, key=lambda p: p['filter_date_post'], reverse=True)
@@ -103,7 +103,7 @@ def bereich_group_type(group, groupType):
     #amounts = len(projects)
     amounts = len(projects1)
     #amount2 = len(project)
-    ab = {"amount": amounts, "amount2": page_size}
+    #ab = {"amount": amounts, "amount2": page_size}
     #projects.insert(0,ab)
     #print(type(projects))
     b = {"amount": amounts, "amount2": page_size}
@@ -114,7 +114,7 @@ def bereich_group_type(group, groupType):
 
 @app.route('/<group>/<groupType>/<groupStack>')
 def bereich_group_type_stack(group, groupType, groupStack):
-    page_size = 30
+    page_size = 50
     project = db.itproject_clean.find({"region": {"$ne": None}, "bereich.group": group, "bereich.group_type": groupType, "bereich.group_type_stack": groupStack}).limit(page_size)
     project1 = db.itproject_clean.find({"region": {"$ne": None}, "bereich.group": group, "bereich.group_type": groupType, "bereich.group_type_stack": groupStack})
     projects1 = sorted(project1, key=lambda p: p['filter_date_post'], reverse=True)

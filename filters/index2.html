@@ -57,7 +57,6 @@
     </nav>
     <br>
     <div class="container" id="app">
-            
             <section class="callout secondary">
               <h5 class="text-center">Filter by Category</h5>
               <form>
@@ -79,7 +78,7 @@
                     </select>
                   -->
                   </div>
-                  <hr>
+                  
                   <div class="large-12 columns" v-if="dev">
                     <select>
                       <option v-for="sub in subDev1" :value="sub">{{ sub }}</option>
@@ -103,33 +102,27 @@
                 </div>
               </form>
             </section>
-            <news-list :results="results"></news-list>            
-    </div>
-    
-    <nav aria-label="Page navigation example">
-      <ul class="pagination justify-content-center pagination-lg">
-        <li class="page-item">
-          <a class="page-link" href="#" aria-label="Previous">
-            <span aria-hidden="true">&laquo;</span>
-            <span class="sr-only">Previous</span>
-          </a>
-        </li>
-        <li class="page-item"><a class="page-link" href="#">1</a></li>
-        <li class="page-item"><a class="page-link" href="#">2</a></li>
-        <li class="page-item"><a class="page-link" href="#">3</a></li>
-        <li class="page-item">
-          <a class="page-link" href="#" aria-label="Next">
-            <span aria-hidden="true">&raquo;</span>
-            <span class="sr-only">Next</span>
-          </a>
-        </li>
-      </ul>
-    </nav>
+            <div v-if="loading"> Loading....</div>
+            <div class="search-results" v-else>
+               <!-- Found {{ total_results.length }} results for {{ group_selected }} -->
+               <i>Showing results for <strong>{{ group_selected }}</strong> </i>
+               
+            </div>
+            
+            <div>
+              <news-list :results="results"></news-list> 
+            </div> 
   </div>
+  <div class="container" id="product-list-bottom" >
+      <div>.</div>
+      
+  </div> 
   
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     
-    <script src="https://unpkg.com/vue"></script>
+    <script src="node_modules/axios/dist/axios.min.js"></script>
+    <script src="node_modules/vue/dist/vue.js"></script>
+    <script src="node_modules/scrollmonitor/scrollMonitor.js"></script>
+    <script src="node_modules/vue-resource/dist/vue-resource.js"></script>
     <script src="app1.js"></script>
 </body>
 </html>

@@ -12,7 +12,9 @@
     }
   });*/
 
-
+  //import Vue from 'vue'
+  //import vSelect from 'vue-select'
+  
 const SECTIONS = "Development, Infrastructure, Data Science";
 const subDev = "Web, Mobile";
 const subInf = "ERP, IT Admin/Services";
@@ -50,6 +52,7 @@ function searchUrl(url) {
     return searchBaseUrl + url
 }
 
+Vue.component('v-select', VueSelect.VueSelect);
 
 Vue.component('news-list', {
     props: ['results'],
@@ -110,7 +113,7 @@ Vue.component('news-list', {
                         </tbody>
              </table>
         </section>`,
-        
+
     computed: {
         processedPosts() {
             let posts = this.results;
@@ -134,51 +137,54 @@ Vue.component('news-list', {
 
 var vm = new Vue({
     el: '#app',
-    data: {
-        dev_project_count : 0,
-        inf_project_count : 0,
-        ds_project_count : 0,
-        results: [],
-        catdev: 50,
-        catinf: cat2,
-        catds: cat3,
-        section1: [{name: 'Development', group: "Development", button: "btn btn-primary", width: "width:", count: 50, pix:"%"}, {name: 'Infrastructure', group: "Infrastructure", button:"btn btn-info", width: "width:", count: 30, pix:"%"}, {name: 'Data', group:"Data Science", button: "btn btn-warning", width: "width:", count: 20, pix:"%"}],
-        sections: SECTIONS.split(', '), // create an array of the sections
-        class_buttons1: class_buttons.split(', '),
-        subDev1: subDev.split(', '),
-        subInf1: subInf.split(', '),
-        subDs1: subDs.split(', '),
-        devSub: devWeb.split(', '),
+    data: function(){
+        return {
+            dev_project_count : 0,
+            inf_project_count : 0,
+            ds_project_count : 0,
+            results: [],
+            catdev: 50,
+            catinf: cat2,
+            catds: cat3,
+            section1: [{name: 'Development', group: "Development", button: "btn btn-primary", width: "width:", count: 50, pix:"%"}, {name: 'Infrastructure', group: "Infrastructure", button:"btn btn-info", width: "width:", count: 30, pix:"%"}, {name: 'Data', group:"Data Science", button: "btn btn-warning", width: "width:", count: 20, pix:"%"}],
+            sections: SECTIONS.split(', '), // create an array of the sections
+            class_buttons1: class_buttons.split(', '),
+            subDev1: subDev.split(', '),
+            subInf1: subInf.split(', '),
+            subDs1: subDs.split(', '),
+            devSub: devWeb.split(', '),
+            
+            section: 'home', // set default section to 'home'
+            isActive: true,
+            devSub1: false,
+            dev: false,
+            inf: false,
+            ds: false,
+            selected: [],
+            options: [
+            { text: 'Development', value: this.subDev1 },
+            { text: 'Infrastructure', value: this.subInf1 },
+            { text: 'Data Science', value: this.subDs1 }
+            ],
         
-        section: 'home', // set default section to 'home'
-        isActive: true,
-        devSub1: false,
-        dev: false,
-        inf: false,
-        ds: false,
-        selected: [],
-        options: [
-        { text: 'Development', value: this.subDev1 },
-        { text: 'Infrastructure', value: this.subInf1 },
-        { text: 'Data Science', value: this.subDs1 }
-        ],
+            styleObject: {
+                color: 'red',
+                font: '100px'
+              },
+            width1: "width: 50%",
+            gg: 1,
+            items: [],
+            total_project_count: 0,
+            total_results: [],
+            loading: false,
+            loading_api: false,
+            group_selected: '',
+            searchRoute: 'search/',
+            search_term: '',
+            group_clicked: true
 
-        styleObject: {
-            color: 'red',
-            font: '100px'
-          },
-        width1: "width: 50%",
-        gg: 1,
-        items: [],
-        total_project_count: 0,
-        total_results: [],
-        loading: false,
-        loading_api: false,
-        group_selected: '',
-        searchRoute: 'search/',
-        search_term: '',
-        group_clicked: true
-
+        }
+        
         
 
 

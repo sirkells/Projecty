@@ -57,7 +57,6 @@
     </nav>
     <br>
     <div class="container" id="app">
-        
             <section class="callout secondary">
               <h5 class="text-center">Filter by Category</h5>
               <form>
@@ -81,19 +80,22 @@
                   </div>
                   
                   <div class="large-12 columns" v-if="dev">
-                    <select>
+                    <v-select :options="subDev1"></v-select>
+                    <!--<select>
                       <option v-for="sub in subDev1" :value="sub">{{ sub }}</option>
-                    </select>
+                    </select>-->
                   </div>
                   <div class="large-12 columns" v-else-if="inf">
-                    <select>
+                    <v-select :options="subInf1"></v-select>
+                    <!-- <select>
                         <option v-for="sub in subInf1" :value="sub">{{ sub }}</option>
-                    </select>
+                    </select>-->
                   </div>
                   <div class="large-12 columns" v-else-if="ds">
-                      <select>
+                      <v-select :options="subDs1"></v-select>
+                     <!--  <select>
                           <option v-for="sub in subDs1" :value="sub">{{ sub }}</option>
-                      </select>
+                      </select>-->
                   </div>
                   <!-- 
                   <div class="medium-6 columns center-block" >
@@ -128,6 +130,7 @@
     <script src="node_modules/axios/dist/axios.min.js"></script>
     <script src="node_modules/vue/dist/vue.js"></script>
     <script src="node_modules/scrollmonitor/scrollMonitor.js"></script>
+    <script src="node_modules/vue-select/dist/vue-select.js"></script>
     <script src="node_modules/vue-resource/dist/vue-resource.js"></script>
     <script src="app1.js"></script>
 </body>

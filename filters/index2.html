@@ -57,6 +57,10 @@
     </nav>
     <br>
     <div class="container" id="app">
+        <form class="searchbar" @submit="getPosts(search_term)" >
+            <input type="text" v-model="search_term" placeholder="Search"><input type="submit" value="" class="btn btn-outline-danger my-2 my-sm-0">
+            
+        </form>
             <section class="callout secondary">
               <h5 class="text-center">Filter by Category</h5>
               <form>
@@ -103,10 +107,11 @@
               </form>
             </section>
             <div v-if="loading"> Loading....</div>
-            <div class="search-results" v-else>
-               <!-- Found {{ total_results.length }} results for {{ group_selected }} -->
+            <div class="search-results" v-else-if="group_clicked">
                <i>Showing results for <strong>{{ group_selected }}</strong> </i>
-               
+            </div>
+            <div class="search-results" v-else>
+                <i>Found {{ total_results.length }} results for <strong>{{ group_selected }}</strong> </i>
             </div>
             
             <div>

@@ -37,11 +37,17 @@ var thestyle = [{group: "Development", button: "btn btn-primary", width: "width:
 //var country_selected = document.getElementById("Sub");
 
 const BaseUrl = "http://127.0.0.1:5000/";
+const searchBaseUrl = "http://127.0.0.1:5000/search/";
 
 
 function buildUrl(url) {
     
     return BaseUrl + url
+}
+
+function searchUrl(url) {
+    
+    return searchBaseUrl + url
 }
 
 
@@ -83,8 +89,12 @@ Vue.component('news-list', {
                                                         <div class="description">
                                                             Date Posted: <b>{{ post.date_post }}</b>
                                                         </div>
+                                                        
                                                         <div class="description">
                                                             Bundesland <b>{{ post.region.bundesland }}</b>, Stadt: <b>{{ post.region.stadt }}</b>
+                                                        </div>
+                                                        <div class="description" style="color: red">
+                                                            Score: <i><b>{{ post.score }}</b></i>
                                                         </div>
                                         
 
@@ -163,7 +173,11 @@ var vm = new Vue({
         total_results: [],
         loading: false,
         loading_api: false,
-        group_selected: ''
+        group_selected: '',
+        searchRoute: 'search/',
+        search_term: '',
+        group_clicked: true
+
         
 
 
@@ -294,25 +308,39 @@ var vm = new Vue({
                 //console.log((response.data.project_lists).length)
             }).catch(error => { console.log(error); });
             }
-            else if (section === "Development/Web") {
-                url = buildUrl(section);
+            else if (section === this.search_term) {
+                url = buildUrl(this.searchRoute.concat(section));
                 console.log(url)
                 console.log(section)
                 this.inf = false;
                 this.ds = false;
                 this.dev = true;
                 this.devSub1 = true;
+                this.group_clicked =false
                 axios.get(url).then((response) => {
-                    this.results = response.data.project_lists;
-                    this.total_project_count = response.data.amount
-                    this.current_project_count = response.data.amount2
-                    this.cat1 = (100 * this.current_project_count)/this.total_project_count
-                    console.log(this.total_project_count)
-                    console.log(this.current_project_count)
-                    console.log(this.cat1)
+                 this.group_selected = section
+                 this.total_results = response.data.project_lists
+                 this.results = response.data.project_lists.slice(0, 10);
+                 this.total_project_count = response.data.amount
+                 console.log(this.section1[0])
+                 this.section1[0].count = (100 * response.data.amount2[0])/this.total_project_count
+                 this.section1[1].count = (100 * response.data.amount2[1])/this.total_project_count
+                 this.loading = false
+
+                 //if ((100 * response.data.amount2[2])/this.total_project_count) < 12) {}
+                 this.section1[2].count = ((100 * response.data.amount2[2])/this.total_project_count)
+                 this.section1[2].count +=5
+
+
+
+
+                 console.log(this.section1[0].count)
+                 console.log(this.section1[1].count)
+                 console.log(this.section1[2].count)
                     //console.log((response.data.project_lists).length)
                 }).catch(error => { console.log(error); });
             }
+            
         }
     },
     

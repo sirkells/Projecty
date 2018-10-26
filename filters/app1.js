@@ -110,6 +110,7 @@ Vue.component('news-list', {
                         </tbody>
              </table>
         </section>`,
+        
     computed: {
         processedPosts() {
             let posts = this.results;

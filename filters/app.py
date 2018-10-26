@@ -40,7 +40,7 @@ def index():
 
 @app.route('/home', methods=['GET'])
 def home():
-    page_size = 50
+    page_size = 100
     project = db.itproject_clean.find({"region": {"$ne": None}, "bereich": {"$ne": None} }).limit(page_size)
     project1 = db.itproject_clean.find({"region": {"$ne": None}, "bereich": {"$ne": None} })
     projects1 = sorted(project1, key=lambda p: p['filter_date_post'], reverse=True)
@@ -55,14 +55,6 @@ def home():
     b.update({"project_lists": projects})
     page_sanitized = json.dumps(json.loads(json_util.dumps(b)))
     #print(type(page_sanitized))
-
-
-
-
-
-
-    #print(type(d))
-    #print(page_sanitized)
     return page_sanitized
 
     #return render_template('home.html', projects=projects, amount=amount, amounts=amounts)
@@ -91,19 +83,17 @@ def dev(group):
     project1 = db.itproject_clean.find({"region": {"$ne": None}, "bereich.group": group})
     projects1 = sorted(project1, key=lambda p: p['filter_date_post'], reverse=True)
     pro = len(projects1)
-
     projects = sorted(project, key=lambda p: p['filter_date_post'], reverse=True)
     #amount = project.count()
     #amounts = len(projects)
-    amounts = len(projects1)
     #amount2 = len(project)
     #ab = {"amount": amounts, "amount2": page_size}
     #projects.insert(0,ab)
     #print(type(projects))
+    amounts = len(projects1)
     b = {"amount": amounts, "amount2": page_size}
     b.update({"project_lists": projects})
     page_sanitized = json.dumps(json.loads(json_util.dumps(b)))
-
     return page_sanitized
 
 

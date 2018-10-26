@@ -30,6 +30,7 @@
     "scrollmonitor": "~1.2.0",
     "vue": "~2.1.0",
     "vue-resource": "~1.0.3",
+    "vue-select": "^2.5.1",
     "vue-tree-navigation": "^3.0.1"
   },
   "devDependencies": {

@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for, redirect, jsonify, abort, flash, json
+from flask import Flask, render_template, url_for, redirect, jsonify, abort, flash, json, request
 from pymongo import MongoClient
 from elasticsearch import Elasticsearch
 from datetime import datetime
@@ -58,6 +58,44 @@ def home():
     return page_sanitized
 
     #return render_template('home.html', projects=projects, amount=amount, amounts=amounts)
+"""@app.route('/query')
+def query():
+    language = request.args.get('language') #if key doesn't exist, returns None
+    
+    
+    #framework = request.args['framework'] #if key doesn't exist, returns a 400, bad request error
+    #website = request.args.get('website')
+    results = db.itproject_clean.find( { "region": {"$ne": None}, "bereich": {"$ne": None}, "$text": { "$search":  language, "$language": "de" } }, { "score": {"$meta": "textScore" } } )
+    
+    results.sort([('score', {'$meta': 'textScore'}), ("filter_date_post", 1)]).limit(100)
+    projects = [p for p in results]
+    #sorted(results, key=lambda p: p['filter_date_post'], reverse=True)
+    print(type(projects))
+    amounts = len(projects)
+    b = {"amount": amounts, "amount2": lengths}
+    b.update({"project_lists": projects})
+    page_sanitized = json.dumps(json.loads(json_util.dumps(b)))
+
+    return page_sanitized"""
+@app.route('/query')
+def search_query():
+    language = request.args.get('language') #if key doesn't exist, returns None
+    
+    
+    #framework = request.args['framework'] #if key doesn't exist, returns a 400, bad request error
+    #website = request.args.get('website')
+    results = db.itproject_clean.find( { "region": {"$ne": None}, "bereich": {"$ne": None}, "$text": { "$search": "\"" + language + "\"", "$language": "de" } }, { "score": {"$meta": "textScore" } } )
+    
+    results.sort([('score', {'$meta': 'textScore'}), ("filter_date_post", 1)]).limit(100)
+    projects = [p for p in results]
+    #sorted(results, key=lambda p: p['filter_date_post'], reverse=True)
+    print(type(projects))
+    amounts = len(projects)
+    b = {"amount": amounts, "amount2": lengths}
+    b.update({"project_lists": projects})
+    page_sanitized = json.dumps(json.loads(json_util.dumps(b)))
+
+    return page_sanitized
 @app.route('/search/<search_term>', methods=['GET', 'POST'])
 def search_request(search_term):
     #search_term = request.form["input"]

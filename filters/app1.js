@@ -40,6 +40,7 @@ var thestyle = [{group: "Development", button: "btn btn-primary", width: "width:
 
 const BaseUrl = "http://127.0.0.1:5000/";
 const searchBaseUrl = "http://127.0.0.1:5000/search/";
+const queryBaseUrl = "http://127.0.0.1:5000/query";
 
 
 function buildUrl(url) {
@@ -51,8 +52,13 @@ function searchUrl(url) {
     
     return searchBaseUrl + url
 }
+function queryUrl(url) {
+    
+    return queryBaseUrl + url
+}
 
 Vue.component('v-select', VueSelect.VueSelect);
+
 
 Vue.component('news-list', {
     props: ['results'],
@@ -181,7 +187,8 @@ var vm = new Vue({
             group_selected: '',
             searchRoute: 'search/',
             search_term: '',
-            group_clicked: true
+            group_clicked: true,
+            queryRoute: '?language='
 
         }
         
@@ -316,7 +323,8 @@ var vm = new Vue({
             }).catch(error => { console.log(error); });
             }
             else if (section === this.search_term) {
-                url = buildUrl(this.searchRoute.concat(section));
+                //url = buildUrl(this.searchRoute.concat(section));
+                url = queryUrl(this.queryRoute.concat(section));
                 console.log(url)
                 console.log(section)
                 this.inf = false;

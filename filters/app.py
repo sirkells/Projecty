@@ -58,33 +58,15 @@ def home():
     return page_sanitized
 
     #return render_template('home.html', projects=projects, amount=amount, amounts=amounts)
-"""@app.route('/query')
-def query():
-    language = request.args.get('language') #if key doesn't exist, returns None
-    
-    
-    #framework = request.args['framework'] #if key doesn't exist, returns a 400, bad request error
-    #website = request.args.get('website')
-    results = db.itproject_clean.find( { "region": {"$ne": None}, "bereich": {"$ne": None}, "$text": { "$search":  language, "$language": "de" } }, { "score": {"$meta": "textScore" } } )
-    
-    results.sort([('score', {'$meta': 'textScore'}), ("filter_date_post", 1)]).limit(100)
-    projects = [p for p in results]
-    #sorted(results, key=lambda p: p['filter_date_post'], reverse=True)
-    print(type(projects))
-    amounts = len(projects)
-    b = {"amount": amounts, "amount2": lengths}
-    b.update({"project_lists": projects})
-    page_sanitized = json.dumps(json.loads(json_util.dumps(b)))
 
-    return page_sanitized"""
 @app.route('/query')
 def search_query():
-    language = request.args.get('language') #if key doesn't exist, returns None
+    search_term = request.args.get('search') #if key doesn't exist, returns None
     
     
     #framework = request.args['framework'] #if key doesn't exist, returns a 400, bad request error
     #website = request.args.get('website')
-    results = db.itproject_clean.find( { "region": {"$ne": None}, "bereich": {"$ne": None}, "$text": { "$search": "\"" + language + "\"", "$language": "de" } }, { "score": {"$meta": "textScore" } } )
+    results = db.itproject_clean.find( { "region": {"$ne": None}, "bereich": {"$ne": None}, "$text": { "$search": "\"" + search_term + "\"", "$language": "de" } }, { "score": {"$meta": "textScore" } } )
     
     results.sort([('score', {'$meta': 'textScore'}), ("filter_date_post", 1)]).limit(100)
     projects = [p for p in results]
@@ -95,22 +77,6 @@ def search_query():
     b.update({"project_lists": projects})
     page_sanitized = json.dumps(json.loads(json_util.dumps(b)))
 
-    return page_sanitized
-@app.route('/search/<search_term>', methods=['GET', 'POST'])
-def search_request(search_term):
-    #search_term = request.form["input"]
-    #results = es.search(index="itproject", size=20, body={"query": {"multi_match" : { "query": search_term, "fields": ["description", "title", "skill_summary"] }}})
-    results = db.itproject_clean.find( { "region": {"$ne": None}, "bereich": {"$ne": None}, "$text": { "$search": search_term, "$language": "de" } }, { "score": {"$meta": "textScore" } } )
-    results.sort([('score', {'$meta': 'textScore'}), ("filter_date_post", 1)]).limit(100)
-    projects = [p for p in results]
-    #sorted(results, key=lambda p: p['filter_date_post'], reverse=True)
-    print(type(projects))
-    amounts = len(projects)
-    b = {"amount": amounts, "amount2": lengths}
-    b.update({"project_lists": projects})
-    page_sanitized = json.dumps(json.loads(json_util.dumps(b)))
-
-    #res = es.search(index="projectfinder", body=doc)
     return page_sanitized
 
 @app.route('/<group>')
@@ -175,7 +141,51 @@ def bereich_group_type_stack(group, groupType, groupStack):
 
     return page_sanitized
 
-"""
+if __name__ == '__main__':
+    app.run(debug=True)
+
+
+
+
+
+"""@app.route('/query')
+def query():
+    language = request.args.get('language') #if key doesn't exist, returns None
+    
+    
+    #framework = request.args['framework'] #if key doesn't exist, returns a 400, bad request error
+    #website = request.args.get('website')
+    results = db.itproject_clean.find( { "region": {"$ne": None}, "bereich": {"$ne": None}, "$text": { "$search":  language, "$language": "de" } }, { "score": {"$meta": "textScore" } } )
+    
+    results.sort([('score', {'$meta': 'textScore'}), ("filter_date_post", 1)]).limit(100)
+    projects = [p for p in results]
+    #sorted(results, key=lambda p: p['filter_date_post'], reverse=True)
+    print(type(projects))
+    amounts = len(projects)
+    b = {"amount": amounts, "amount2": lengths}
+    b.update({"project_lists": projects})
+    page_sanitized = json.dumps(json.loads(json_util.dumps(b)))
+
+    return page_sanitized
+@app.route('/search/<search_term>', methods=['GET', 'POST'])
+def search_request(search_term):
+    #search_term = request.form["input"]
+    #results = es.search(index="itproject", size=20, body={"query": {"multi_match" : { "query": search_term, "fields": ["description", "title", "skill_summary"] }}})
+    results = db.itproject_clean.find( { "region": {"$ne": None}, "bereich": {"$ne": None}, "$text": { "$search": search_term, "$language": "de" } }, { "score": {"$meta": "textScore" } } )
+    results.sort([('score', {'$meta': 'textScore'}), ("filter_date_post", 1)]).limit(100)
+    projects = [p for p in results]
+    #sorted(results, key=lambda p: p['filter_date_post'], reverse=True)
+    print(type(projects))
+    amounts = len(projects)
+    b = {"amount": amounts, "amount2": lengths}
+    b.update({"project_lists": projects})
+    page_sanitized = json.dumps(json.loads(json_util.dumps(b)))
+
+    #res = es.search(index="projectfinder", body=doc)
+    return page_sanitized
+
+
+
 
 @app.route('/<group>')
 def bereich_group(group):
@@ -218,5 +228,4 @@ def bereich_skill(group, groupType, groupStack, skill):
 
     return render_template('home.html', projects=projects, amount=amount, amounts=amounts)
 """
-if __name__ == '__main__':
-    app.run(debug=True)
+

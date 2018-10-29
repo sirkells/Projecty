@@ -163,7 +163,7 @@ var vm = new Vue({
             searchRoute: 'search/',
             search_term: '',
             group_clicked: true,
-            queryRoute: '?language='
+            queryRoute: '?search='
 
         }
         

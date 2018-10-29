@@ -21,14 +21,6 @@ const subInf = "ERP, IT Admin/Services";
 const subDs = "Big Data, Business Intelligence, Machine Learning";
 const devWeb = "Fullstack, Backend, Frontend"
 const class_buttons = "btn btn-primary, btn btn-info, btn btn-warning"
-var cat1 = 50;
-var cat2 = 30;
-var cat3 = 20;
-var total = 0;
-var currentdev = 0;
-var currentinf = 0;
-var currentds = 0;
-var thestyle = [{group: "Development", button: "btn btn-primary", width: "width:", count: this.catdev, pix:"%"}, {group: "Infrastructure", button:"btn btn-info", width: "width:", count: cat2, pix:"%"}, {group:"Data Science", button: "btn btn-warning", width: "width:", count: cat3, pix:"%"}]
 
 
     //let url = section === "home"? buildUrl(section) : buildUrl(section) + "/" + sub;
@@ -145,13 +137,8 @@ var vm = new Vue({
     el: '#app',
     data: function(){
         return {
-            dev_project_count : 0,
-            inf_project_count : 0,
-            ds_project_count : 0,
+            
             results: [],
-            catdev: 50,
-            catinf: cat2,
-            catds: cat3,
             section1: [{name: 'Development', group: "Development", button: "btn btn-primary", width: "width:", count: 50, pix:"%"}, {name: 'Infrastructure', group: "Infrastructure", button:"btn btn-info", width: "width:", count: 30, pix:"%"}, {name: 'Data', group:"Data Science", button: "btn btn-warning", width: "width:", count: 20, pix:"%"}],
             sections: SECTIONS.split(', '), // create an array of the sections
             class_buttons1: class_buttons.split(', '),
@@ -167,18 +154,6 @@ var vm = new Vue({
             inf: false,
             ds: false,
             selected: [],
-            options: [
-            { text: 'Development', value: this.subDev1 },
-            { text: 'Infrastructure', value: this.subInf1 },
-            { text: 'Data Science', value: this.subDs1 }
-            ],
-        
-            styleObject: {
-                color: 'red',
-                font: '100px'
-              },
-            width1: "width: 50%",
-            gg: 1,
             items: [],
             total_project_count: 0,
             total_results: [],

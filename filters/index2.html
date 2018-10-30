@@ -59,7 +59,8 @@
     </nav>
     <br>
     <div class="container" id="app">
-            <section class="callout secondary">
+  
+          <section class="callout secondary">
               <h5 class="text-center">Filter by Category</h5>
               <form>
                 <div class="row">
@@ -82,20 +83,41 @@
                   </div>
                   
                   <div class="large-12 columns" v-if="dev">
-                    <v-select :options="subDev1"></v-select>
-                    <!--<select>
+                      <select v-model="selected_dv">
+                          <option v-for="option in subDev1" v-bind:value="option">
+                            {{ option }}
+                          </option>
+                      </select>
+                        <span>Selected: {{ selected_dv }}</span>
+                    <!-- <v-select :options="subDev1" v-model="selected"></v-select>
+                    
+                   <select>
                       <option v-for="sub in subDev1" :value="sub">{{ sub }}</option>
                     </select>-->
                   </div>
                   <div class="large-12 columns" v-else-if="inf">
-                    <v-select :options="subInf1"></v-select>
-                    <!-- <select>
+                      <select v-model="selected_inf">
+                          <option v-for="option in subInf1" v-bind:value="option">
+                            {{ option }}
+                          </option>
+                      </select>
+                        <span>Selected: {{ selected_inf }}</span>
+                    <!-- <v-select :options="subInf1" v-model="selected"></v-select>
+                    <span>Selected: {{ selected }}</span>
+                    <select>
                         <option v-for="sub in subInf1" :value="sub">{{ sub }}</option>
                     </select>-->
                   </div>
                   <div class="large-12 columns" v-else-if="ds">
-                      <v-select :options="subDs1"></v-select>
-                     <!--  <select>
+                      <select v-model="selected_ds">
+                          <option v-for="option in subDs1" v-bind:value="option">
+                            {{ option }}
+                          </option>
+                      </select>
+                        <span>Selected: {{ selected_ds }}</span>
+                      <!-- <v-select :options="subDs1" v-model="selected"></v-select>
+                      <span>Selected: {{ selected }}</span>
+                      <select>
                           <option v-for="sub in subDs1" :value="sub">{{ sub }}</option>
                       </select>-->
                   </div>
@@ -115,7 +137,7 @@
             </form>
             <div v-if="loading"> Loading....</div>
             <div class="search-results" v-else-if="group_clicked">
-               <i>Showing results for <strong>{{ group_selected }}</strong> </i>
+               <i>Showing results for <strong>{{ group_selected }} -> {{ selected }}</strong> </i>
             </div>
             <div class="search-results" v-else>
                 <i>Found {{ total_results.length }} results for <strong>{{ group_selected }}</strong> </i>

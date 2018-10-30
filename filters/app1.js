@@ -163,7 +163,16 @@ var vm = new Vue({
             searchRoute: 'search/',
             search_term: '',
             group_clicked: true,
-            queryRoute: '?search='
+            queryRoute: '?search=',
+            selected: '',
+            selected_dv: '',
+            selected_inf: '',
+            selected_ds: '',
+            options: [
+                { text: 'One', value: 'A' },
+                { text: 'Two', value: 'B' },
+                { text: 'Three', value: 'C' }
+              ],
 
         }
         
@@ -233,7 +242,13 @@ var vm = new Vue({
                 
             }
             else if (section === "Development") {
+                if (this.selected_dv.length === 'Web') {
+                    
+                    url = buildUrl(section + '/' + this.selected_dv)
+                    console.log(url)
+                }
                 url = buildUrl(section);
+
                 console.log(url)
                 console.log(section)
                 
@@ -276,7 +291,6 @@ var vm = new Vue({
 
             }
             else if (section === "Data Science") {
-
                url = buildUrl(section);
                console.log(url)
                this.dev = false;

@@ -33,9 +33,7 @@
 
     <br>
     <div class="container" id="app">
-      <div>
-        
-      </div>
+      
           <section >
             <div class="center">
                 
@@ -95,6 +93,15 @@
                         </select>-->
                     </div>
                   </div>
+                  <div v-for="folder in folders">
+                      <span @click="toggle(folder.name)" style="cursor: pointer;">+</span>
+                      <span><a @click="getPosts(folder.name)"> {{ folder.name }} </a></span>
+                      <div v-show="false" :id="folder.name">
+                        <div v-for="page in folder.pages" style="margin-left: 20px;">
+                          <span> - {{ page.name }}</span>
+                        </div>
+                      </div>        
+                    </div>
                   <div class="sidebar-module sidebar-module-inset">
                     <h6>Elsewhere</h6>
                     <ol class="list-unstyled">

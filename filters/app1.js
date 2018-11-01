@@ -179,6 +179,11 @@ var vm = new Vue({
                 { text: 'Three', value: 'C' }
               ],
             group_selected: '',
+            folders: [
+                {name: 'Development', pages: [{name: 'Web'}, {name: 'Mobile'}, {name: 'Others'}] },
+                {name: 'Infrastructure', pages: [{name: 'ERP'}, {name: 'Admin'}, {name: 'Others+'}] },
+                {name: 'Data Science', pages: [{name: 'Big Data'}, {name: 'Business Intelligence'}, {name: 'Machine Learning'}] },
+            ]
 
         }
 
@@ -198,6 +203,15 @@ var vm = new Vue({
 
     },
     methods: {
+        toggle: function (idname) {
+            if(document.getElementById(idname).style.display == "none"){
+                document.getElementById(idname).style.display = "inline";
+
+            }
+            else {
+                document.getElementById(idname).style.display = 'none';
+            }
+          },
         appendItems: function() {
             if (this.results.length < this.total_results.length) {
                 var next_data = this.total_results.slice(this.results.length, this.results.length + 10);

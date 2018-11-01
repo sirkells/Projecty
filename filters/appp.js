@@ -178,7 +178,8 @@
                   { text: 'Two', value: 'B' },
                   { text: 'Three', value: 'C' }
                 ],
-              group_selected: ''
+              group_selected: '',
+              
   
           }
   
@@ -198,6 +199,7 @@
   
       },
       methods: {
+          
           appendItems: function() {
               if (this.results.length < this.total_results.length) {
                   var next_data = this.total_results.slice(this.results.length, this.results.length + 10);

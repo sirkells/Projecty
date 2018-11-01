@@ -14,10 +14,10 @@
 
   //import Vue from 'vue'
   //import vSelect from 'vue-select'
-  
+
 const SECTIONS = "Development, Infrastructure, Data Science";
 const subDev = "Web, Mobile";
-const subInf = "ERP, IT Admin/Services";
+const subInf = "ERP, Admin";
 const subDs = "Big Data, Business Intelligence, Machine Learning";
 const devWeb = "Fullstack, Backend, Frontend"
 const class_buttons = "btn btn-primary, btn btn-info, btn btn-warning"
@@ -25,7 +25,7 @@ const class_buttons = "btn btn-primary, btn btn-info, btn btn-warning"
 
     //let url = section === "home"? buildUrl(section) : buildUrl(section) + "/" + sub;
     //let url = buildUrl(section) + "/Web";
-    
+
 
 
 //var country_selected = document.getElementById("Sub");
@@ -33,20 +33,25 @@ const class_buttons = "btn btn-primary, btn btn-info, btn btn-warning"
 const BaseUrl = "http://127.0.0.1:5000/";
 const searchBaseUrl = "http://127.0.0.1:5000/search/";
 const queryBaseUrl = "http://127.0.0.1:5000/query";
+//const url1 = `${queryBaseUrl}&search_term=${searchTerm}`;
 
 
 function buildUrl(url) {
-    
+
     return BaseUrl + url
 }
 
 function searchUrl(url) {
-    
+
     return searchBaseUrl + url
 }
-function queryUrl(url) {
-    
-    return queryBaseUrl + url
+function queryUrl(searchTerm) {
+
+    return `${queryBaseUrl}${'?'}search=${searchTerm}`;
+}
+function buildSecUrl(url, sub) {
+
+    return BaseUrl + url + '/' + sub
 }
 
 Vue.component('v-select', VueSelect.VueSelect);
@@ -57,19 +62,19 @@ Vue.component('news-list', {
     template: `
         <section>
             <table class="ui very basic padded striped four column table accordion">
-                        
+
                         <tbody>
                             <div v-for="posts in processedPosts">
                                 <div v-for="post in posts">
-                                <hr>
-                                
+
+
                                     <tr>
-                                        
+
                                         <td>
                                             <div class="title">
                                             <a :href="post.url" target="_blank"><b>{{ post.title }}</b></a>
                                             </div>
-                                            
+
                                             <div class="content">
                                                 <div class="ui relaxed divided items">
                                                     <div class="item">
@@ -84,26 +89,26 @@ Vue.component('news-list', {
                                                             Category: <b>{{ post.bereich.group }}</b>
                                                         </div>
                                                         <div class="description">
-                                                        
+
                                                             Sub-Category: <b>{{ post.bereich.group_type }}</b>
                                                         </div>
                                                         <div class="description">
                                                             Date Posted: <b>{{ post.date_post }}</b>
                                                         </div>
-                                                        
+
                                                         <div class="description">
                                                             Bundesland <b>{{ post.region.bundesland }}</b>, Stadt: <b>{{ post.region.stadt }}</b>
                                                         </div>
                                                         <div class="description" style="color: red">
                                                             Score: <i><b>{{ post.score }}</b></i>
                                                         </div>
-                                        
+
 
 
                                                     </div>
                                                 </div>
                                             </div>
-                                            
+
                                         </td>
                                     </tr>
                                 </div>
@@ -137,7 +142,7 @@ var vm = new Vue({
     el: '#app',
     data: function(){
         return {
-            
+
             results: [],
             section1: [{name: 'Development', group: "Development", button: "btn btn-primary", width: "width:", count: 50, pix:"%"}, {name: 'Infrastructure', group: "Infrastructure", button:"btn btn-info", width: "width:", count: 30, pix:"%"}, {name: 'Data', group:"Data Science", button: "btn btn-warning", width: "width:", count: 20, pix:"%"}],
             sections: SECTIONS.split(', '), // create an array of the sections
@@ -146,7 +151,7 @@ var vm = new Vue({
             subInf1: subInf.split(', '),
             subDs1: subDs.split(', '),
             devSub: devWeb.split(', '),
-            
+
             section: 'home', // set default section to 'home'
             isActive: true,
             devSub1: false,
@@ -173,10 +178,11 @@ var vm = new Vue({
                 { text: 'Two', value: 'B' },
                 { text: 'Three', value: 'C' }
               ],
+            group_selected: '',
 
         }
-        
-        
+
+
 
 
     },
@@ -189,7 +195,7 @@ var vm = new Vue({
             console.log('hello')
             vueInstance.appendItems()
         })
-        
+
     },
     methods: {
         appendItems: function() {
@@ -198,17 +204,21 @@ var vm = new Vue({
                 this.results = this.results.concat(next_data);
             }
         },
+        dropdown: function(a) {
+            console.log(a)
+        },
+
         getPosts(section) {
             //let url = section === "home"? buildUrl(section) : buildUrl(section) + "/" + sub;
             //let url = buildUrl(section) + "/Web";
-            
+
             let url
             if (section === "home") {
                 //this.appendItems()
                 url = buildUrl(section);
                 console.log(url)
                 this.loading = true
-                
+
                 axios.get(url).then((response) => {
                  this.group_selected = "All Projects"
                  this.total_results = response.data.project_lists
@@ -239,19 +249,18 @@ var vm = new Vue({
                  console.log(this.gg)*/
                  //console.log((response.data.project_lists).length)
                  }).catch(error => { console.log(error); });
-                
+
             }
             else if (section === "Development") {
-                if (this.selected_dv.length === 'Web') {
-                    
-                    url = buildUrl(section + '/' + this.selected_dv)
-                    console.log(url)
-                }
+
                 url = buildUrl(section);
 
                 console.log(url)
                 console.log(section)
-                
+                this.group_selected = ''
+                this.group_selected = section;
+                console.log(this.group_selected)
+
                 this.inf = false;
                 this.ds = false;
                 this.dev = true;
@@ -273,6 +282,10 @@ var vm = new Vue({
             else if (section === "Infrastructure") {
                url = buildUrl(section);
                console.log(url)
+               console.log(section)
+               this.group_selected = ''
+               this.group_selected = section;
+               console.log(this.group_selected)
                this.dev = false;
                this.ds = false;
                this.inf = true;
@@ -293,6 +306,10 @@ var vm = new Vue({
             else if (section === "Data Science") {
                url = buildUrl(section);
                console.log(url)
+               console.log(section)
+               this.group_selected = ''
+               this.group_selected = section;
+               console.log(this.group_selected)
                this.dev = false;
                this.inf = false;
                this.ds = true;
@@ -313,13 +330,11 @@ var vm = new Vue({
             }
             else if (section === this.search_term) {
                 //url = buildUrl(this.searchRoute.concat(section));
-                url = queryUrl(this.queryRoute.concat(section));
+                url = queryUrl(section);
                 console.log(url)
                 console.log(section)
-                this.inf = false;
-                this.ds = false;
-                this.dev = true;
-                this.devSub1 = true;
+
+
                 this.group_clicked =false
                 axios.get(url).then((response) => {
                  this.group_selected = section
@@ -334,20 +349,120 @@ var vm = new Vue({
                  //if ((100 * response.data.amount2[2])/this.total_project_count) < 12) {}
                  this.section1[2].count = ((100 * response.data.amount2[2])/this.total_project_count)
                  this.section1[2].count +=5
-
-
-
-
                  console.log(this.section1[0].count)
                  console.log(this.section1[1].count)
                  console.log(this.section1[2].count)
                     //console.log((response.data.project_lists).length)
                 }).catch(error => { console.log(error); });
             }
-            
+            else if (section === this.selected_dv) {
+                //let category_selected = this.group_selected
+                //url = buildUrl(this.searchRoute.concat(section));
+                url = buildSecUrl("Development", section);
+
+                console.log(url)
+                console.log(section)
+
+
+                this.group_clicked =false
+                axios.get(url).then((response) => {
+                 this.group_selected = section
+                 this.total_results = response.data.project_lists
+                 this.results = response.data.project_lists.slice(0, 10);
+                 this.total_project_count = response.data.amount
+                 console.log(this.section1[0])
+                 this.section1[0].count = (100 * response.data.amount2[0])/this.total_project_count
+                 this.section1[1].count = (100 * response.data.amount2[1])/this.total_project_count
+                 this.loading = false
+
+                 //if ((100 * response.data.amount2[2])/this.total_project_count) < 12) {}
+                 this.section1[2].count = ((100 * response.data.amount2[2])/this.total_project_count)
+                 this.section1[2].count +=5
+                 console.log(this.section1[0].count)
+                 console.log(this.section1[1].count)
+                 console.log(this.section1[2].count)
+                    //console.log((response.data.project_lists).length)
+                }).catch(error => { console.log(error); });
+            }
+            else if (section === this.selected_inf) {
+                //let category_selected = this.group_selected
+                //url = buildUrl(this.searchRoute.concat(section));
+                url = buildSecUrl("Infrastructure", section);
+
+                console.log(url)
+                console.log(section)
+
+
+                this.group_clicked =false
+                axios.get(url).then((response) => {
+                 this.group_selected = section
+                 this.total_results = response.data.project_lists
+                 this.results = response.data.project_lists.slice(0, 10);
+                 this.total_project_count = response.data.amount
+                 console.log(this.section1[0])
+                 this.section1[0].count = (100 * response.data.amount2[0])/this.total_project_count
+                 this.section1[1].count = (100 * response.data.amount2[1])/this.total_project_count
+                 this.loading = false
+
+                 //if ((100 * response.data.amount2[2])/this.total_project_count) < 12) {}
+                 this.section1[2].count = ((100 * response.data.amount2[2])/this.total_project_count)
+                 this.section1[2].count +=5
+                 console.log(this.section1[0].count)
+                 console.log(this.section1[1].count)
+                 console.log(this.section1[2].count)
+                    //console.log((response.data.project_lists).length)
+                }).catch(error => { console.log(error); });
+            }
+            else if (section === this.selected_ds) {
+                //let category_selected = this.group_selected
+                //url = buildUrl(this.searchRoute.concat(section));
+                url = buildSecUrl("Data Science", section);
+
+                console.log(url)
+                console.log(section)
+
+
+                this.group_clicked =false
+                axios.get(url).then((response) => {
+                 this.group_selected = section
+                 this.total_results = response.data.project_lists
+                 this.results = response.data.project_lists.slice(0, 10);
+                 this.total_project_count = response.data.amount
+                 console.log(this.section1[0])
+                 this.section1[0].count = (100 * response.data.amount2[0])/this.total_project_count
+                 this.section1[1].count = (100 * response.data.amount2[1])/this.total_project_count
+                 this.loading = false
+
+                 //if ((100 * response.data.amount2[2])/this.total_project_count) < 12) {}
+                 this.section1[2].count = ((100 * response.data.amount2[2])/this.total_project_count)
+                 this.section1[2].count +=5
+                 console.log(this.section1[0].count)
+                 console.log(this.section1[1].count)
+                 console.log(this.section1[2].count)
+                    //console.log((response.data.project_lists).length)
+                }).catch(error => { console.log(error); });
+            }
+
+
+
         }
     },
-    
+    watch: {
+      selected_dv: function() {
+        console.log(this.selected_dv)
+        this.getPosts(this.selected_dv)
+
+      },
+      selected_inf: function() {
+        console.log(this.selected_inf)
+        this.getPosts(this.selected_inf)
+      },
+      selected_ds: function() {
+        console.log(this.selected_ds)
+        this.getPosts(this.selected_ds)
+      }
+    }
+
 });
 
 //var myStringArray = ["Hello","World"];
@@ -365,8 +480,6 @@ var vm = new Vue({
     Vue.set(dev, 'count', dev_count)
     Vue.set(inf, 'count', inf_count)
     Vue.set(ds, 'count', ds_count)
-    
+
     console.log(vm.dev_project_count)
 }*/
-
-

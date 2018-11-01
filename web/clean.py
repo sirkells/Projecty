@@ -22,7 +22,7 @@ db.itproject.update({"bundesland":{"$exists": True }}, {"$unset":{"bundesland": 
 #db.itproject.update({"location":{"$regex": r'(?:[\s]|^)' + city + '(?=[\s]|$)'}}, {"$set":{"region.bundesland": [state, city]}}, multi=True)
 
 for city in Baden_Württemberg:
-    db.itproject.update({"location":{"$regex": r'(?:[\s]|^)' + city + '(?=[\s]|$)'}}, 
+    db.itproject.update({"location":{"$regex": r'(?:[\s]|^)' + city + '(?=[\s]|$)'}},
     {"$set":{"region.bundesland":"Baden-Wüttemburg", "region.stadt": city} }, multi=True)
 #r'(?:[\s]|^)' + city '(?=[\s]|$)'
 print(1)
@@ -40,7 +40,7 @@ for city in Brandenburg:
 print(4)
 for city in Bremen:
     db.itproject.update({"location":{"$regex": r'(?:[\s]|^)' + city + '(?=[\s]|$)'}}, {"$set":{"region.bundesland": "Bremen", "region.stadt": city}}, multi=True)
-print(5)       
+print(5)
 #db.itproject.update({"location":{"$regex": '^.*' + city,"$options": 'i' }}, {"$set":{"region.bundesland": [state, "region.stadt": city}}, multi=True)
 for city in Hamburg:
     db.itproject.update({"location":{"$regex": r'(?:[\s]|^)' + city + '(?=[\s]|$)'}}, {"$set":{"region.bundesland": "Hamburg", "region.stadt": city}}, multi=True)
@@ -91,129 +91,129 @@ for city in Ausland:
 print(17)
 
 #cisco
-db.itproject.update({ "$and": [ {"bereich": None},{"title": {"$regex": '(cisco|ccna|ccnp|netzwerk)', "$options": 'i'}}, { "skill_summary": { "$regex": '(cisco|ccna|ccnp)', "$options": 'i' } }]}, 
-{"$set":{"bereich.group": "Infrastructure", "bereich.group_type": "IT Admin/Services", "bereich.skill": "CISCO"}}, multi=True)
+db.itproject.update({ "$and": [ {"bereich": None},{"title": {"$regex": '(cisco|ccna|ccnp|netzwerk)', "$options": 'i'}}, { "skill_summary": { "$regex": '(cisco|ccna|ccnp)', "$options": 'i' } }]},
+{"$set":{"bereich.group": "Infrastructure", "bereich.group_type": "Admin", "bereich.skill": "CISCO"}}, multi=True)
 
-db.itproject.update({ "$and": [ {"bereich": None},{"title": {"$regex": '(netzwerk|netzplan)', "$options": 'i'}}]}, 
-{"$set":{"bereich.group": "Infrastructure", "bereich.group_type": "IT Admin/Services", "bereich.skill": "Others"}}, multi=True)
+db.itproject.update({ "$and": [ {"bereich": None},{"title": {"$regex": '(netzwerk|netzplan)', "$options": 'i'}}]},
+{"$set":{"bereich.group": "Infrastructure", "bereich.group_type": "Admin", "bereich.skill": "Others"}}, multi=True)
 
 #devops
-db.itproject.update({ "$and": [ {"bereich": None},{"title": {"$regex": '(devop|kuber|jenk)', "$options": 'i'}}, { "skill_summary": { "$not": re.compile('(^sap)') } }]}, 
+db.itproject.update({ "$and": [ {"bereich": None},{"title": {"$regex": '(devop|kuber|jenk)', "$options": 'i'}}, { "skill_summary": { "$not": re.compile('(^sap)') } }]},
 {"$set":{"bereich.group": "Development", "bereich.group_type": "Web", "bereich.group_type_stack": "DevOps"}}, multi=True)
 
 #data science, bigdata
-db.itproject.update({"$or": [{"category": {"$regex": '(Big Data|data|daten)', "$options": 'i'}}, {"title": {"$regex": '(Big Data|hadoop|spark)', "$options": 'i'}}]}, 
+db.itproject.update({"$or": [{"category": {"$regex": '(Big Data|data|daten)', "$options": 'i'}}, {"title": {"$regex": '(Big Data|hadoop|spark)', "$options": 'i'}}]},
 {"$set":{"bereich.group": "Data Science", "bereich.group_type":"Big Data"}}, multi=True)
-db.itproject.update({ "$and": [{"bereich": None},{ "skill_summary": {"$regex": '(big data|hadoop|spark)', "$options": 'i'} }, { "skill_summary": { "$not": re.compile('(^sap)') } }]}, 
+db.itproject.update({ "$and": [{"bereich": None},{ "skill_summary": {"$regex": '(big data|hadoop|spark)', "$options": 'i'} }, { "skill_summary": { "$not": re.compile('(^sap)') } }]},
 {"$set":{"bereich.group": "Data Science", "bereich.group_type": "Big Data"}}, multi=True)
-db.itproject.update({ "$and": [{"bereich": None},{ "title": {"$regex": '(data scien|nlp|Regression|machine learning|tensorflow|tensor flow|^ml|datenanalyse|data analysis|daten analyse)', "$options": 'i'} }, { "skill_summary": { "$not": re.compile('(^sap)') } }]}, 
+db.itproject.update({ "$and": [{"bereich": None},{ "title": {"$regex": '(data scien|nlp|Regression|machine learning|tensorflow|tensor flow|^ml|datenanalyse|data analysis|daten analyse)', "$options": 'i'} }, { "skill_summary": { "$not": re.compile('(^sap)') } }]},
 {"$set":{"bereich.group": "Data Science","bereich.group_type": "Machine Learning"}}, multi=True)
-db.itproject.update({ "$and": [{"bereich": None},{ "title": {"$regex": '(business inte|business anal|businessana)', "$options": 'i'} }, { "skill_summary": { "$not": re.compile('(^sap)') } }]}, 
+db.itproject.update({ "$and": [{"bereich": None},{ "title": {"$regex": '(business inte|business anal|businessana)', "$options": 'i'} }, { "skill_summary": { "$not": re.compile('(^sap)') } }]},
 {"$set":{"bereich.group": "Data Science","bereich.group_type": "Business Intelligence"}}, multi=True)
 
 #mobile app
 
-db.itproject.update({ "$and": [{"bereich": None},{ "skill_summary": {"$regex": '(^ios|swift|objectiv)'} }, 
-{ "skill_summary": {"$regex": '(^android|kotlin)'} }, { "skill_summary": { "$not": re.compile(r'(?:[\s]|^)(j2ee|python|django|flask|pyramid|php|laravel|node|express|sap|c|c#|node.js|nodejs|c\++|^js$|javascript|angular|vue|bootstrap|jquery)(?=[\s]|$)') } }]}, 
+db.itproject.update({ "$and": [{"bereich": None},{ "skill_summary": {"$regex": '(^ios|swift|objectiv)'} },
+{ "skill_summary": {"$regex": '(^android|kotlin)'} }, { "skill_summary": { "$not": re.compile(r'(?:[\s]|^)(j2ee|python|django|flask|pyramid|php|laravel|node|express|sap|c|c#|node.js|nodejs|c\++|^js$|javascript|angular|vue|bootstrap|jquery)(?=[\s]|$)') } }]},
 {"$set":{"bereich.group": "Development", "bereich.group_type": "Mobile", "bereich.platform": "Native", "bereich.platform_name": ["IOS", "Android"]}}, multi=True)
-db.itproject.update({ "$and": [{"bereich": None},{ "skill_summary": {"$regex": '(phonegap|ionic|cordova|flutter|react native)'} }, 
-{ "skill_summary": { "$not": re.compile(r'(?:[\s]|^)(j2ee|python|django|flask|pyramid|php|laravel|node|express|sap|c|c#|node.js|nodejs|c\++|^js$|javascript|angular|vue|bootstrap|jquery)(?=[\s]|$)') } }]}, 
+db.itproject.update({ "$and": [{"bereich": None},{ "skill_summary": {"$regex": '(phonegap|ionic|cordova|flutter|react native)'} },
+{ "skill_summary": { "$not": re.compile(r'(?:[\s]|^)(j2ee|python|django|flask|pyramid|php|laravel|node|express|sap|c|c#|node.js|nodejs|c\++|^js$|javascript|angular|vue|bootstrap|jquery)(?=[\s]|$)') } }]},
 {"$set":{"bereich.group": "Development", "bereich.group_type": "Mobile", "bereich.platform": "Cross-Platform"}}, multi=True)
-db.itproject.update({ "$and": [{"bereich": None},{ "skill_summary": {"$regex": '(^ios|swift|objectiv)'} }, 
-{ "skill_summary": { "$not": re.compile(r'(?:[\s]|^)(j2ee|python|django|flask|pyramid|php|laravel|node|express|sap|c|c#|node.js|nodejs|c\++|^js$|javascript|angular|vue|bootstrap|jquery)(?=[\s]|$)') } }]}, 
+db.itproject.update({ "$and": [{"bereich": None},{ "skill_summary": {"$regex": '(^ios|swift|objectiv)'} },
+{ "skill_summary": { "$not": re.compile(r'(?:[\s]|^)(j2ee|python|django|flask|pyramid|php|laravel|node|express|sap|c|c#|node.js|nodejs|c\++|^js$|javascript|angular|vue|bootstrap|jquery)(?=[\s]|$)') } }]},
 {"$set":{"bereich.group": "Development", "bereich.group_type": "Mobile", "bereich.platform": "Native", "bereich.platform_name": "IOS"}}, multi=True)
-db.itproject.update({ "$and": [{"bereich": None}, { "skill_summary": {"$regex": '(^android|kotlin)'} }, { "skill_summary": { "$not": re.compile(r'(?:[\s]|^)(j2ee|python|django|flask|pyramid|php|laravel|node|express|sap|c|c#|node.js|nodejs|c\++|^js$|javascript|angular|vue|bootstrap|jquery)(?=[\s]|$)') } }]}, 
+db.itproject.update({ "$and": [{"bereich": None}, { "skill_summary": {"$regex": '(^android|kotlin)'} }, { "skill_summary": { "$not": re.compile(r'(?:[\s]|^)(j2ee|python|django|flask|pyramid|php|laravel|node|express|sap|c|c#|node.js|nodejs|c\++|^js$|javascript|angular|vue|bootstrap|jquery)(?=[\s]|$)') } }]},
 {"$set":{"bereich.group": "Development", "bereich.group_type": "Mobile", "bereich.platform": "Native", "bereich.platform_name": "Android"}}, multi=True)
 
 #fullstack skills with title
-db.itproject.update({ "$and": [ {"bereich": None},{ "skill_summary": {"$regex": '(php|laravel)'} }, { "skill_summary": {"$regex": '(^js|javascript|react|angular|vue|css|html|bootstrap)'} } ], "title":{"$regex": '(php|Fullstack php|php Fullstack|laravel)', "$options": 'i'}}, 
+db.itproject.update({ "$and": [ {"bereich": None},{ "skill_summary": {"$regex": '(php|laravel)'} }, { "skill_summary": {"$regex": '(^js|javascript|react|angular|vue|css|html|bootstrap)'} } ], "title":{"$regex": '(php|Fullstack php|php Fullstack|laravel)', "$options": 'i'}},
 {"$set":{"bereich.group": "Development",  "bereich.group_type": "Web", "bereich.group_type_stack":  "Fullstack","bereich.skill":  "PHP"}}, multi=True)
-db.itproject.update({ "$and": [ {"bereich": None},{ "skill_summary": {"$regex": r'(?:[\s]|^)(java|spring|j2ee|jvm)(?=[\s]|$)'} }, { "skill_summary": {"$regex": '(^js|javascript|react|angular|vue|css|html|bootstrap|frontend)'} } ], "title":{"$regex": '(Java|Fullstack Java|Java Fullstack)', "$options": 'i'}}, 
+db.itproject.update({ "$and": [ {"bereich": None},{ "skill_summary": {"$regex": r'(?:[\s]|^)(java|spring|j2ee|jvm)(?=[\s]|$)'} }, { "skill_summary": {"$regex": '(^js|javascript|react|angular|vue|css|html|bootstrap|frontend)'} } ], "title":{"$regex": '(Java|Fullstack Java|Java Fullstack)', "$options": 'i'}},
 {"$set":{"bereich.group": "Development", "bereich.group_type": "Web", "bereich.group_type_stack": "Fullstack", "bereich.skill": "Java"}}, multi=True)
 
-db.itproject.update({ "$and": [ {"bereich": None},{ "skill_summary": {"$regex": '(node|express)'} }, { "skill_summary": {"$regex": '(react|angular|vue|css|express|html|bootstrap)'} } ], "title":{"$regex": '(php|Fullstack php|php Fullstack|laravel)', "$options": 'i'}}, 
+db.itproject.update({ "$and": [ {"bereich": None},{ "skill_summary": {"$regex": '(node|express)'} }, { "skill_summary": {"$regex": '(react|angular|vue|css|express|html|bootstrap)'} } ], "title":{"$regex": '(php|Fullstack php|php Fullstack|laravel)', "$options": 'i'}},
 {"$set":{"bereich.group": "Development",  "bereich.group_type": "Web", "bereich.group_type_stack": "Fullstack", "bereich.skill": "Nodejs"}}, multi=True)
 db.itproject.update({ "$and": [ {"bereich": None},{ "skill_summary": {"$regex": '(python|django|flask|pyramid)'} }, { "skill_summary": {"$regex": '(^js|javascript|react|angular|vue|css|html|bootstrap)'} } ], "title":{"$regex": '(Python|Fullstack Python|Python Fullstack)', "$options": 'i'}},
 {"$set":{"bereich.group": "Development",  "bereich.group_type": "Web", "bereich.group_type_stack": "Fullstack", "bereich.skill": "Python"}}, multi=True)
 
 #sap bereich
-db.itproject.update({ "$and": [ {"bereich": None},{"skill_summary": {"$regex": 'sap', "$options": 'i'}}]}, 
+db.itproject.update({ "$and": [ {"bereich": None},{"skill_summary": {"$regex": 'sap', "$options": 'i'}}]},
 {"$set":{"bereich.group": "Infrastructure", "bereich.group_type": "ERP", "bereich.skill": "SAP"}}, multi=True)
-db.itproject.update({ "$and": [ {"bereich": None},{"title": {"$regex": r'(?:[\s]|^)(sap)(?=[\s]|$)', "$options": 'i'}}]}, 
+db.itproject.update({ "$and": [ {"bereich": None},{"title": {"$regex": r'(?:[\s]|^)(sap)(?=[\s]|$)', "$options": 'i'}}]},
 {"$set":{"bereich.group": "Infrastructure", "bereich.group_type": "ERP", "bereich.skill": "SAP"}}, multi=True)
 
 
 
 #fullstack skills without title
-db.itproject.update({ "$and": [ {"bereich": None},{ "skill_summary": {"$regex": '(ruby|rail)'} }, { "skill_summary": {"$regex": '(^js|javascript|react|angular|vue|css|html|bootstrap|jquery)'} } ] }, 
+db.itproject.update({ "$and": [ {"bereich": None},{ "skill_summary": {"$regex": '(ruby|rail)'} }, { "skill_summary": {"$regex": '(^js|javascript|react|angular|vue|css|html|bootstrap|jquery)'} } ] },
 {"$set":{"bereich.group": "Development", "bereich.group_type": "Web", "bereich.group_type_stack": "Fullstack", "bereich.skill": "Ruby & Rails"}}, multi=True)
-db.itproject.update({ "$and": [ {"bereich": None},{ "skill_summary": {"$regex": r'(?:[\s]|^)(java|spring|j2ee|jvm)(?=[\s]|$)'} }, { "skill_summary": {"$regex": '(^js|javascript|react|angular|vue|css|html|bootstrap|jquery)'} } ] }, 
+db.itproject.update({ "$and": [ {"bereich": None},{ "skill_summary": {"$regex": r'(?:[\s]|^)(java|spring|j2ee|jvm)(?=[\s]|$)'} }, { "skill_summary": {"$regex": '(^js|javascript|react|angular|vue|css|html|bootstrap|jquery)'} } ] },
 {"$set":{"bereich.group": "Development", "bereich.group_type": "Web", "bereich.group_type_stack": "Fullstack", "bereich.skill": "Java"}}, multi=True)
-db.itproject.update({ "$and": [ {"bereich": None},{ "skill_summary": {"$regex": '(python|django|flask|pyramid)'} }, { "skill_summary": {"$regex": '(^js|javascript|react|angular|vue|css|html|bootstrap|jquery)'} } ] }, 
+db.itproject.update({ "$and": [ {"bereich": None},{ "skill_summary": {"$regex": '(python|django|flask|pyramid)'} }, { "skill_summary": {"$regex": '(^js|javascript|react|angular|vue|css|html|bootstrap|jquery)'} } ] },
 {"$set":{"bereich.group": "Development", "bereich.group_type": "Web", "bereich.group_type_stack": "Fullstack", "bereich.skill": "Python"}}, multi=True)
-db.itproject.update({ "$and": [ {"bereich": None},{ "skill_summary": {"$regex": '(php|laravel)'} }, { "skill_summary": {"$regex": '(^js|javascript|react|angular|vue|css|html|bootstrap|jquery)'} } ]}, 
+db.itproject.update({ "$and": [ {"bereich": None},{ "skill_summary": {"$regex": '(php|laravel)'} }, { "skill_summary": {"$regex": '(^js|javascript|react|angular|vue|css|html|bootstrap|jquery)'} } ]},
 {"$set":{"bereich.group": "Development", "bereich.group_type": "Web", "bereich.group_type_stack": "Fullstack", "bereich.skill": "PHP"}}, multi=True)
-db.itproject.update({ "$and": [ {"bereich": None},{ "skill_summary": {"$regex": '(node|express)'} }, { "skill_summary": {"$regex": '(^js$|react|angular|vue|css|html|bootstrap|jquery|express|frontend)'} } ]}, 
+db.itproject.update({ "$and": [ {"bereich": None},{ "skill_summary": {"$regex": '(node|express)'} }, { "skill_summary": {"$regex": '(^js$|react|angular|vue|css|html|bootstrap|jquery|express|frontend)'} } ]},
 {"$set":{"bereich.group": "Development", "bereich.group_type": "Web", "bereich.group_type_stack": "Fullstack", "bereich.skill": "Nodejs"}}, multi=True)
-db.itproject.update({ "$and": [ {"bereich": None},{ "skill_summary": {"$regex": r'(?:[\s]|^)(c|c\++)(?=[\s]|$)'} }, { "skill_summary": {"$regex": '(^js|javascript|react|angular|vue|css|html|bootstrap|jquery|express)'} } ]}, 
+db.itproject.update({ "$and": [ {"bereich": None},{ "skill_summary": {"$regex": r'(?:[\s]|^)(c|c\++)(?=[\s]|$)'} }, { "skill_summary": {"$regex": '(^js|javascript|react|angular|vue|css|html|bootstrap|jquery|express)'} } ]},
 {"$set":{"bereich.group": "Development", "bereich.group_type": "Web", "bereich.group_type_stack": "Fullstack", "bereich.skill": "C/C++"}}, multi=True)
-db.itproject.update({ "$and": [ {"bereich": None},{ "skill_summary": {"$regex": r'(?:[\s]|^)(\.net|asp.net|c#|asp)(?=[\s]|$)'} }, { "skill_summary": {"$regex": '(^js|javascript|react|angular|vue|css|html|bootstrap|jquery|express)'} }, { "skill_summary": { "$not": re.compile(r'(?:[\s]|^)(java|spring|j2ee|python|django|flask|pyramid|php|laravel|node|express|sap|node.js|nodejs|c\++)(?=[\s]|$)') } } ]}, 
+db.itproject.update({ "$and": [ {"bereich": None},{ "skill_summary": {"$regex": r'(?:[\s]|^)(\.net|asp.net|c#|asp)(?=[\s]|$)'} }, { "skill_summary": {"$regex": '(^js|javascript|react|angular|vue|css|html|bootstrap|jquery|express)'} }, { "skill_summary": { "$not": re.compile(r'(?:[\s]|^)(java|spring|j2ee|python|django|flask|pyramid|php|laravel|node|express|sap|node.js|nodejs|c\++)(?=[\s]|$)') } } ]},
 {"$set":{"bereich.group": "Development", "bereich.group_type": "Web", "bereich.group_type_stack": "Fullstack", "bereich.skill": "C#/ASP.Net"}}, multi=True)
-db.itproject.update({ "$and": [ {"bereich": None},{ "skill_summary": {"$regex": '(backend)'} }, { "skill_summary": {"$regex": '(^js|javascript|react|angular|vue|css|html|bootstrap|jquery|frontend)'} } ] }, 
+db.itproject.update({ "$and": [ {"bereich": None},{ "skill_summary": {"$regex": '(backend)'} }, { "skill_summary": {"$regex": '(^js|javascript|react|angular|vue|css|html|bootstrap|jquery|frontend)'} } ] },
 {"$set":{"bereich.group": "Development", "bereich.group_type": "Web", "bereich.group_type_stack": "Fullstack", "bereich.skill": "Others"}}, multi=True)
 
 
 #frontend
-db.itproject.update({ "$and": [{"bereich": None},{ "skill_summary": {"$regex": '(^react)'} }, { "skill_summary": {"$regex": '(^angula)'} }, { "skill_summary": { "$not": re.compile(r'(?:[\s]|^)(java|spring|j2ee|python|django|flask|pyramid|php|laravel|node|express|sap|c|c#|node.js|nodejs|c\++)(?=[\s]|$)') } }]}, 
+db.itproject.update({ "$and": [{"bereich": None},{ "skill_summary": {"$regex": '(^react)'} }, { "skill_summary": {"$regex": '(^angula)'} }, { "skill_summary": { "$not": re.compile(r'(?:[\s]|^)(java|spring|j2ee|python|django|flask|pyramid|php|laravel|node|express|sap|c|c#|node.js|nodejs|c\++)(?=[\s]|$)') } }]},
 {"$set":{"bereich.group": "Development", "bereich.group_type": "Web", "bereich.group_type_stack": "Frontend", "bereich.skill": "React & Angular"}}, multi=True)
-db.itproject.update({ "$and": [{"bereich": None},{ "skill_summary": {"$regex": '(^react)'} }, { "skill_summary": {"$regex": '(^vue)'} }, { "skill_summary": { "$not": re.compile(r'(?:[\s]|^)(java|spring|j2ee|python|django|flask|pyramid|php|laravel|node|express|sap|c|c#|node.js|nodejs|c\++)(?=[\s]|$)') } }]}, 
+db.itproject.update({ "$and": [{"bereich": None},{ "skill_summary": {"$regex": '(^react)'} }, { "skill_summary": {"$regex": '(^vue)'} }, { "skill_summary": { "$not": re.compile(r'(?:[\s]|^)(java|spring|j2ee|python|django|flask|pyramid|php|laravel|node|express|sap|c|c#|node.js|nodejs|c\++)(?=[\s]|$)') } }]},
 {"$set":{"bereich.group": "Development", "bereich.group_type": "Web", "bereich.group_type_stack": "Frontend", "bereich.skill": "React & Vue"}}, multi=True)
-db.itproject.update({ "$and": [{"bereich": None},{ "skill_summary": {"$regex": '(^vue)'} }, { "skill_summary": {"$regex": '(^angula)'} }, { "skill_summary": { "$not": re.compile(r'(?:[\s]|^)(java|spring|j2ee|python|django|flask|pyramid|php|laravel|node|express|sap|c|c#|node.js|nodejs|c\++)(?=[\s]|$)') } }]}, 
+db.itproject.update({ "$and": [{"bereich": None},{ "skill_summary": {"$regex": '(^vue)'} }, { "skill_summary": {"$regex": '(^angula)'} }, { "skill_summary": { "$not": re.compile(r'(?:[\s]|^)(java|spring|j2ee|python|django|flask|pyramid|php|laravel|node|express|sap|c|c#|node.js|nodejs|c\++)(?=[\s]|$)') } }]},
 {"$set":{"bereich.group": "Development", "bereich.group_type": "Web", "bereich.group_type_stack": "Frontend", "bereich.skill": "Angular & Vue"}}, multi=True)
-db.itproject.update({ "$and": [{"bereich": None},{ "skill_summary": {"$regex": '(^react)'} }, { "skill_summary": { "$not": re.compile(r'(?:[\s]|^)(java|spring|j2ee|python|django|flask|pyramid|php|laravel|node|express|sap|c|c#|node.js|nodejs|c\++)(?=[\s]|$)') } }]}, 
+db.itproject.update({ "$and": [{"bereich": None},{ "skill_summary": {"$regex": '(^react)'} }, { "skill_summary": { "$not": re.compile(r'(?:[\s]|^)(java|spring|j2ee|python|django|flask|pyramid|php|laravel|node|express|sap|c|c#|node.js|nodejs|c\++)(?=[\s]|$)') } }]},
 {"$set":{"bereich.group": "Development", "bereich.group_type": "Web", "bereich.group_type_stack": "Frontend", "bereich.skill": "React"}}, multi=True)
-db.itproject.update({ "$and": [{"bereich": None},{ "skill_summary": {"$regex": '(^angula)'} }, { "skill_summary": { "$not": re.compile(r'(?:[\s]|^)(java|spring|j2ee|python|django|flask|pyramid|php|laravel|node|express|sap|c|c#|node.js|nodejs|c\++)(?=[\s]|$)') } }]}, 
+db.itproject.update({ "$and": [{"bereich": None},{ "skill_summary": {"$regex": '(^angula)'} }, { "skill_summary": { "$not": re.compile(r'(?:[\s]|^)(java|spring|j2ee|python|django|flask|pyramid|php|laravel|node|express|sap|c|c#|node.js|nodejs|c\++)(?=[\s]|$)') } }]},
 {"$set":{"bereich.group": "Development", "bereich.group_type": "Web", "bereich.group_type_stack": "Frontend", "bereich.skill": "Angular"}}, multi=True)
-db.itproject.update({ "$and": [{"bereich": None},{ "skill_summary": {"$regex": '(^vue)'} }, { "skill_summary": { "$not": re.compile(r'(?:[\s]|^)(java|spring|j2ee|python|django|flask|pyramid|php|laravel|node|express|sap|c|c#|node.js|nodejs|c\++)(?=[\s]|$)') } }]}, 
+db.itproject.update({ "$and": [{"bereich": None},{ "skill_summary": {"$regex": '(^vue)'} }, { "skill_summary": { "$not": re.compile(r'(?:[\s]|^)(java|spring|j2ee|python|django|flask|pyramid|php|laravel|node|express|sap|c|c#|node.js|nodejs|c\++)(?=[\s]|$)') } }]},
 {"$set":{"bereich.group": "Development", "bereich.group_type": "Web", "bereich.group_type_stack": "Frontend", "bereich.skill": "Vue"}}, multi=True)
-db.itproject.update({ "$and": [{"bereich": None},{ "skill_summary": {"$regex": '(^js$|javascript|css|html|bootstrap|jquery|frontend)'} }, { "skill_summary": { "$not": re.compile(r'(?:[\s]|^)(java|spring|j2ee|python|django|flask|pyramid|php|laravel|node|express|sap|c|c#|node.js|nodejs|c\++)(?=[\s]|$)') } }]}, 
+db.itproject.update({ "$and": [{"bereich": None},{ "skill_summary": {"$regex": '(^js$|javascript|css|html|bootstrap|jquery|frontend)'} }, { "skill_summary": { "$not": re.compile(r'(?:[\s]|^)(java|spring|j2ee|python|django|flask|pyramid|php|laravel|node|express|sap|c|c#|node.js|nodejs|c\++)(?=[\s]|$)') } }]},
 {"$set":{"bereich.group": "Development", "bereich.group_type": "Web", "bereich.group_type_stack": "Frontend", "bereich.skill": "Others"}}, multi=True)
 
 #backend
-db.itproject.update({ "$and": [{"bereich": None},{ "skill_summary": {"$regex": '(ruby|rail)'} }, { "skill_summary": { "$not": re.compile('(^js$|javascript|react|angular|vue|css|html|bootstrap|jquery)') } }]}, 
+db.itproject.update({ "$and": [{"bereich": None},{ "skill_summary": {"$regex": '(ruby|rail)'} }, { "skill_summary": { "$not": re.compile('(^js$|javascript|react|angular|vue|css|html|bootstrap|jquery)') } }]},
 {"$set":{"bereich.group": "Development", "bereich.group_type": "Web", "bereich.group_type_stack": "Backend", "bereich.skill": "Ruby & Rails"}}, multi=True)
-db.itproject.update({ "$and": [{"bereich": None},{ "skill_summary": {"$regex": r'(?:[\s]|^)(java|spring|j2ee|jvm)(?=[\s]|$)'} }, { "skill_summary": { "$not": re.compile('(^js$|javascript|react|angular|vue|css|html|bootstrap|jquery)') } }]}, 
+db.itproject.update({ "$and": [{"bereich": None},{ "skill_summary": {"$regex": r'(?:[\s]|^)(java|spring|j2ee|jvm)(?=[\s]|$)'} }, { "skill_summary": { "$not": re.compile('(^js$|javascript|react|angular|vue|css|html|bootstrap|jquery)') } }]},
 {"$set":{"bereich.group": "Development", "bereich.group_type": "Web", "bereich.group_type_stack": "Backend", "bereich.skill": "Java"}}, multi=True)
-db.itproject.update({ "$and": [{"bereich": None},{ "skill_summary": {"$regex": '(python|django|flask|pyramid)'} }, { "skill_summary": { "$not": re.compile('(^js$|javascript|react|angular|vue|css|html|bootstrap|jquery)') } }]}, 
+db.itproject.update({ "$and": [{"bereich": None},{ "skill_summary": {"$regex": '(python|django|flask|pyramid)'} }, { "skill_summary": { "$not": re.compile('(^js$|javascript|react|angular|vue|css|html|bootstrap|jquery)') } }]},
 {"$set":{"bereich.group": "Development", "bereich.group_type": "Web", "bereich.group_type_stack": "Backend", "bereich.skill": "Python"}}, multi=True)
-db.itproject.update({ "$and": [{"bereich": None},{ "skill_summary": {"$regex": '(php|laravel)'} }, { "skill_summary": { "$not": re.compile('(^js$|javascript|react|angular|vue|css|html|bootstrap|jquery)') } }]}, 
+db.itproject.update({ "$and": [{"bereich": None},{ "skill_summary": {"$regex": '(php|laravel)'} }, { "skill_summary": { "$not": re.compile('(^js$|javascript|react|angular|vue|css|html|bootstrap|jquery)') } }]},
 {"$set":{"bereich.group": "Development", "bereich.group_type": "Web", "bereich.group_type_stack": "Backend", "bereich.skill": "PHP"}}, multi=True)
-db.itproject.update({ "$and": [{"bereich": None},{ "skill_summary": {"$regex": r'(?:[\s]|^)(node|nodejs|node.js)(?=[\s]|$)'} }, { "skill_summary": { "$not": re.compile('(react|angular|vue|css|html|bootstrap|jquery)') } }]}, 
+db.itproject.update({ "$and": [{"bereich": None},{ "skill_summary": {"$regex": r'(?:[\s]|^)(node|nodejs|node.js)(?=[\s]|$)'} }, { "skill_summary": { "$not": re.compile('(react|angular|vue|css|html|bootstrap|jquery)') } }]},
 {"$set":{"bereich.group": "Development", "bereich.group_type": "Web", "bereich.group_type_stack": "Backend", "bereich.skill": "Nodejs"}}, multi=True)
-db.itproject.update({ "$and": [{"bereich": None},{ "skill_summary": {"$regex": r'(?:[\s]|^)(c|c\++)(?=[\s]|$)'} }, { "skill_summary": { "$not": re.compile('(^js$|javascript|react|angular|vue|css|html|bootstrap|jquery)') } }]}, 
+db.itproject.update({ "$and": [{"bereich": None},{ "skill_summary": {"$regex": r'(?:[\s]|^)(c|c\++)(?=[\s]|$)'} }, { "skill_summary": { "$not": re.compile('(^js$|javascript|react|angular|vue|css|html|bootstrap|jquery)') } }]},
 {"$set":{"bereich.group": "Development", "bereich.group_type": "Web", "bereich.group_type_stack": "Backend", "bereich.skill": "C/C++"}}, multi=True)
-db.itproject.update({ "$and": [{"bereich": None},{ "skill_summary": {"$regex": r'(?:[\s]|^)(\.net|asp.net|c#|asp)(?=[\s]|$)'} }, { "skill_summary": { "$not": re.compile('(^js$|javascript|react|angular|vue|css|html|bootstrap|jquery)') } }]}, 
+db.itproject.update({ "$and": [{"bereich": None},{ "skill_summary": {"$regex": r'(?:[\s]|^)(\.net|asp.net|c#|asp)(?=[\s]|$)'} }, { "skill_summary": { "$not": re.compile('(^js$|javascript|react|angular|vue|css|html|bootstrap|jquery)') } }]},
 {"$set":{"bereich.group": "Development", "bereich.group_type": "Web", "bereich.group_type_stack": "Backend", "bereich.skill": "C#/Asp.Net"}}, multi=True)
 
 
 #system admin
-db.itproject.update({ "$and": [ {"bereich": None},{"title": {"$regex": '(system)', "$options": 'i'}}, {"skill_summary": {"$regex": '(linux)', "$options": 'i'}}]}, 
-{"$set":{"bereich.group": "Infrastructure", "bereich.group_type": "IT Admin/Services", "bereich.skill": "Linux"}}, multi=True)
-db.itproject.update({ "$and": [ {"bereich": None},{"title": {"$regex": '(system|window|support)', "$options": 'i'}}, {"skill_summary": {"$regex": '(exchange|sql|windows|outlook|microsoft|admin)', "$options": 'i'}}]}, 
-{"$set":{"bereich.group": "Infrastructure", "bereich.group_type": "IT Admin/Services", "bereich.skill": "Microsoft"}}, multi=True)
-db.itproject.update({ "$and": [ {"bereich": None},{"title": {"$regex": '(sharepoint)', "$options": 'i'}}]}, 
-{"$set":{"bereich.group": "Infrastructure", "bereich.group_type": "IT Admin/Services", "bereich.skill": "Microsoft/Sharepoint"}}, multi=True)
+db.itproject.update({ "$and": [ {"bereich": None},{"title": {"$regex": '(system)', "$options": 'i'}}, {"skill_summary": {"$regex": '(linux)', "$options": 'i'}}]},
+{"$set":{"bereich.group": "Infrastructure", "bereich.group_type": "Admin", "bereich.skill": "Linux"}}, multi=True)
+db.itproject.update({ "$and": [ {"bereich": None},{"title": {"$regex": '(system|window|support)', "$options": 'i'}}, {"skill_summary": {"$regex": '(exchange|sql|windows|outlook|microsoft|admin)', "$options": 'i'}}]},
+{"$set":{"bereich.group": "Infrastructure", "bereich.group_type": "Admin", "bereich.skill": "Microsoft"}}, multi=True)
+db.itproject.update({ "$and": [ {"bereich": None},{"title": {"$regex": '(sharepoint)', "$options": 'i'}}]},
+{"$set":{"bereich.group": "Infrastructure", "bereich.group_type": "Admin", "bereich.skill": "Microsoft/Sharepoint"}}, multi=True)
 
 #IT Services
-db.itproject.update({ "$and": [{"bereich": None},{ "skill_summary": {"$regex": '(itil)', "$options": 'i'} }, { "skill_summary": { "$not": re.compile('(^sap)') } }]}, 
-{"$set":{"bereich.group": "Infrastructure", "bereich.group_type": "IT Admin/Services", "bereich.skill": "ITIL"}}, multi=True)
+db.itproject.update({ "$and": [{"bereich": None},{ "skill_summary": {"$regex": '(itil)', "$options": 'i'} }, { "skill_summary": { "$not": re.compile('(^sap)') } }]},
+{"$set":{"bereich.group": "Infrastructure", "bereich.group_type": "Admin", "bereich.skill": "ITIL"}}, multi=True)
 
 #saas
-db.itproject.update({ "$and": [ {"bereich": None},{ "title": {"$regex": '(citrix)', "$options": 'i'} } ]}, 
-{"$set":{"bereich.group": "Infrastructure", "bereich.group_type": "IT Admin/Services", "bereich.skill": "CITRIX"}}, multi=True)
+db.itproject.update({ "$and": [ {"bereich": None},{ "title": {"$regex": '(citrix)', "$options": 'i'} } ]},
+{"$set":{"bereich.group": "Infrastructure", "bereich.group_type": "Admin", "bereich.skill": "CITRIX"}}, multi=True)
 #oracle
-db.itproject.update({ "$and": [ {"bereich": None},{ "title": {"$regex": '(oracle)', "$options": 'i'} } ]}, 
-{"$set":{"bereich.group": "Infrastructure", "bereich.group_type": "IT Admin/Services", "bereich.skill": "Oracle"}}, multi=True)
+db.itproject.update({ "$and": [ {"bereich": None},{ "title": {"$regex": '(oracle)', "$options": 'i'} } ]},
+{"$set":{"bereich.group": "Infrastructure", "bereich.group_type": "Admin", "bereich.skill": "Oracle"}}, multi=True)
 
 
 #Aggregate
@@ -273,9 +273,9 @@ db.itproject.update({ "$and": [{"bereich": None},{ "title": {"$regex": '(busines
 
 
 #fullstack skills with title
-db.itproject.update({ "$and": [ {"bereich": None},{ "skill_summary": {"$regex": '(php|laravel)'} }, { "skill_summary": {"$regex": '(^js|javascript|react|angular|vue|css|html|bootstrap|jquery)'} } ], "title":{"$regex": '(php|Fullstack php|php Fullstack|laravel)', "$options": 'i'}}, 
+db.itproject.update({ "$and": [ {"bereich": None},{ "skill_summary": {"$regex": '(php|laravel)'} }, { "skill_summary": {"$regex": '(^js|javascript|react|angular|vue|css|html|bootstrap|jquery)'} } ], "title":{"$regex": '(php|Fullstack php|php Fullstack|laravel)', "$options": 'i'}},
 {"$set":{"bereich.group": "Development", "bereich.group_type_stack":  "Fullstack","bereich.skill":  "PHP"}}, multi=True)
-db.itproject.update({ "$and": [ {"bereich": None},{ "skill_summary": {"$regex": r'(?:[\s]|^)(java|spring|j2ee|jvm)(?=[\s]|$)'} }, { "skill_summary": {"$regex": '(^js|javascript|react|angular|vue|css|html|bootstrap|jquery|frontend)'} } ], "title":{"$regex": '(Java|Fullstack Java|Java Fullstack)', "$options": 'i'}}, 
+db.itproject.update({ "$and": [ {"bereich": None},{ "skill_summary": {"$regex": r'(?:[\s]|^)(java|spring|j2ee|jvm)(?=[\s]|$)'} }, { "skill_summary": {"$regex": '(^js|javascript|react|angular|vue|css|html|bootstrap|jquery|frontend)'} } ], "title":{"$regex": '(Java|Fullstack Java|Java Fullstack)', "$options": 'i'}},
 {"$set":{"bereich.group": "Development", "bereich.group_type_stack": "Fullstack", "bereich.skill": "Java"}}, multi=True)
 
 db.itproject.update({ "$and": [ {"bereich": None},{ "skill_summary": {"$regex": '(node|express)'} }, { "skill_summary": {"$regex": '(react|angular|vue|css|express|html|bootstrap|jquery)'} } ], "title":{"$regex": '(php|Fullstack php|php Fullstack|laravel)', "$options": 'i'}}, {"$set":{"bereich.group": "Development", "bereich.group_type_stack": "Fullstack", "bereich.skill": "Nodejs"}}, multi=True)
@@ -371,11 +371,11 @@ db.itproject.update({"region.bundesland":{"$exists": True }}, {"$unset":{"region
 
 """
 #mobile app
-db.itproject.update({ "$and": [{"bereich": None},{ "skill_summary": {"$regex": '(^ios|swift|objectiv)'} }, 
-{ "skill_summary": {"$regex": '(^android|kotlin)'} }, { "skill_summary": { "$not": re.compile(r'(?:[\s]|^)(j2ee|python|django|flask|pyramid|php|laravel|node|express|sap|c|c#|node.js|nodejs|c\++|^js$|javascript|angular|vue|bootstrap|jquery)(?=[\s]|$)') } }]}, 
+db.itproject.update({ "$and": [{"bereich": None},{ "skill_summary": {"$regex": '(^ios|swift|objectiv)'} },
+{ "skill_summary": {"$regex": '(^android|kotlin)'} }, { "skill_summary": { "$not": re.compile(r'(?:[\s]|^)(j2ee|python|django|flask|pyramid|php|laravel|node|express|sap|c|c#|node.js|nodejs|c\++|^js$|javascript|angular|vue|bootstrap|jquery)(?=[\s]|$)') } }]},
 {"$set":{"bereich.group": "Development", "bereich.group_type": "Mobile Apps", "bereich.platform": "Native", "bereich.platform_name": ["IOS", "Android"]}}, multi=True)
-db.itproject.update({ "$and": [{"bereich": None},{ "skill_summary": {"$regex": '(phonegap|ionic|cordova|flutter|react native)'} }, 
-{ "skill_summary": { "$not": re.compile(r'(?:[\s]|^)(j2ee|python|django|flask|pyramid|php|laravel|node|express|sap|c|c#|node.js|nodejs|c\++|^js$|javascript|angular|vue|bootstrap|jquery)(?=[\s]|$)') } }]}, 
+db.itproject.update({ "$and": [{"bereich": None},{ "skill_summary": {"$regex": '(phonegap|ionic|cordova|flutter|react native)'} },
+{ "skill_summary": { "$not": re.compile(r'(?:[\s]|^)(j2ee|python|django|flask|pyramid|php|laravel|node|express|sap|c|c#|node.js|nodejs|c\++|^js$|javascript|angular|vue|bootstrap|jquery)(?=[\s]|$)') } }]},
 {"$set":{"bereich.group": "Development", "bereich.group_type": "Mobile Apps", "bereich.platform": "Cross-Platform"}}, multi=True)
 #db.itproject.update({ "$and": [{"bereich": None},{ "skill_summary": {"$regex": '(^ios|swift|objectiv)'} }, { "skill_summary": {"$regex": '(^android|kotlin)'} }, { "skill_summary": { "$not": re.compile(r'(?:[\s]|^)(j2ee|python|django|flask|pyramid|php|laravel|node|express|sap|c|c#|node.js|nodejs|c\++|^js$|javascript|react|angular|vue|bootstrap|jquery)(?=[\s]|$)') } }]}, {"$set":{"bereich.group": "Development", "bereich.group_type": "Mobile Apps", "bereich.platform": "Native" "bereich.platform_name": ["IOS", "Android"]}}, multi=True)
 #db.itproject.update({ "$and": [{"bereich": None},{ "skill_summary": {"$regex": '(^ios|swift|objectiv)'} }, { "skill_summary": { "$not": re.compile('(^js$|javascript|react|angular|vue|css|html|bootstrap|jquery|java|spring|j2ee|python|django|flask|pyramid|php|laravel|node|express|sap|c#|node.js|nodejs)') } }]}, {"$set":{"bereich.group": "Mobile", "IOS", "Native"]}}, multi=True)
@@ -387,7 +387,7 @@ db.itproject.update({ "$and": [{"bereich": None},{ "skill_summary": {"$regex": '
 
 
 location = ["Frankfurt", "Köln", "Bonn", "München", "Hamburg", "Berlin", "Stuttgart", "Düsseldorf", "Nürnberg", "Bayern", "Hannover", "Hessen", "Niedersachsen", "Karlsruhe",
-             "Wiesbaden", "Bremen", "Mannheim", "Kiel", "Essen", "Ingolstadt", "Braunschweig", "Friedrichshafen", 
+             "Wiesbaden", "Bremen", "Mannheim", "Kiel", "Essen", "Ingolstadt", "Braunschweig", "Friedrichshafen",
               "Leverkusen", "Dortmund", "Sailauf", "Darmstadt", "Dresden", "Münster", "Aschaffenburg", "Leipzig",
               "Heidelberg", "Wolfsburg", "Ulm", "Heilbronn", "Bielefeld", "Mainz", "Potsdam", "Eschborn", "Oldenburg", "Ludwigsburg",
               "Zurich", "Kassel", "Ruhrgebiet", "Würzburg", "Bern", "Augsburg", "Wuppertal", "Wilhelmshaven", "Kerpen", "Regensburg", "Freiburg",
@@ -395,8 +395,8 @@ location = ["Frankfurt", "Köln", "Bonn", "München", "Hamburg", "Berlin", "Stut
                "Waldorf", "Bad Homburg", "Ravensburg", "Bochum", "Ludwigshafen", "Duisburg", "Dachau", "Marburg", "Lübeck", "Gießen", "Pforzheim", "Leinfelden", "Gütersloh",
                "Saarbrücken", "Esslingen", "Offenbach", "Göttingen", "Cottbus", "Coburg", "Sindelfingen", "Sassenberg", "Halle", "Zwickau", "Göppingen", "Basel",
                "Ottobrunn", "Paderborn", "Remscheid", "Sankt Leon-Rot", "Amberg", "Montabaur", "Kaiserslautern", "Biberach", "Hamm", "Oberursel",  "Weinheim", "Gelsenkirchen", "Aalen", "Würzburg", "Ditzingen", "Hanau", "Melsungen",
-               "Turgi", "Flensburg",  "Oberhausen", "Schwaben", "Aßlar", "Lindau", "Aurich", "Karlsfeld", "Kenzingen", "Künzelsau", "Schwerin", "Rastatt", "Passau", "Poing", "Schopfloch", "Elmshorn", 
-               "Tuttlingen", "Magedeburg", "Hüttenberg", "Lohfelden", "Meckenheim", "Loßburg", "Rosenheim", "Gilching", "Germersheim", "Rastede", "Leichlingen", "Höchberg", "Bamberg", "Saarland", "Hilden", "Borken", "Bayreuth", "Heppenheim", "Mülheim", "Crailsheim", 
+               "Turgi", "Flensburg",  "Oberhausen", "Schwaben", "Aßlar", "Lindau", "Aurich", "Karlsfeld", "Kenzingen", "Künzelsau", "Schwerin", "Rastatt", "Passau", "Poing", "Schopfloch", "Elmshorn",
+               "Tuttlingen", "Magedeburg", "Hüttenberg", "Lohfelden", "Meckenheim", "Loßburg", "Rosenheim", "Gilching", "Germersheim", "Rastede", "Leichlingen", "Höchberg", "Bamberg", "Saarland", "Hilden", "Borken", "Bayreuth", "Heppenheim", "Mülheim", "Crailsheim",
                "Böblingen",  "Kempten", "Sossenheim", "Weissach", "Lahr", "Vechta", "Bischofsheim", "Konstanz", "Warstein", "Genthin", "Dreilinden", "Brandenburg", "Husum", "Spelle", "Rheine", "Meerbusch", "Münzenberg", "Luterbach", "Herzogenaurach", "Siegen", "Ahrensburg",
                "Herne", "Eschwege", "Bottrop", "Cadolzburg", "Minden", "Kroppach", "Meschede", "Gummersbach", "Rimpar", "Oberpfalz", "Philippsburg", "Steinhausen", "Willich", "Offenburg", "Nordrhein-Westfalen", "D7", "D6", "D8", "D3", "D9", "D5", "D2","D0","D4","D1",'Baden-Württemberg', "Krefeld",
                 'Rheinland-Pfalz', 'Rhein-Main-Gebiet','Schleswig-Holstein','Ostwestfalen', "Neckar", "Leon", 'Fürth', "Solingen", "None"]
@@ -404,10 +404,10 @@ location = ["Frankfurt", "Köln", "Bonn", "München", "Hamburg", "Berlin", "Stut
 
 location = [Baden_Württemberg, Bayern, Berlin, Brandenburg, Bremen, Hamburg, Hessen, Mecklenburg_Vorpommern, Niedersachsen, Nordrhein_Westfalen, Rheinland_Pfalz, Saarland, Sachsen, Sachsen_Anhalt, Schleswig_Holstein, Thüringen]
 #add region.bundesland field using location value
-germany = {'Baden_Württemberg': Baden_Württemberg,'Bayern': Bayern,'Berlin': Berlin, "Brandenburg": Brandenburg, 
+germany = {'Baden_Württemberg': Baden_Württemberg,'Bayern': Bayern,'Berlin': Berlin, "Brandenburg": Brandenburg,
          "Bremen": Bremen, "Hamburg": Hamburg, "Hessen": Hessen, "Mecklenburg_Vorpommern": Mecklenburg_Vorpommern,
-         "Niedersachsen": Niedersachsen, "Nordrhein_Westfalen": Nordrhein_Westfalen, "Rheinland_Pfalz": Rheinland_Pfalz, 
-         "Saarland": Saarland, "Sachsen": Sachsen, "Sachsen_Anhalt": Sachsen_Anhalt, "Schleswig_Holstein": Schleswig_Holstein, 
+         "Niedersachsen": Niedersachsen, "Nordrhein_Westfalen": Nordrhein_Westfalen, "Rheinland_Pfalz": Rheinland_Pfalz,
+         "Saarland": Saarland, "Sachsen": Sachsen, "Sachsen_Anhalt": Sachsen_Anhalt, "Schleswig_Holstein": Schleswig_Holstein,
          "Thüringen": Thüringen, "Ausland": Ausland}
 #data = db.itproject.find()
 

@@ -38,7 +38,7 @@ def index():
 
 
 
-@app.route('/home', methods=['GET'])
+@app.route('/home')
 def home():
     page_size = 100
     project = db.itproject_clean.find({"region": {"$ne": None}, "bereich": {"$ne": None} }).limit(page_size)
@@ -53,7 +53,8 @@ def home():
     #print(type(projects))
     b = {"amount": amounts, "amount2": lengths}
     b.update({"project_lists": projects})
-    page_sanitized = json.dumps(json.loads(json_util.dumps(b)))
+    parsed = json.loads(json_util.dumps(b))
+    page_sanitized = json.dumps(parsed, indent=4)
     #print(type(page_sanitized))
     return page_sanitized
 
@@ -62,12 +63,12 @@ def home():
 @app.route('/query')
 def search_query():
     search_term = request.args.get('search') #if key doesn't exist, returns None
-    
-    
+
+
     #framework = request.args['framework'] #if key doesn't exist, returns a 400, bad request error
     #website = request.args.get('website')
     results = db.itproject_clean.find( { "region": {"$ne": None}, "bereich": {"$ne": None}, "$text": { "$search": "\"" + search_term + "\"", "$language": "de" } }, { "score": {"$meta": "textScore" } } )
-    
+
     results.sort([('score', {'$meta': 'textScore'}), ("filter_date_post", 1)]).limit(100)
     projects = [p for p in results]
     #sorted(results, key=lambda p: p['filter_date_post'], reverse=True)
@@ -75,13 +76,14 @@ def search_query():
     amounts = len(projects)
     b = {"amount": amounts, "amount2": lengths}
     b.update({"project_lists": projects})
-    page_sanitized = json.dumps(json.loads(json_util.dumps(b)))
+    parsed = json.loads(json_util.dumps(b))
+    page_sanitized = json.dumps(parsed, indent=4)
 
     return page_sanitized
 
 @app.route('/<group>')
 def dev(group):
-    page_size = 50
+    page_size = 100
     global pro
     project = db.itproject_clean.find({"region": {"$ne": None}, "bereich.group": group}).limit(page_size)
     project1 = db.itproject_clean.find({"region": {"$ne": None}, "bereich.group": group})
@@ -97,13 +99,14 @@ def dev(group):
     amounts = len(projects1)
     b = {"amount": amounts, "amount2": page_size}
     b.update({"project_lists": projects})
-    page_sanitized = json.dumps(json.loads(json_util.dumps(b)))
+    parsed = json.loads(json_util.dumps(b))
+    page_sanitized = json.dumps(parsed, indent=4)
     return page_sanitized
 
 
 @app.route('/<group>/<groupType>')
 def bereich_group_type(group, groupType):
-    page_size = 50
+    page_size = 100
     project = db.itproject_clean.find({"region": {"$ne": None}, "bereich.group": group, "bereich.group_type": groupType}).limit(page_size)
     project1 = db.itproject_clean.find({"region": {"$ne": None}, "bereich.group": group, "bereich.group_type": groupType})
     projects1 = sorted(project1, key=lambda p: p['filter_date_post'], reverse=True)
@@ -117,13 +120,14 @@ def bereich_group_type(group, groupType):
     #print(type(projects))
     b = {"amount": amounts, "amount2": page_size}
     b.update({"project_lists": projects})
-    page_sanitized = json.dumps(json.loads(json_util.dumps(b)))
+    parsed = json.loads(json_util.dumps(b))
+    page_sanitized = json.dumps(parsed, indent=4)
     return page_sanitized
     #return render_template('home.html', projects=projects, amount=amount, amounts=amounts)
 
 @app.route('/<group>/<groupType>/<groupStack>')
 def bereich_group_type_stack(group, groupType, groupStack):
-    page_size = 50
+    page_size = 100
     project = db.itproject_clean.find({"region": {"$ne": None}, "bereich.group": group, "bereich.group_type": groupType, "bereich.group_type_stack": groupStack}).limit(page_size)
     project1 = db.itproject_clean.find({"region": {"$ne": None}, "bereich.group": group, "bereich.group_type": groupType, "bereich.group_type_stack": groupStack})
     projects1 = sorted(project1, key=lambda p: p['filter_date_post'], reverse=True)
@@ -137,7 +141,8 @@ def bereich_group_type_stack(group, groupType, groupStack):
     #print(type(projects))
     b = {"amount": amounts, "amount2": page_size}
     b.update({"project_lists": projects})
-    page_sanitized = json.dumps(json.loads(json_util.dumps(b)))
+    parsed = json.loads(json_util.dumps(b))
+    page_sanitized = json.dumps(parsed, indent=4)
 
     return page_sanitized
 
@@ -151,12 +156,12 @@ if __name__ == '__main__':
 """@app.route('/query')
 def query():
     language = request.args.get('language') #if key doesn't exist, returns None
-    
-    
+
+
     #framework = request.args['framework'] #if key doesn't exist, returns a 400, bad request error
     #website = request.args.get('website')
     results = db.itproject_clean.find( { "region": {"$ne": None}, "bereich": {"$ne": None}, "$text": { "$search":  language, "$language": "de" } }, { "score": {"$meta": "textScore" } } )
-    
+
     results.sort([('score', {'$meta': 'textScore'}), ("filter_date_post", 1)]).limit(100)
     projects = [p for p in results]
     #sorted(results, key=lambda p: p['filter_date_post'], reverse=True)
@@ -228,4 +233,3 @@ def bereich_skill(group, groupType, groupStack, skill):
 
     return render_template('home.html', projects=projects, amount=amount, amounts=amounts)
 """
-

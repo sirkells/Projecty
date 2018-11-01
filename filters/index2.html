@@ -6,135 +6,70 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/foundation/6.3.1/css/foundation.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css">
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/foundation/6.3.1/css/foundation.min.css">
-  
-  
+
+
+
 
 
 </head>
 
 <body>
-  
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <a class="navbar-brand mr-auto mr-lg-0" href="#">
-        <img src="ACT-Logo.png" width="70" height="40" class="d-inline-block align-top" alt=""></a>
-      <button class="navbar-toggler p-0 border-0" type="button" data-toggle="offcanvas">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <br>
-      <div class="navbar-collapse offcanvas-collapse" id="navbarsExampleDefault">
-        <ul class="navbar-nav mr-auto">
-          <li class="nav-item">
-            <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-          </li>
-          <br>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Analytics</a>
-          </li>
-          <br>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Cockpit</a>
-          </li>
-          <br>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="https://example.com" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Kelechi Igbokwe</a>
-            <div class="dropdown-menu" aria-labelledby="dropdown01">
-              <a class="dropdown-item" href="#">Profile</a>
-              <a class="dropdown-item" href="#">Logout</a>
-            </div>
-          </li>
-        </ul>
-        <form class="form-inline my-2 my-lg-0" action="/search/results" method="post">
-          <input class="form-control mr-lg-2" name="input" type="search" placeholder="Search" aria-label="Search">
-          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-        </form>
+  <nav class="navbar navbar-default">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a href="#">
+          <img alt="Brand" src="ACT-Logo.png" width="70" height="40" class="d-inline-block align-top">
+        </a>
       </div>
-    </nav>
+    </div>
+  </nav>
+
     <br>
     <div class="container" id="app">
+      <div>
+        
+      </div>
+          <section >
+            <div class="center">
+                <h5 class="text-center">Filter by Category</h5>
+                <form>
+                  <div class="row">
+                    <div class="large-12 columns">
+                      <!-- <div class="btn-group btn-group-justified">
+                            <a @click="getPosts('Development')" class="btn btn-primary" style="width:50%">Development</a>
+                            <a @click="getPosts('Infrastructure')" class="btn btn-info" style="width:30%">Infrastructure</a>
+                            <a @click="getPosts('Data Science')" class="btn btn-warning" style="width:15%">Data Science</a>
+                      </div>
+                      -->
+                      <br>
+                      <div class="btn-group btn-group-justified" >
+                        <a v-for="sub in section1" @click="getPosts(sub.group)" :class="sub.button" :style="sub.width + sub.count + sub.pix">{{ sub.name }}</a>
+                      </div>
+                     <!-- <select v-model="section">
+                        <option v-for="section in sections" :value="section">{{ section }}</option>
+                      </select>
+                    -->
+                    </div>
   
-          <section class="callout secondary">
-              <h5 class="text-center">Filter by Category</h5>
-              <form>
-                <div class="row">
-                  <div class="large-12 columns">
-                    <!-- <div class="btn-group btn-group-justified">
-                          <a @click="getPosts('Development')" class="btn btn-primary" style="width:50%">Development</a>
-                          <a @click="getPosts('Infrastructure')" class="btn btn-info" style="width:30%">Infrastructure</a>
-                          <a @click="getPosts('Data Science')" class="btn btn-warning" style="width:15%">Data Science</a>
+                    
+                    <!--
+                    <div class="medium-6 columns center-block" >
+                      <a @click="getPosts(section)" class="button expanded">Retrieve</a>
                     </div>
                     -->
-                    <br>
-                    
-                    <div class="btn-group btn-group-justified" role="group">
-                      <a v-for="sub in section1" @click="getPosts(sub.group)" :class="sub.button" :style="sub.width + sub.count + sub.pix">{{ sub.name }}</a>
-                    </div>
-                   <!-- <select v-model="section">
-                      <option v-for="section in sections" :value="section">{{ section }}</option>
-                    </select>
-                  -->
                   </div>
-                  
-                  <div class="large-12 columns" v-if="dev">
-                      <select v-model="selected_dv">
-                          <option v-for="option in subDev1" v-bind:value="option">
-                            {{ option }}
-                          </option>
-                      </select>
-                        <span>Selected: {{ selected_dv }}</span>
-                    <!-- <v-select :options="subDev1" v-model="selected"></v-select>
-                    
-                   <select>
-                      <option v-for="sub in subDev1" :value="sub">{{ sub }}</option>
-                    </select>-->
-                  </div>
-                  <div class="large-12 columns" v-else-if="inf">
-                      <select v-model="selected_inf">
-                          <option v-for="option in subInf1" v-bind:value="option">
-                            {{ option }}
-                          </option>
-                      </select>
-                        <span>Selected: {{ selected_inf }}</span>
-                    <!-- <v-select :options="subInf1" v-model="selected"></v-select>
-                    <span>Selected: {{ selected }}</span>
-                    <select>
-                        <option v-for="sub in subInf1" :value="sub">{{ sub }}</option>
-                    </select>-->
-                  </div>
-                  <div class="large-12 columns" v-else-if="ds">
-                      <select v-model="selected_ds">
-                          <option v-for="option in subDs1" v-bind:value="option">
-                            {{ option }}
-                          </option>
-                      </select>
-                        <span>Selected: {{ selected_ds }}</span>
-                      <!-- <v-select :options="subDs1" v-model="selected"></v-select>
-                      <span>Selected: {{ selected }}</span>
-                      <select>
-                          <option v-for="sub in subDs1" :value="sub">{{ sub }}</option>
-                      </select>-->
-                  </div>
-                  <!-- 
-                  <div class="medium-6 columns center-block" >
-                    <a @click="getPosts(section)" class="button expanded">Retrieve</a>
-                  </div>
-                  -->
-                </div>
-              </form>
-            </section>
-            
-            
-            <form  @submit="getPosts(search_term)" >
-                
-                <input type="text" v-model="search_term" placeholder="Search for projects">
-            </form>
+                </form>
+            </div>
+              
+          </section>
+          
             <div v-if="loading"> Loading....</div>
             <div class="search-results" v-else-if="group_clicked">
                <i>Showing results for <strong>{{ group_selected }} -> {{ selected }}</strong> </i>
@@ -142,17 +77,102 @@
             <div class="search-results" v-else>
                 <i>Found {{ total_results.length }} results for <strong>{{ group_selected }}</strong> </i>
             </div>
+            <div class="col-sm-3  blog-sidebar">
+                <div class="sidebar-module sidebar-module-inset">
+                  <h4>Search</h4>
+                  <form @submit.prevent="getPosts(search_term)">
+                      <input v-model="search_term" class="u-full-width" type="text" id="searchTerm" name="searchTerm" placeholder="Search for projects">
+                      <button type="submit">Search</button>
+                  </form>
+                  
+                </div>
+                <div class="sidebar-module">
+                    <h4>Sub Catergories</h4>
+                    <div class="large-12 columns" v-if="dev">
+                        <select v-model="selected_dv">
+                            <option v-for="option in subDev1" v-bind:value="option">
+                              {{ option }}
+                            </option>
+                        </select>
+                          <span>Selected: {{ selected_dv }}</span>
+                      <!-- <v-select :options="subDev1" v-model="selected"></v-select>
+  
+                     <select>
+                        <option v-for="sub in subDev1" :value="sub">{{ sub }}</option>
+                      </select>-->
+                    </div>
+                    <div class="large-12 columns" v-else-if="inf">
+                        <select v-model="selected_inf">
+                            <option v-for="option in subInf1" v-bind:value="option">
+                              {{ option }}
+                            </option>
+                        </select>
+                          <span>Selected: {{ selected_inf }}</span>
+                      <!-- <v-select :options="subInf1" v-model="selected"></v-select>
+                      <span>Selected: {{ selected }}</span>
+                      <select>
+                          <option v-for="sub in subInf1" :value="sub">{{ sub }}</option>
+                      </select>-->
+                    </div>
+                    <div class="large-12 columns" v-else-if="ds">
+                        <select v-model="selected_ds">
+                            <option v-for="option in subDs1" v-bind:value="option">
+                              {{ option }}
+                            </option>
+                        </select>
+                          <span>Selected: {{ selected_ds }}</span>
+                        <!-- <v-select :options="subDs1" v-model="selected"></v-select>
+                        <span>Selected: {{ selected }}</span>
+                        <select>
+                            <option v-for="sub in subDs1" :value="sub">{{ sub }}</option>
+                        </select>-->
+                    </div>
+                  </div>
+                  <div class="sidebar-module">
+                    <h4>Elsewhere</h4>
+                    <ol class="list-unstyled">
+                      <li><a href="#">GitHub</a></li>
+                      <li><a href="#">Twitter</a></li>
+                      <li><a href="#">Facebook</a></li>
+                    </ol>
+                  </div>
+                <div class="sidebar-module">
+                  <h4>Archives</h4>
+                  <ol class="list-unstyled">
+                    <li><a href="#">March 2014</a></li>
+                    <li><a href="#">February 2014</a></li>
+                    <li><a href="#">January 2014</a></li>
+                    <li><a href="#">December 2013</a></li>
+                    <li><a href="#">November 2013</a></li>
+                    <li><a href="#">October 2013</a></li>
+                    <li><a href="#">September 2013</a></li>
+                    <li><a href="#">August 2013</a></li>
+                    <li><a href="#">July 2013</a></li>
+                    <li><a href="#">June 2013</a></li>
+                    <li><a href="#">May 2013</a></li>
+                    <li><a href="#">April 2013</a></li>
+                  </ol>
+                </div>
+                <div class="sidebar-module">
+                  <h4>Elsewhere</h4>
+                  <ol class="list-unstyled">
+                    <li><a href="#">GitHub</a></li>
+                    <li><a href="#">Twitter</a></li>
+                    <li><a href="#">Facebook</a></li>
+                  </ol>
+                </div>
+              </div>
+            <div class="col-lg-9 blog-main">
+              <news-list :results="results"></news-list>
+            </div>
             
-            <div>
-              <news-list :results="results"></news-list> 
-            </div> 
   </div>
   <div class="container" id="product-list-bottom" >
       <div>.</div>
-      
-  </div> 
-  
-    
+
+  </div>
+
+
     <script src="node_modules/axios/dist/axios.min.js"></script>
     <script src="node_modules/vue/dist/vue.js"></script>
     <script src="node_modules/scrollmonitor/scrollMonitor.js"></script>

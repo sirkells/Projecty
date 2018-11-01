@@ -98,10 +98,20 @@
                       <span><a @click="getPosts(folder.name)"> {{ folder.name }} </a></span>
                       <div v-show="false" :id="folder.name">
                         <div v-for="page in folder.pages" style="margin-left: 20px;">
-                          <span> - {{ page.name }}</span>
+                          <span @click="toggle(page.name)" style="cursor: pointer;"> - </span>{{ page.name }}
+                         
                         </div>
-                      </div>        
+                        <!-- <div v-show="true" :id="folder.sub1">
+                            <div v-for="group in folder.sub1" style="margin-left: 20px;">
+                              <span @click="toggle(folder.sub1)" style="cursor: pointer;"> + </span>{{ group.name }}
+                             
+                            </div>
+                        </div> -->
+                      </div> 
+                      
+
                     </div>
+                  
                   <div class="sidebar-module sidebar-module-inset">
                     <h6>Elsewhere</h6>
                     <ol class="list-unstyled">

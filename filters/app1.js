@@ -54,6 +54,8 @@ function buildSecUrl(url, sub) {
     return BaseUrl + url + '/' + sub
 }
 
+
+
 Vue.component('v-select', VueSelect.VueSelect);
 
 
@@ -180,10 +182,11 @@ var vm = new Vue({
               ],
             group_selected: '',
             folders: [
-                {name: 'Development', pages: [{name: 'Web'}, {name: 'Mobile'}, {name: 'Others'}] },
-                {name: 'Infrastructure', pages: [{name: 'ERP'}, {name: 'Admin'}, {name: 'Others+'}] },
-                {name: 'Data Science', pages: [{name: 'Big Data'}, {name: 'Business Intelligence'}, {name: 'Machine Learning'}] },
-            ]
+                {name: 'Development', pages: [{name: 'Web'}, {name: 'Mobile'}, {name: 'Others'}], sub1: [{name: 'Backend'}, {name: 'Frontend'}, {name: 'Fullstack'}] },
+                {name: 'Infrastructure', pages: [{name: 'ERP'}, {name: 'Admin'}, {name: 'Others'}], sub1: [{name: 'Backend'}, {name: 'Frontend'}, {name: 'Fullstack'}] },
+                {name: 'Data Science', pages: [{name: 'Big Data'}, {name: 'Business Intelligence'}, {name: 'Machine Learning'}], sub1: [{name: 'Backend'}, {name: 'Frontend'}, {name: 'Fullstack'}] },
+            ],
+        
 
         }
 
@@ -207,6 +210,9 @@ var vm = new Vue({
             if(document.getElementById(idname).style.display == "none"){
                 document.getElementById(idname).style.display = "inline";
 
+            }
+            else if(document.getElementById(idname).style.display == "inline") {
+                document.getElementById(idname).style.display = "none";
             }
             else {
                 document.getElementById(idname).style.display = 'none';

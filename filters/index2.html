@@ -38,10 +38,91 @@
       </div>
           <section >
             <div class="center">
-                <h5 class="text-center">Filter by Category</h5>
+                
+            </div>
+              
+          </section>
+        
+            <div class="col-sm-3 blog-sidebar">
+                <div class="sidebar-module sidebar-module-inset">
+                  <h6>Search</h6>
+                  <form @submit.prevent="getPosts(search_term)">
+                      <input v-model="search_term"  type="text" id="searchTerm" name="searchTerm" placeholder="Search for projects">
+                      <button type="submit">Search</button>
+                  </form>
+                
+                  
+                </div>
+                <div class="sidebar-module sidebar-module-inset">
+                    <h6>Sub Catergories</h6>
+                    <div class="sidebar-module sidebar-module-inset" v-if="dev">
+                        <select v-model="selected_dv">
+                            <option v-for="option in subDev1" v-bind:value="option">
+                              {{ option }}
+                            </option>
+                        </select>
+                          <span>Selected: {{ selected_dv }}</span>
+                      <!-- <v-select :options="subDev1" v-model="selected"></v-select>
+  
+                     <select>
+                        <option v-for="sub in subDev1" :value="sub">{{ sub }}</option>
+                      </select>-->
+                    </div>
+                    <div class="sidebar-module sidebar-module-inset" v-else-if="inf">
+                        <select v-model="selected_inf">
+                            <option v-for="option in subInf1" v-bind:value="option">
+                              {{ option }}
+                            </option>
+                        </select>
+                          <span>Selected: {{ selected_inf }}</span>
+                      <!-- <v-select :options="subInf1" v-model="selected"></v-select>
+                      <span>Selected: {{ selected }}</span>
+                      <select>
+                          <option v-for="sub in subInf1" :value="sub">{{ sub }}</option>
+                      </select>-->
+                    </div>
+                    <div class="sidebar-module sidebar-module-inset" v-else-if="ds">
+                        <select v-model="selected_ds">
+                            <option v-for="option in subDs1" v-bind:value="option">
+                              {{ option }}
+                            </option>
+                        </select>
+                          <span>Selected: {{ selected_ds }}</span>
+                        <!-- <v-select :options="subDs1" v-model="selected"></v-select>
+                        <span>Selected: {{ selected }}</span>
+                        <select>
+                            <option v-for="sub in subDs1" :value="sub">{{ sub }}</option>
+                        </select>-->
+                    </div>
+                  </div>
+                  <div class="sidebar-module sidebar-module-inset">
+                    <h6>Elsewhere</h6>
+                    <ol class="list-unstyled">
+                      <li v-for="sub in section1" @click="getPosts(sub.group)"><a href="#">{{sub.name}}</a></li>
+                    </ol>
+                  </div>
+                <div class="sidebar-module">
+                  <h6>Archives</h6>
+                  <ol class="list-unstyled">
+                    <li><a href="#">March 2014</a></li>
+                    <li><a href="#">February 2014</a></li>
+                    <li><a href="#">January 2014</a></li>
+                    <li><a href="#">December 2013</a></li>
+                    <li><a href="#">November 2013</a></li>
+                    <li><a href="#">October 2013</a></li>
+                    <li><a href="#">September 2013</a></li>
+                    <li><a href="#">August 2013</a></li>
+                    <li><a href="#">July 2013</a></li>
+                    <li><a href="#">June 2013</a></li>
+                    <li><a href="#">May 2013</a></li>
+                    <li><a href="#">April 2013</a></li>
+                  </ol>
+                </div>
+              </div>
+            <div class="col-lg-9 blog-main">
                 <form>
                   <div class="row">
-                    <div class="large-12 columns">
+                    <div class="large-14 columns">
                       <!-- <div class="btn-group btn-group-justified">
                             <a @click="getPosts('Development')" class="btn btn-primary" style="width:50%">Development</a>
                             <a @click="getPosts('Infrastructure')" class="btn btn-info" style="width:30%">Infrastructure</a>
@@ -66,103 +147,13 @@
                     -->
                   </div>
                 </form>
-            </div>
-              
-          </section>
-          
-            <div v-if="loading"> Loading....</div>
-            <div class="search-results" v-else-if="group_clicked">
-               <i>Showing results for <strong>{{ group_selected }} -> {{ selected }}</strong> </i>
-            </div>
-            <div class="search-results" v-else>
-                <i>Found {{ total_results.length }} results for <strong>{{ group_selected }}</strong> </i>
-            </div>
-            <div class="col-sm-3  blog-sidebar">
-                <div class="sidebar-module sidebar-module-inset">
-                  <h4>Search</h4>
-                  <form @submit.prevent="getPosts(search_term)">
-                      <input v-model="search_term" class="u-full-width" type="text" id="searchTerm" name="searchTerm" placeholder="Search for projects">
-                      <button type="submit">Search</button>
-                  </form>
-                  
-                </div>
-                <div class="sidebar-module">
-                    <h4>Sub Catergories</h4>
-                    <div class="large-12 columns" v-if="dev">
-                        <select v-model="selected_dv">
-                            <option v-for="option in subDev1" v-bind:value="option">
-                              {{ option }}
-                            </option>
-                        </select>
-                          <span>Selected: {{ selected_dv }}</span>
-                      <!-- <v-select :options="subDev1" v-model="selected"></v-select>
-  
-                     <select>
-                        <option v-for="sub in subDev1" :value="sub">{{ sub }}</option>
-                      </select>-->
-                    </div>
-                    <div class="large-12 columns" v-else-if="inf">
-                        <select v-model="selected_inf">
-                            <option v-for="option in subInf1" v-bind:value="option">
-                              {{ option }}
-                            </option>
-                        </select>
-                          <span>Selected: {{ selected_inf }}</span>
-                      <!-- <v-select :options="subInf1" v-model="selected"></v-select>
-                      <span>Selected: {{ selected }}</span>
-                      <select>
-                          <option v-for="sub in subInf1" :value="sub">{{ sub }}</option>
-                      </select>-->
-                    </div>
-                    <div class="large-12 columns" v-else-if="ds">
-                        <select v-model="selected_ds">
-                            <option v-for="option in subDs1" v-bind:value="option">
-                              {{ option }}
-                            </option>
-                        </select>
-                          <span>Selected: {{ selected_ds }}</span>
-                        <!-- <v-select :options="subDs1" v-model="selected"></v-select>
-                        <span>Selected: {{ selected }}</span>
-                        <select>
-                            <option v-for="sub in subDs1" :value="sub">{{ sub }}</option>
-                        </select>-->
-                    </div>
+                <div v-if="loading"> Loading....</div>
+                  <div class="search-results" v-else-if="group_clicked">
+                     <i>Showing results for <strong>{{ group_selected }} {{ selected }}</strong> </i>
                   </div>
-                  <div class="sidebar-module">
-                    <h4>Elsewhere</h4>
-                    <ol class="list-unstyled">
-                      <li><a href="#">GitHub</a></li>
-                      <li><a href="#">Twitter</a></li>
-                      <li><a href="#">Facebook</a></li>
-                    </ol>
-                  </div>
-                <div class="sidebar-module">
-                  <h4>Archives</h4>
-                  <ol class="list-unstyled">
-                    <li><a href="#">March 2014</a></li>
-                    <li><a href="#">February 2014</a></li>
-                    <li><a href="#">January 2014</a></li>
-                    <li><a href="#">December 2013</a></li>
-                    <li><a href="#">November 2013</a></li>
-                    <li><a href="#">October 2013</a></li>
-                    <li><a href="#">September 2013</a></li>
-                    <li><a href="#">August 2013</a></li>
-                    <li><a href="#">July 2013</a></li>
-                    <li><a href="#">June 2013</a></li>
-                    <li><a href="#">May 2013</a></li>
-                    <li><a href="#">April 2013</a></li>
-                  </ol>
+                  <div class="search-results" v-else>
+                  <i>Found {{ total_results.length }} results for <strong>{{ group_selected }}</strong> </i>
                 </div>
-                <div class="sidebar-module">
-                  <h4>Elsewhere</h4>
-                  <ol class="list-unstyled">
-                    <li><a href="#">GitHub</a></li>
-                    <li><a href="#">Twitter</a></li>
-                    <li><a href="#">Facebook</a></li>
-                  </ol>
-                </div>
-              </div>
-            <div class="col-lg-9 blog-main">
               <news-list :results="results"></news-list>
             </div>
             

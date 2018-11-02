@@ -182,9 +182,9 @@ var vm = new Vue({
               ],
             group_selected: '',
             folders: [
-                {name: 'Development', pages: [{name: 'Web'}, {name: 'Mobile'}, {name: 'Others'}], sub1: [{name: 'Backend'}, {name: 'Frontend'}, {name: 'Fullstack'}] },
-                {name: 'Infrastructure', pages: [{name: 'ERP'}, {name: 'Admin'}, {name: 'Others'}], sub1: [{name: 'Backend'}, {name: 'Frontend'}, {name: 'Fullstack'}] },
-                {name: 'Data Science', pages: [{name: 'Big Data'}, {name: 'Business Intelligence'}, {name: 'Machine Learning'}], sub1: [{name: 'Backend'}, {name: 'Frontend'}, {name: 'Fullstack'}] },
+                {name: 'Development', pages: [{name: 'Web', sub1: [{name: 'Backend'}, {name: 'Frontend'}, {name: 'Fullstack'}] }, {name: 'Mobile', sub1: [{name: 'Native'}, {name: 'Cross-Platform'}]}] },
+                {name: 'Infrastructure', pages: [{name: 'ERP', sub1: [{name: 'SAP'}]}, {name: 'Admin', sub1: [{name: 'Microsoft'}]}, {name: 'Others', sub1: [{name: 'Other'}]}] },
+                {name: 'Data Science', pages: [{name: 'Big Data', sub1: [{name: 'Big'}]}, {name: 'Business Intelligence', sub1: [{name: 'BI'}]}, {name: 'Machine Learning', sub1: [{name: 'ML'}]}] },
             ],
         
 

@@ -96,28 +96,27 @@
                   <div v-for="folder in folders">
                       <span @click="toggle(folder.name)" style="cursor: pointer;">+</span>
                       <span><a @click="getPosts(folder.name)"> {{ folder.name }} </a></span>
+                      <input type="checkbox" name="vehicle" value="Bike"> I have a bike<br>
                       <div v-show="false" :id="folder.name">
-                        <div v-for="page in folder.pages" style="margin-left: 20px;">
-                          <span @click="toggle(page.name)" style="cursor: pointer;"> - </span>{{ page.name }}
-                         
-                        </div>
-                        <!-- <div v-show="true" :id="folder.sub1">
-                            <div v-for="group in folder.sub1" style="margin-left: 20px;">
-                              <span @click="toggle(folder.sub1)" style="cursor: pointer;"> + </span>{{ group.name }}
-                             
+                        <div v-for="page in folder.pages" style="margin-left: 20px;" >
+                          <span @click="toggle(page.name)" style="cursor: pointer;"> + </span>{{ page.name }}
+                          <div v-show="false" :id="page.name">
+                            <div v-for="group in page.sub1" style="margin-left: 20px;">
+                                <span> - </span>{{ group.name }}
                             </div>
-                        </div> -->
-                      </div> 
-                      
-
-                    </div>
-                  
-                  <div class="sidebar-module sidebar-module-inset">
-                    <h6>Elsewhere</h6>
-                    <ol class="list-unstyled">
-                      <li v-for="sub in section1" @click="getPosts(sub.group)"><a href="#">{{sub.name}}</a></li>
-                    </ol>
+                          </div>
+                        </div> 
+                      </div>
                   </div>
+                    
+                      
+                  
+                <div class="sidebar-module sidebar-module-inset">
+                  <h6>Elsewhere</h6>
+                  <ol class="list-unstyled">
+                    <li v-for="sub in section1" @click="getPosts(sub.group)"><a href="#">{{sub.name}}</a></li>
+                  </ol>
+                </div>
                 <div class="sidebar-module">
                   <h6>Archives</h6>
                   <ol class="list-unstyled">

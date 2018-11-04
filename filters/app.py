@@ -136,7 +136,6 @@ def bereich_group_type_stack(group, groupType, groupStack):
     #amounts = len(projects)
     amounts = len(projects1)
     #amount2 = len(project)
-    ab = {"amount": amounts, "amount2": page_size}
     #projects.insert(0,ab)
     #print(type(projects))
     b = {"amount": amounts, "amount2": page_size}

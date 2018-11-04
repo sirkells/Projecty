@@ -92,7 +92,7 @@ Vue.component('news-list', {
                                                         </div>
                                                         <div class="description">
 
-                                                            Sub-Category: <b>{{ post.bereich.group_type }}</b>
+                                                            Sub-Category: <b>{{ post.bereich.group_type }}</b>, Stack: <b>{{ post.bereich.group_type_stack }}</b>
                                                         </div>
                                                         <div class="description">
                                                             Date Posted: <b>{{ post.date_post }}</b>
@@ -120,6 +120,7 @@ Vue.component('news-list', {
         </section>`,
 
     computed: {
+        
         processedPosts() {
             let posts = this.results;
 
@@ -184,8 +185,9 @@ var vm = new Vue({
             folders: [
                 {name: 'Development', pages: [{name: 'Web', sub1: [{name: 'Backend'}, {name: 'Frontend'}, {name: 'Fullstack'}] }, {name: 'Mobile', sub1: [{name: 'Native'}, {name: 'Cross-Platform'}]}] },
                 {name: 'Infrastructure', pages: [{name: 'ERP', sub1: [{name: 'SAP'}]}, {name: 'Admin', sub1: [{name: 'Microsoft'}]}, {name: 'Others', sub1: [{name: 'Other'}]}] },
-                {name: 'Data Science', pages: [{name: 'Big Data', sub1: [{name: 'Big'}]}, {name: 'Business Intelligence', sub1: [{name: 'BI'}]}, {name: 'Machine Learning', sub1: [{name: 'ML'}]}] },
+                {name: 'Data Science', pages: [{name: 'Big Data', sub1: []}, {name: 'Business Intelligence', sub1: []}, {name: 'Machine Learning', sub1: []}] },
             ],
+            expanded: false,
         
 
         }
@@ -206,18 +208,25 @@ var vm = new Vue({
 
     },
     methods: {
+        print: function(name) {
+            console.log(name)
+        },
+        
+        
         toggle: function (idname) {
             if(document.getElementById(idname).style.display == "none"){
                 document.getElementById(idname).style.display = "inline";
+                
 
             }
             else if(document.getElementById(idname).style.display == "inline") {
                 document.getElementById(idname).style.display = "none";
+                
             }
-            else {
-                document.getElementById(idname).style.display = 'none';
-            }
+            
           },
+            
+          
         appendItems: function() {
             if (this.results.length < this.total_results.length) {
                 var next_data = this.total_results.slice(this.results.length, this.results.length + 10);
@@ -231,7 +240,7 @@ var vm = new Vue({
         getPosts(section) {
             //let url = section === "home"? buildUrl(section) : buildUrl(section) + "/" + sub;
             //let url = buildUrl(section) + "/Web";
-
+            
             let url
             if (section === "home") {
                 //this.appendItems()
@@ -437,6 +446,7 @@ var vm = new Vue({
                 //let category_selected = this.group_selected
                 //url = buildUrl(this.searchRoute.concat(section));
                 url = buildSecUrl("Data Science", section);
+                
 
                 console.log(url)
                 console.log(section)
@@ -462,6 +472,37 @@ var vm = new Vue({
                     //console.log((response.data.project_lists).length)
                 }).catch(error => { console.log(error); });
             }
+            else {
+                //let category_selected = this.group_selected
+                //url = buildUrl(this.searchRoute.concat(section));
+                url = buildUrl(section);
+                
+
+                console.log(url)
+                console.log(section)
+
+
+                this.group_clicked =false
+                axios.get(url).then((response) => {
+                 this.group_selected = section
+                 this.total_results = response.data.project_lists
+                 this.results = response.data.project_lists.slice(0, 10);
+                 this.total_project_count = response.data.amount
+                 console.log(this.section1[0])
+                 this.section1[0].count = (100 * response.data.amount2[0])/this.total_project_count
+                 this.section1[1].count = (100 * response.data.amount2[1])/this.total_project_count
+                 this.loading = false
+
+                 //if ((100 * response.data.amount2[2])/this.total_project_count) < 12) {}
+                 this.section1[2].count = ((100 * response.data.amount2[2])/this.total_project_count)
+                 this.section1[2].count +=5
+                 console.log(this.section1[0].count)
+                 console.log(this.section1[1].count)
+                 console.log(this.section1[2].count)
+                    //console.log((response.data.project_lists).length)
+                }).catch(error => { console.log(error); });
+            }
+
 
 
 

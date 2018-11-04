@@ -43,7 +43,7 @@
         
             <div class="col-sm-3 blog-sidebar">
                 <div class="sidebar-module sidebar-module-inset">
-                  <h6>Search</h6>
+                  <br>
                   <form @submit.prevent="getPosts(search_term)">
                       <input v-model="search_term"  type="text" id="searchTerm" name="searchTerm" placeholder="Search for projects">
                       <button type="submit">Search</button>
@@ -93,23 +93,49 @@
                         </select>-->
                     </div>
                   </div>
-                  <div v-for="folder in folders">
-                      <span @click="toggle(folder.name)" style="cursor: pointer;">+</span>
-                      <span><a @click="getPosts(folder.name)"> {{ folder.name }} </a></span>
-                      <input type="checkbox" name="vehicle" value="Bike"> I have a bike<br>
+                  <div v-for="folder in folders" :key="folder.id">
+                      <!--<span @click="toggle(folder.name), getPosts(folder.name)" style="cursor: pointer;"><input type="checkbox" name="vehicle" value="Bike" > </span>-->
+                      <span @click="toggle(folder.name), getPosts(folder.name)" style="cursor: pointer;"  >{{ expanded ? '&#9660;' : '&#9658;'}} </span>
+                      
+                      <span @click="getPosts(folder.name)"> {{ folder.name }} </span>
+                      
                       <div v-show="false" :id="folder.name">
                         <div v-for="page in folder.pages" style="margin-left: 20px;" >
-                          <span @click="toggle(page.name)" style="cursor: pointer;"> + </span>{{ page.name }}
+                          <div>
+                            
+                            <div v-if="dev">
+                              <span @click="toggle(page.name)" style="cursor: pointer;" > {{ page.sub1.length ? '+' : '-'}} </span>
+                             <a @click="getPosts(folder.name + '/' + page.name)">{{page.name}}</a>
+                              
+                              </span>
+                            </div>
+                            
+                            <span v-else-if="inf">
+                              <span @click="toggle(page.name), getPosts(folder.name + '/' + page.name)" style="cursor: pointer;" > {{ page.sub1.length ? '+' : '-'}} </span>
+                              <a @click="getPosts(folder.name + '/' + page.name)">{{page.name}}</a>
+                            </span>
+                            <span v-else-if="ds">
+                              <span @click="toggle(page.name), getPosts(folder.name + '/' + page.name)" style="cursor: pointer;" > {{ page.sub1.length ? '+' : '-'}} </span>
+                              <a @click="getPosts(folder.name + '/' + page.name)">{{page.name}}</a>
+                            </span>
+                          </div>
+                          
                           <div v-show="false" :id="page.name">
                             <div v-for="group in page.sub1" style="margin-left: 20px;">
-                                <span> - </span>{{ group.name }}
+                                <span> {{ group.name ? '-' : '+'}} </span>
+                                <span @click="getPosts(folder.name + '/' + page.name + '/' + group.name)">
+                                    {{ group.name }}
+                                </span>
+                              
                             </div>
                           </div>
                         </div> 
                       </div>
                   </div>
+                  <br>
+                  
                     
-                      
+                
                   
                 <div class="sidebar-module sidebar-module-inset">
                   <h6>Elsewhere</h6>

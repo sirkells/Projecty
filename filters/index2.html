@@ -24,7 +24,7 @@
   <nav class="navbar navbar-default">
     <div class="container-fluid">
       <div class="navbar-header">
-        <a href="#">
+        <a href="./index2.html">
           <img alt="Brand" src="ACT-Logo.png" width="70" height="40" class="d-inline-block align-top">
         </a>
       </div>
@@ -32,7 +32,7 @@
   </nav>
 
     <br>
-    <div class="container" id="app">
+    <div class="" id="app">
       
           <section >
             <div class="center">
@@ -40,7 +40,13 @@
             </div>
               
           </section>
-        
+            <div class="sidebar-module">
+                
+                <div class="btn-group btn-group-justified" >
+                    <a v-for="sub in section1" @click="getPosts(sub.group)" :class="sub.button" :style="sub.width + sub.count + sub.pix">{{ sub.name }}</a>
+                </div>
+                
+            </div>
             <div class="col-sm-3 blog-sidebar">
                 <div class="sidebar-module sidebar-module-inset">
                   <br>
@@ -51,9 +57,10 @@
                 
                   
                 </div>
-                <div class="sidebar-module sidebar-module-inset">
-                    <h6>Sub Catergories</h6>
-                    <div class="sidebar-module sidebar-module-inset" v-if="dev">
+                <div class="sidebar-module">
+                  
+                    <h6>Catergories</h6>
+                    <div class="" v-if="dev">
                         <select v-model="selected_dv">
                             <option v-for="option in subDev1" v-bind:value="option">
                               {{ option }}
@@ -123,8 +130,9 @@
                           <div v-show="false" :id="page.name">
                             <div v-for="group in page.sub1" style="margin-left: 20px;">
                                 <span> {{ group.name ? '-' : '+'}} </span>
-                                <span @click="getPosts(folder.name + '/' + page.name + '/' + group.name)">
-                                    {{ group.name }}
+                                <span>
+                                  <a @click="getPosts(folder.name + '/' + page.name + '/' + group.name)">{{ group.name }}</a>
+                                    
                                 </span>
                               
                             </div>
@@ -146,20 +154,12 @@
                 <div class="sidebar-module">
                   <h6>Archives</h6>
                   <ol class="list-unstyled">
-                    <li><a href="#">March 2014</a></li>
-                    <li><a href="#">February 2014</a></li>
-                    <li><a href="#">January 2014</a></li>
-                    <li><a href="#">December 2013</a></li>
-                    <li><a href="#">November 2013</a></li>
-                    <li><a href="#">October 2013</a></li>
-                    <li><a href="#">September 2013</a></li>
-                    <li><a href="#">August 2013</a></li>
-                    <li><a href="#">July 2013</a></li>
-                    <li><a href="#">June 2013</a></li>
-                    <li><a href="#">May 2013</a></li>
-                    <li><a href="#">April 2013</a></li>
+                    <li><a href="#">2015</a></li>
+                  
                   </ol>
                 </div>
+                
+                
               </div>
             <div class="col-lg-9 blog-main">
                 <form>
@@ -171,10 +171,7 @@
                             <a @click="getPosts('Data Science')" class="btn btn-warning" style="width:15%">Data Science</a>
                       </div>
                       -->
-                      <br>
-                      <div class="btn-group btn-group-justified" >
-                        <a v-for="sub in section1" @click="getPosts(sub.group)" :class="sub.button" :style="sub.width + sub.count + sub.pix">{{ sub.name }}</a>
-                      </div>
+                      
                      <!-- <select v-model="section">
                         <option v-for="section in sections" :value="section">{{ section }}</option>
                       </select>

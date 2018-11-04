@@ -259,8 +259,8 @@ var vm = new Vue({
                  this.loading = false
 
                  //if ((100 * response.data.amount2[2])/this.total_project_count) < 12) {}
-                 this.section1[2].count = ((100 * response.data.amount2[2])/this.total_project_count)
-                 this.section1[2].count +=5
+                 this.section1[2].count = ((100 * response.data.amount2[2])/this.total_project_count) + 5
+                 //this.section1[2].count +=5
 
 
 

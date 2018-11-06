@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for, redirect, jsonify, abort, flash, json, request
+from flask import Flask, render_template, url_for, redirect, jsonify, abort, flash, json, request, current_app
 from pymongo import MongoClient
 from elasticsearch import Elasticsearch
 from datetime import datetime
@@ -31,17 +31,16 @@ lengths = []
 for group in category:
     a = db.itproject_clean.find({"region": {"$ne": None}, "bereich.group": group}).count()
     lengths.append(a)
-@app.route('/')
+@app.route('/go')
 def index():
-    section = ['Development', 'Infrastructure', 'Data science']
-    return render_template('index3.html', section=[sec for sec in section])
+    return render_template('index2.html')
 
 
 
 @app.route('/home')
 def home():
     page_size = 100
-    project = db.itproject_clean.find({"region": {"$ne": None}, "bereich": {"$ne": None} }).limit(page_size)
+    project = db.itproject_clean.find({"region": {"$ne": None}, "bereich": {"$ne": None} })
     project1 = db.itproject_clean.find({"region": {"$ne": None}, "bereich": {"$ne": None} })
     projects1 = sorted(project1, key=lambda p: p['filter_date_post'], reverse=True)
     projects = sorted(project, key=lambda p: p['filter_date_post'], reverse=True)
@@ -69,7 +68,7 @@ def search_query():
     #website = request.args.get('website')
     results = db.itproject_clean.find( { "region": {"$ne": None}, "bereich": {"$ne": None}, "$text": { "$search": "\"" + search_term + "\"", "$language": "de" } }, { "score": {"$meta": "textScore" } } )
 
-    results.sort([('score', {'$meta': 'textScore'}), ("filter_date_post", 1)]).limit(100)
+    results.sort([('score', {'$meta': 'textScore'}), ("filter_date_post", 1)])
     projects = [p for p in results]
     #sorted(results, key=lambda p: p['filter_date_post'], reverse=True)
     print(type(projects))
@@ -85,7 +84,7 @@ def search_query():
 def dev(group):
     page_size = 100
     global pro
-    project = db.itproject_clean.find({"region": {"$ne": None}, "bereich.group": group}).limit(page_size)
+    project = db.itproject_clean.find({"region": {"$ne": None}, "bereich.group": group})
     project1 = db.itproject_clean.find({"region": {"$ne": None}, "bereich.group": group})
     projects1 = sorted(project1, key=lambda p: p['filter_date_post'], reverse=True)
     pro = len(projects1)
@@ -107,7 +106,7 @@ def dev(group):
 @app.route('/<group>/<groupType>')
 def bereich_group_type(group, groupType):
     page_size = 100
-    project = db.itproject_clean.find({"region": {"$ne": None}, "bereich.group": group, "bereich.group_type": groupType}).limit(page_size)
+    project = db.itproject_clean.find({"region": {"$ne": None}, "bereich.group": group, "bereich.group_type": groupType})
     project1 = db.itproject_clean.find({"region": {"$ne": None}, "bereich.group": group, "bereich.group_type": groupType})
     projects1 = sorted(project1, key=lambda p: p['filter_date_post'], reverse=True)
     projects = sorted(project, key=lambda p: p['filter_date_post'], reverse=True)
@@ -128,7 +127,7 @@ def bereich_group_type(group, groupType):
 @app.route('/<group>/<groupType>/<groupStack>')
 def bereich_group_type_stack(group, groupType, groupStack):
     page_size = 100
-    project = db.itproject_clean.find({"region": {"$ne": None}, "bereich.group": group, "bereich.group_type": groupType, "bereich.group_type_stack": groupStack}).limit(page_size)
+    project = db.itproject_clean.find({"region": {"$ne": None}, "bereich.group": group, "bereich.group_type": groupType, "bereich.group_type_stack": groupStack})
     project1 = db.itproject_clean.find({"region": {"$ne": None}, "bereich.group": group, "bereich.group_type": groupType, "bereich.group_type_stack": groupStack})
     projects1 = sorted(project1, key=lambda p: p['filter_date_post'], reverse=True)
     projects = sorted(project, key=lambda p: p['filter_date_post'], reverse=True)

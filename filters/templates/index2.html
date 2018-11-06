@@ -6,123 +6,715 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/foundation/6.3.1/css/foundation.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css">
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/foundation/6.3.1/css/foundation.min.css">
+
+
+
 
 
 </head>
 
 <body>
-
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <a class="navbar-brand mr-auto mr-lg-0" href="#">
-        <img src="/static/img/act-logo-dark-typo.png" width="70" height="40" class="d-inline-block align-top" alt=""></a>
-      <button class="navbar-toggler p-0 border-0" type="button" data-toggle="offcanvas">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <br>
-      <div class="navbar-collapse offcanvas-collapse" id="navbarsExampleDefault">
-        <ul class="navbar-nav mr-auto">
-          <li class="nav-item">
-            <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-          </li>
-          <br>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Analytics</a>
-          </li>
-          <br>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Cockpit</a>
-          </li>
-          <br>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="https://example.com" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Kelechi Igbokwe</a>
-            <div class="dropdown-menu" aria-labelledby="dropdown01">
-              <a class="dropdown-item" href="#">Profile</a>
-              <a class="dropdown-item" href="#">Logout</a>
-            </div>
-          </li>
-        </ul>
-        <form class="form-inline my-2 my-lg-0" action="/search/results" method="post">
-          <input class="form-control mr-lg-2" name="input" type="search" placeholder="Search" aria-label="Search">
-          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-        </form>
+  <nav class="navbar navbar-default">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a href="./index2.html">
+          <img alt="Brand" src="ACT-Logo.png" width="70" height="40" class="d-inline-block align-top">
+        </a>
       </div>
-    </nav>
-    <br>
-    <div class="container" id="app">
-            
-            <section class="callout secondary">
-              <h5 class="text-center">Filter by Category</h5>
-              <form>
-                <div class="row">
-                  <div class="large-12 columns">
-                    <div class="btn-group btn-group-justified" v-model="section">
-                          <a @click="getPosts('Development')" class="btn btn-primary" style="width:50%">Development</a>
-                          <a @click="getPosts('Infrastructure')" class="btn btn-info" style="width:30%">Infrastructure</a>
-                          <a @click="getPosts('Data Science')" class="btn btn-warning" style="width:15%">Data Science</a>
-                    </div>
-                   <!-- <select v-model="section">
-                      <option v-for="section in sections" :value="section">{{ section }}</option>
-                    </select>
-                  -->
-                  </div>
-                  <hr>
-                  <div class="large-12 columns" v-if="dev">
-                    <select>
-                      <option v-for="sub in subDev1" :value="sub">{{ sub }}</option>
-                    </select>
-                  </div>
-                  <div class="large-12 columns" v-else-if="inf">
-                    <select>
-                        <option v-for="sub in subInf1" :value="sub">{{ sub }}</option>
-                    </select>
-                  </div>
-                  <div class="large-12 columns" v-else-if="ds">
-                      <select>
-                          <option v-for="sub in subDs1" :value="sub">{{ sub }}</option>
-                      </select>
-                  </div>
-                  <!-- 
-                  <div class="medium-6 columns center-block" >
-                    <a @click="getPosts(section)" class="button expanded">Retrieve</a>
-                  </div>
-                  -->
-                </div>
-              </form>
-            </section>
-            <news-list :results="results"></news-list>            
     </div>
-    
-    <nav aria-label="Page navigation example">
-      <ul class="pagination justify-content-center pagination-lg">
-        <li class="page-item">
-          <a class="page-link" href="#" aria-label="Previous">
-            <span aria-hidden="true">&laquo;</span>
-            <span class="sr-only">Previous</span>
-          </a>
-        </li>
-        <li class="page-item"><a class="page-link" href="#">1</a></li>
-        <li class="page-item"><a class="page-link" href="#">2</a></li>
-        <li class="page-item"><a class="page-link" href="#">3</a></li>
-        <li class="page-item">
-          <a class="page-link" href="#" aria-label="Next">
-            <span aria-hidden="true">&raquo;</span>
-            <span class="sr-only">Next</span>
-          </a>
-        </li>
-      </ul>
-    </nav>
-  </div>
+  </nav>
+
+    <br>
+    <div class="" id="app">
+      
+          <section >
+            <div class="center">
+                
+            </div>
+              
+          </section>
+            <div class="sidebar-module">
+                
+                <div class="btn-group btn-group-justified" >
+                    <a v-for="sub in section1" @click="getPosts(sub.group)" :class="sub.button" :style="sub.width + sub.count + sub.pix">{{ sub.name }}</a>
+                </div>
+                
+            </div>
+            <div class="col-sm-3 blog-sidebar">
+                <div class="sidebar-module sidebar-module-inset">
+                  <br>
+                  <form @submit.prevent="getPosts(search_term)">
+                      <input v-model="search_term"  type="text" id="searchTerm" name="searchTerm" placeholder="Search for projects">
+                      <button type="submit">Search</button>
+                  </form>
+                
+                  
+                </div>
+                <div class="sidebar-module">
+                  
+                    <h6>Catergories</h6>
+                    <div class="" v-if="dev">
+                        <select v-model="selected_dv">
+                            <option v-for="option in subDev1" v-bind:value="option">
+                              {{ option }}
+                            </option>
+                        </select>
+                          <span>Selected: {{ selected_dv }}</span>
+                      <!-- <v-select :options="subDev1" v-model="selected"></v-select>
   
+                     <select>
+                        <option v-for="sub in subDev1" :value="sub">{{ sub }}</option>
+                      </select>-->
+                    </div>
+                    <div class="sidebar-module sidebar-module-inset" v-else-if="inf">
+                        <select v-model="selected_inf">
+                            <option v-for="option in subInf1" v-bind:value="option">
+                              {{ option }}
+                            </option>
+                        </select>
+                          <span>Selected: {{ selected_inf }}</span>
+                      <!-- <v-select :options="subInf1" v-model="selected"></v-select>
+                      <span>Selected: {{ selected }}</span>
+                      <select>
+                          <option v-for="sub in subInf1" :value="sub">{{ sub }}</option>
+                      </select>-->
+                    </div>
+                    <div class="sidebar-module sidebar-module-inset" v-else-if="ds">
+                        <select v-model="selected_ds">
+                            <option v-for="option in subDs1" v-bind:value="option">
+                              {{ option }}
+                            </option>
+                        </select>
+                          <span>Selected: {{ selected_ds }}</span>
+                        <!-- <v-select :options="subDs1" v-model="selected"></v-select>
+                        <span>Selected: {{ selected }}</span>
+                        <select>
+                            <option v-for="sub in subDs1" :value="sub">{{ sub }}</option>
+                        </select>-->
+                    </div>
+                  </div>
+                  <div v-for="folder in folders" :key="folder.id">
+                      <!--<span @click="toggle(folder.name), getPosts(folder.name)" style="cursor: pointer;"><input type="checkbox" name="vehicle" value="Bike" > </span>-->
+                      <span @click="toggle(folder.name), getPosts(folder.name)" style="cursor: pointer;"  >{{ expanded ? '&#9660;' : '&#9658;'}} </span>
+                      
+                      <span @click="getPosts(folder.name)"> {{ folder.name }} </span>
+                      
+                      <div v-show="false" :id="folder.name">
+                        <div v-for="page in folder.pages" style="margin-left: 20px;" >
+                          <div>
+                            
+                            <div v-if="dev">
+                              <span @click="toggle(page.name)" style="cursor: pointer;" > {{ page.sub1.length ? '+' : '-'}} </span>
+                             <a @click="getPosts(folder.name + '/' + page.name)">{{page.name}}</a>
+                              
+                              </span>
+                            </div>
+                            
+                            <span v-else-if="inf">
+                              <span @click="toggle(page.name), getPosts(folder.name + '/' + page.name)" style="cursor: pointer;" > {{ page.sub1.length ? '+' : '-'}} </span>
+                              <a @click="getPosts(folder.name + '/' + page.name)">{{page.name}}</a>
+                            </span>
+                            <span v-else-if="ds">
+                              <span @click="toggle(page.name), getPosts(folder.name + '/' + page.name)" style="cursor: pointer;" > {{ page.sub1.length ? '+' : '-'}} </span>
+                              <a @click="getPosts(folder.name + '/' + page.name)">{{page.name}}</a>
+                            </span>
+                          </div>
+                          
+                          <div v-show="false" :id="page.name">
+                            <div v-for="group in page.sub1" style="margin-left: 20px;">
+                                <span> {{ group.name ? '-' : '+'}} </span>
+                                <span>
+                                  <a @click="getPosts(folder.name + '/' + page.name + '/' + group.name)">{{ group.name }}</a>
+                                    
+                                </span>
+                              
+                            </div>
+                          </div>
+                        </div> 
+                      </div>
+                  </div>
+                  <br>
+                  
+                    
+                
+                  
+                <div class="sidebar-module sidebar-module-inset">
+                  <h6>Elsewhere</h6>
+                  <ol class="list-unstyled">
+                    <li v-for="sub in section1" @click="getPosts(sub.group)"><a href="#">{{sub.name}}</a></li>
+                  </ol>
+                </div>
+                <div class="sidebar-module">
+                  <h6>Archives</h6>
+                  <ol class="list-unstyled">
+                    <li><a href="#">2015</a></li>
+                  
+                  </ol>
+                </div>
+                
+                
+              </div>
+            <div class="col-lg-9 blog-main">
+                <form>
+                  <div class="row">
+                    <div class="large-14 columns">
+                      <!-- <div class="btn-group btn-group-justified">
+                            <a @click="getPosts('Development')" class="btn btn-primary" style="width:50%">Development</a>
+                            <a @click="getPosts('Infrastructure')" class="btn btn-info" style="width:30%">Infrastructure</a>
+                            <a @click="getPosts('Data Science')" class="btn btn-warning" style="width:15%">Data Science</a>
+                      </div>
+                      -->
+                      
+                     <!-- <select v-model="section">
+                        <option v-for="section in sections" :value="section">{{ section }}</option>
+                      </select>
+                    -->
+                    </div>
+  
+                    
+                    <!--
+                    <div class="medium-6 columns center-block" >
+                      <a @click="getPosts(section)" class="button expanded">Retrieve</a>
+                    </div>
+                    -->
+                  </div>
+                </form>
+                <div v-if="loading"> Loading....</div>
+                  <div class="search-results" v-else-if="group_clicked">
+                     <i>Showing results for <strong>{{ group_selected }} {{ selected }}</strong> </i>
+                  </div>
+                  <div class="search-results" v-else>
+                  <i>Found {{ total_results.length }} results for <strong>{{ group_selected }}</strong> </i>
+                </div>
+              <news-list :results="results"></news-list>
+            </div>
+            
+  </div>
+  <div class="container" id="product-list-bottom" >
+      <div>.</div>
+
+  </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <script src="https://unpkg.com/vue"></script>
-    <script src="app1.js"></script>
+    <script src="https://unpkg.com/vue-resource@1.5.1/dist/vue-resource.min.js"></script>
+    <script>
+      const SECTIONS = "Development, Infrastructure, Data Science";
+      const subDev = "Web, Mobile";
+      const subInf = "ERP, Admin";
+      const subDs = "Big Data, Business Intelligence, Machine Learning";
+      const devWeb = "Fullstack, Backend, Frontend"
+      const class_buttons = "btn btn-primary, btn btn-info, btn btn-warning"
+
+
+          //let url = section === "home"? buildUrl(section) : buildUrl(section) + "/" + sub;
+          //let url = buildUrl(section) + "/Web";
+
+
+
+      //var country_selected = document.getElementById("Sub");
+
+      const BaseUrl = "http://127.0.0.1:5000/";
+      const searchBaseUrl = "http://127.0.0.1:5000/search/";
+      const queryBaseUrl = "http://127.0.0.1:5000/query";
+      //const url1 = `${queryBaseUrl}&search_term=${searchTerm}`;
+
+
+      function buildUrl(url) {
+      
+          return BaseUrl + url
+      }
+
+      function searchUrl(url) {
+      
+          return searchBaseUrl + url
+      }
+      function queryUrl(searchTerm) {
+      
+          return `${queryBaseUrl}${'?'}search=${searchTerm}`;
+      }
+      function buildSecUrl(url, sub) {
+      
+          return BaseUrl + url + '/' + sub
+      }
+
+
+
+      Vue.component('v-select', VueSelect.VueSelect);
+
+
+      Vue.component('news-list', {
+          props: ['results'],
+          template: `
+              <section>
+                  <table class="ui very basic padded striped four column table accordion">
+                  
+                              <tbody>
+                                  <div v-for="posts in processedPosts">
+                                      <div v-for="post in posts">
+                                      
+                                      
+                                          <tr>
+                                          
+                                              <td>
+                                                  <div class="title">
+                                                  <a :href="post.url" target="_blank"><b>{{ post.title }}</b></a>
+                                                  </div>
+                                                
+                                                  <div class="content">
+                                                      <div class="ui relaxed divided items">
+                                                          <div class="item">
+                                                              <div class="description">
+                                                                  {{ post.description.slice(0,350) }}
+                                                              </div>
+                                                          </div>
+                                                      </div>
+                                                      <div class="ui relaxed divided items">
+                                                          <div class="item">
+                                                              <div class="description">
+                                                                  Category: <b>{{ post.bereich.group }}</b>
+                                                              </div>
+                                                              <div class="description">
+                                                              
+                                                                  Sub-Category: <b>{{ post.bereich.group_type }}</b>, Stack: <b>{{ post.bereich.group_type_stack }}</b>
+                                                              </div>
+                                                              <div class="description">
+                                                                  Date Posted: <b>{{ post.date_post }}</b>
+                                                              </div>
+                                                            
+                                                              <div class="description">
+                                                                  Bundesland <b>{{ post.region.bundesland }}</b>, Stadt: <b>{{ post.region.stadt }}</b>
+                                                              </div>
+                                                              <div class="description" style="color: red">
+                                                                  Score: <i><b>{{ post.score }}</b></i>
+                                                              </div>
+                                                            
+                                                            
+                                                            
+                                                          </div>
+                                                      </div>
+                                                  </div>
+                                                
+                                              </td>
+                                          </tr>
+                                      </div>
+                                  </div>
+                              </tbody>
+                   </table>
+              </section>`,
+            
+          computed: {
+
+              processedPosts() {
+                  let posts = this.results;
+              
+                  // Add image_url attribute
+              
+              
+                  // Put Array into Chunks
+                  let i, j, chunkedArray = [], chunk = 4;
+                  for (i = 0, j = 0; i < posts.length; i += chunk, j++) {
+                      chunkedArray[j] = posts.slice(i, i + chunk);
+                  }
+                  return chunkedArray;
+              },
+              // showM: function() {
+              //     return this.results.length === this.total_results.length && this.results.length > 0
+              // }
+          }
+      });
+
+
+      var vm = new Vue({
+          el: '#app',
+          data: function(){
+              return {
+              
+                  results: [],
+                  section1: [{name: 'Development', group: "Development", button: "btn btn-primary", width: "width:", count: 50, pix:"%"}, {name: 'Infrastructure', group: "Infrastructure", button:"btn btn-info", width: "width:", count: 30, pix:"%"}, {name: 'Data', group:"Data Science", button: "btn btn-warning", width: "width:", count: 20, pix:"%"}],
+                  sections: SECTIONS.split(', '), // create an array of the sections
+                  class_buttons1: class_buttons.split(', '),
+                  subDev1: subDev.split(', '),
+                  subInf1: subInf.split(', '),
+                  subDs1: subDs.split(', '),
+                  devSub: devWeb.split(', '),
+              
+                  section: 'home', // set default section to 'home'
+                  isActive: true,
+                  devSub1: false,
+                  dev: false,
+                  inf: false,
+                  ds: false,
+                  selected: [],
+                  items: [],
+                  total_project_count: 0,
+                  total_results: [],
+                  loading: false,
+                  loading_api: false,
+                  group_selected: '',
+                  searchRoute: 'search/',
+                  search_term: '',
+                  group_clicked: true,
+                  queryRoute: '?search=',
+                  selected: '',
+                  selected_dv: '',
+                  selected_inf: '',
+                  selected_ds: '',
+                  options: [
+                      { text: 'One', value: 'A' },
+                      { text: 'Two', value: 'B' },
+                      { text: 'Three', value: 'C' }
+                    ],
+                  group_selected: '',
+                  folders: [
+                      {name: 'Development', pages: [{name: 'Web', sub1: [{name: 'Backend'}, {name: 'Frontend'}, {name: 'Fullstack'}] }, {name: 'Mobile', sub1: [{name: 'Native'}, {name: 'Cross-Platform'}]}] },
+                      {name: 'Infrastructure', pages: [{name: 'ERP', sub1: [{name: 'SAP'}]}, {name: 'Admin', sub1: [{name: 'Microsoft'}]}, {name: 'Others', sub1: [{name: 'Other'}]}] },
+                      {name: 'Data Science', pages: [{name: 'Big Data', sub1: []}, {name: 'Business Intelligence', sub1: []}, {name: 'Machine Learning', sub1: []}] },
+                  ],
+                  expanded: false,
+              
+              
+              }
+            
+            
+            
+            
+          },
+          mounted() {
+              this.getPosts(this.section);
+              var vueInstance = this;
+              var elem = document.getElementById('product-list-bottom');
+              var watcher = scrollMonitor.create(elem);
+              watcher.enterViewport(function() {
+                  console.log('hello')
+                  vueInstance.appendItems()
+              })
+            
+          },
+          methods: {
+              print: function(name) {
+                  console.log(name)
+              },
+
+
+              toggle: function (idname) {
+                  if(document.getElementById(idname).style.display == "none"){
+                      document.getElementById(idname).style.display = "inline";
+
+                  
+                  }
+                  else if(document.getElementById(idname).style.display == "inline") {
+                      document.getElementById(idname).style.display = "none";
+
+                  }
+
+                },
+
+
+              appendItems: function() {
+                  if (this.results.length < this.total_results.length) {
+                      var next_data = this.total_results.slice(this.results.length, this.results.length + 10);
+                      this.results = this.results.concat(next_data);
+                  }
+              },
+              dropdown: function(a) {
+                  console.log(a)
+              },
+            
+              getPosts(section) {
+                  //let url = section === "home"? buildUrl(section) : buildUrl(section) + "/" + sub;
+                  //let url = buildUrl(section) + "/Web";
+
+                  let url
+                  if (section === "home") {
+                      //this.appendItems()
+                      url = buildUrl(section);
+                      console.log(url)
+                      this.loading = true
+                  
+                      axios.get(url).then((response) => {
+                       this.group_selected = "All Projects"
+                       this.total_results = response.data.project_lists
+                       this.results = response.data.project_lists.slice(0, 10);
+                       this.total_project_count = response.data.amount
+                       console.log(this.section1[0])
+                       this.section1[0].count = (100 * response.data.amount2[0])/this.total_project_count
+                       this.section1[1].count = (100 * response.data.amount2[1])/this.total_project_count
+                       this.loading = false
+                      
+                       //if ((100 * response.data.amount2[2])/this.total_project_count) < 12) {}
+                       this.section1[2].count = ((100 * response.data.amount2[2])/this.total_project_count) + 5
+                       //this.section1[2].count +=5
+                      
+                      
+                      
+                      
+                       console.log(this.section1[0].count)
+                       console.log(this.section1[1].count)
+                       console.log(this.section1[2].count)
+                      
+                       //this.cat1 = (100 * this.current_project_count)/this.total_project_count
+                       /*console.log(this.total_project_count)
+                       console.log(this.dev_project_count)
+                       console.log(this.inf_project_count)
+                       console.log(this.ds_project_count)
+                      
+                       console.log(this.gg)*/
+                       //console.log((response.data.project_lists).length)
+                       }).catch(error => { console.log(error); });
+                     
+                  }
+                  else if (section === "Development") {
+                  
+                      url = buildUrl(section);
+                  
+                      console.log(url)
+                      console.log(section)
+                      this.group_selected = ''
+                      this.group_selected = section;
+                      console.log(this.group_selected)
+                  
+                      this.inf = false;
+                      this.ds = false;
+                      this.dev = true;
+                      axios.get(url).then((response) => {
+                          this.group_selected = section
+                          this.total_results = response.data.project_lists
+                          this.results = response.data.project_lists.slice(0, 10);
+                          this.total_project_count = response.data.amount
+                          //this.results = response.data.project_lists;
+                          //this.total_project_count = response.data.amount
+                          // this.current_project_count = response.data.amount2[0]
+                          // this.cat1 = (100 * this.current_project_count)/this.total_project_count
+                          // console.log(this.total_project_count)
+                          // console.log(this.current_project_count)
+                          // console.log(this.cat1)
+                          //console.log((response.data.project_lists).length)
+                      }).catch(error => { console.log(error); });
+                  }
+                  else if (section === "Infrastructure") {
+                     url = buildUrl(section);
+                     console.log(url)
+                     console.log(section)
+                     this.group_selected = ''
+                     this.group_selected = section;
+                     console.log(this.group_selected)
+                     this.dev = false;
+                     this.ds = false;
+                     this.inf = true;
+                     axios.get(url).then((response) => {
+                      this.group_selected = section
+                      this.total_results = response.data.project_lists
+                      this.results = response.data.project_lists.slice(0, 10);
+                      this.total_project_count = response.data.amount
+                      //this.current_project_count = response.data.amount2[1]
+                      //this.cat1 = (100 * this.current_project_count)/this.total_project_count
+                      // console.log(this.total_project_count)
+                      // console.log(this.current_project_count)
+                      // console.log(this.gg)
+                      //console.log((response.data.project_lists).length)
+                      }).catch(error => { console.log(error); });
+                    
+                  }
+                  else if (section === "Data Science") {
+                     url = buildUrl(section);
+                     console.log(url)
+                     console.log(section)
+                     this.group_selected = ''
+                     this.group_selected = section;
+                     console.log(this.group_selected)
+                     this.dev = false;
+                     this.inf = false;
+                     this.ds = true;
+                     axios.get(url).then((response) => {
+                      this.group_selected = section
+                      this.total_results = response.data.project_lists
+                      this.results = response.data.project_lists.slice(0, 10);
+                      this.total_project_count = response.data.amount
+                      // this.results = response.data.project_lists;
+                      // this.total_project_count = response.data.amount
+                      // this.current_project_count = response.data.amount2[2]
+                      // this.cat1 = (100 * this.current_project_count)/this.total_project_count
+                      // console.log(this.total_project_count)
+                      // console.log(this.current_project_count)
+                      // console.log(this.cat1)
+                      //console.log((response.data.project_lists).length)
+                  }).catch(error => { console.log(error); });
+                  }
+                  else if (section === this.search_term) {
+                      //url = buildUrl(this.searchRoute.concat(section));
+                      url = queryUrl(section);
+                      console.log(url)
+                      console.log(section)
+                  
+                  
+                      this.group_clicked =false
+                      axios.get(url).then((response) => {
+                       this.group_selected = section
+                       this.total_results = response.data.project_lists
+                       this.results = response.data.project_lists.slice(0, 10);
+                       this.total_project_count = response.data.amount
+                       console.log(this.section1[0])
+                       this.section1[0].count = (100 * response.data.amount2[0])/this.total_project_count
+                       this.section1[1].count = (100 * response.data.amount2[1])/this.total_project_count
+                       this.loading = false
+                      
+                       //if ((100 * response.data.amount2[2])/this.total_project_count) < 12) {}
+                       this.section1[2].count = ((100 * response.data.amount2[2])/this.total_project_count)
+                       this.section1[2].count +=5
+                       console.log(this.section1[0].count)
+                       console.log(this.section1[1].count)
+                       console.log(this.section1[2].count)
+                          //console.log((response.data.project_lists).length)
+                      }).catch(error => { console.log(error); });
+                  }
+                  else if (section === this.selected_dv) {
+                      //let category_selected = this.group_selected
+                      //url = buildUrl(this.searchRoute.concat(section));
+                      url = buildSecUrl("Development", section);
+                  
+                      console.log(url)
+                      console.log(section)
+                  
+                  
+                      this.group_clicked =false
+                      axios.get(url).then((response) => {
+                       this.group_selected = section
+                       this.total_results = response.data.project_lists
+                       this.results = response.data.project_lists.slice(0, 10);
+                       this.total_project_count = response.data.amount
+                       console.log(this.section1[0])
+                       this.section1[0].count = (100 * response.data.amount2[0])/this.total_project_count
+                       this.section1[1].count = (100 * response.data.amount2[1])/this.total_project_count
+                       this.loading = false
+                      
+                       //if ((100 * response.data.amount2[2])/this.total_project_count) < 12) {}
+                       this.section1[2].count = ((100 * response.data.amount2[2])/this.total_project_count)
+                       this.section1[2].count +=5
+                       console.log(this.section1[0].count)
+                       console.log(this.section1[1].count)
+                       console.log(this.section1[2].count)
+                          //console.log((response.data.project_lists).length)
+                      }).catch(error => { console.log(error); });
+                  }
+                  else if (section === this.selected_inf) {
+                      //let category_selected = this.group_selected
+                      //url = buildUrl(this.searchRoute.concat(section));
+                      url = buildSecUrl("Infrastructure", section);
+                  
+                      console.log(url)
+                      console.log(section)
+                  
+                  
+                      this.group_clicked =false
+                      axios.get(url).then((response) => {
+                       this.group_selected = section
+                       this.total_results = response.data.project_lists
+                       this.results = response.data.project_lists.slice(0, 10);
+                       this.total_project_count = response.data.amount
+                       console.log(this.section1[0])
+                       this.section1[0].count = (100 * response.data.amount2[0])/this.total_project_count
+                       this.section1[1].count = (100 * response.data.amount2[1])/this.total_project_count
+                       this.loading = false
+                      
+                       //if ((100 * response.data.amount2[2])/this.total_project_count) < 12) {}
+                       this.section1[2].count = ((100 * response.data.amount2[2])/this.total_project_count)
+                       this.section1[2].count +=5
+                       console.log(this.section1[0].count)
+                       console.log(this.section1[1].count)
+                       console.log(this.section1[2].count)
+                          //console.log((response.data.project_lists).length)
+                      }).catch(error => { console.log(error); });
+                  }
+                  else if (section === this.selected_ds) {
+                      //let category_selected = this.group_selected
+                      //url = buildUrl(this.searchRoute.concat(section));
+                      url = buildSecUrl("Data Science", section);
+
+                  
+                      console.log(url)
+                      console.log(section)
+                  
+                  
+                      this.group_clicked =false
+                      axios.get(url).then((response) => {
+                       this.group_selected = section
+                       this.total_results = response.data.project_lists
+                       this.results = response.data.project_lists.slice(0, 10);
+                       this.total_project_count = response.data.amount
+                       console.log(this.section1[0])
+                       this.section1[0].count = (100 * response.data.amount2[0])/this.total_project_count
+                       this.section1[1].count = (100 * response.data.amount2[1])/this.total_project_count
+                       this.loading = false
+                      
+                       //if ((100 * response.data.amount2[2])/this.total_project_count) < 12) {}
+                       this.section1[2].count = ((100 * response.data.amount2[2])/this.total_project_count)
+                       this.section1[2].count +=5
+                       console.log(this.section1[0].count)
+                       console.log(this.section1[1].count)
+                       console.log(this.section1[2].count)
+                          //console.log((response.data.project_lists).length)
+                      }).catch(error => { console.log(error); });
+                  }
+                  else {
+                      //let category_selected = this.group_selected
+                      //url = buildUrl(this.searchRoute.concat(section));
+                      url = buildUrl(section);
+
+                  
+                      console.log(url)
+                      console.log(section)
+                  
+                  
+                      this.group_clicked =false
+                      axios.get(url).then((response) => {
+                       this.group_selected = section
+                       this.total_results = response.data.project_lists
+                       this.results = response.data.project_lists.slice(0, 10);
+                       this.total_project_count = response.data.amount
+                       console.log(this.section1[0])
+                       this.section1[0].count = (100 * response.data.amount2[0])/this.total_project_count
+                       this.section1[1].count = (100 * response.data.amount2[1])/this.total_project_count
+                       this.loading = false
+                      
+                       //if ((100 * response.data.amount2[2])/this.total_project_count) < 12) {}
+                       this.section1[2].count = ((100 * response.data.amount2[2])/this.total_project_count)
+                       this.section1[2].count +=5
+                       console.log(this.section1[0].count)
+                       console.log(this.section1[1].count)
+                       console.log(this.section1[2].count)
+                          //console.log((response.data.project_lists).length)
+                      }).catch(error => { console.log(error); });
+                  }
+                
+                
+                
+                
+              }
+          },
+          watch: {
+            selected_dv: function() {
+              console.log(this.selected_dv)
+              this.getPosts(this.selected_dv)
+            
+            },
+            selected_inf: function() {
+              console.log(this.selected_inf)
+              this.getPosts(this.selected_inf)
+            },
+            selected_ds: function() {
+              console.log(this.selected_ds)
+              this.getPosts(this.selected_ds)
+            }
+          }
+        
+      });
+    </script>
 </body>
 </html>

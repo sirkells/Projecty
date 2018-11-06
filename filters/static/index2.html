@@ -10,16 +10,6 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/foundation/6.3.1/css/foundation.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css">
-    <!--Added style to incraese width of container which helps the scrollMonitor-->
-    <style>
-       @media (min-width: 1200px) {
-         .container{
-             max-width: 3000px;
-         }
-         .main {
-      margin-top: 60px; /* Add a top margin to avoid content overlay */
-     }
-   </style>
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
@@ -31,7 +21,7 @@
 </head>
 
 <body>
-  <nav class="navbar navbar-default navbar-fixed-top">
+  <nav class="navbar navbar-default">
     <div class="container-fluid">
       <div class="navbar-header">
         <a href="./index2.html">
@@ -42,7 +32,7 @@
   </nav>
 
     <br>
-    <div class="container main" id="app">
+    <div class="" id="app">
 
           <section >
             <div class="center">
@@ -67,7 +57,7 @@
 
 
                 </div>
-                <div class="sidebar-module sidebar-module-inset">
+                <div class="sidebar-module">
 
                     <h6>Catergories</h6>
                     <div class="" v-if="dev">
@@ -197,9 +187,9 @@
                   </div>
                 </form>
                 <div v-if="loading"> Loading....</div>
-                <!--  <div class="search-results" v-else-if="group_clicked">
+                  <div class="search-results" v-else-if="group_clicked">
                      <i>Showing results for <strong>{{ group_selected }} {{ selected }}</strong> </i>
-                  </div>  -->
+                  </div>
                   <div class="search-results" v-else>
                   <i>Found {{ total_results.length }} results for <strong>{{ group_selected }}</strong> </i>
                 </div>
@@ -208,7 +198,7 @@
 
   </div>
   <div class="container" id="product-list-bottom" >
-      <div>gggdgshs</div>
+      <div>.</div>
 
   </div>
 

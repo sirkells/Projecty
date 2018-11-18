@@ -120,7 +120,7 @@ Vue.component('news-list', {
         </section>`,
 
     computed: {
-        
+
         processedPosts() {
             let posts = this.results;
 
@@ -188,7 +188,7 @@ var vm = new Vue({
                 {name: 'Data Science', pages: [{name: 'Big Data', sub1: []}, {name: 'Business Intelligence', sub1: []}, {name: 'Machine Learning', sub1: []}] },
             ],
             expanded: false,
-        
+
 
         }
 
@@ -211,22 +211,22 @@ var vm = new Vue({
         print: function(name) {
             console.log(name)
         },
-        
-        
+
+
         toggle: function (idname) {
             if(document.getElementById(idname).style.display == "none"){
                 document.getElementById(idname).style.display = "inline";
-                
+
 
             }
             else if(document.getElementById(idname).style.display == "inline") {
                 document.getElementById(idname).style.display = "none";
-                
+
             }
-            
+
           },
-            
-          
+
+
         appendItems: function() {
             if (this.results.length < this.total_results.length) {
                 var next_data = this.total_results.slice(this.results.length, this.results.length + 10);
@@ -236,11 +236,22 @@ var vm = new Vue({
         dropdown: function(a) {
             console.log(a)
         },
+        fetchData() {
+          axios.get('https://api.coinmarketcap.com/v1/ticker/'+this.$route.params.id+'/')
+          .then((resp) => {
+            this.coin = resp.data[0]
+            console.log(resp)
+          })
+          .catch((err) => {
+            console.log(err)
+          })
+      },
+
 
         getPosts(section) {
             //let url = section === "home"? buildUrl(section) : buildUrl(section) + "/" + sub;
             //let url = buildUrl(section) + "/Web";
-            
+
             let url
             if (section === "home") {
                 //this.appendItems()
@@ -446,7 +457,7 @@ var vm = new Vue({
                 //let category_selected = this.group_selected
                 //url = buildUrl(this.searchRoute.concat(section));
                 url = buildSecUrl("Data Science", section);
-                
+
 
                 console.log(url)
                 console.log(section)
@@ -476,7 +487,7 @@ var vm = new Vue({
                 //let category_selected = this.group_selected
                 //url = buildUrl(this.searchRoute.concat(section));
                 url = buildUrl(section);
-                
+
 
                 console.log(url)
                 console.log(section)

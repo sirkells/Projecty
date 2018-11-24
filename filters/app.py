@@ -36,7 +36,7 @@ def index():
     return render_template('index2.html')
 
 
-
+@app.route('/')
 @app.route('/home')
 def home():
     page_size = 100
@@ -66,7 +66,7 @@ def search_query(search_term):
 
     #framework = request.args['framework'] #if key doesn't exist, returns a 400, bad request error
     #website = request.args.get('website')
-    results = db.itproject_clean.find( { "region": {"$ne": None}, "bereich": {"$ne": None}, "$text": { "$search": "\"" + search_term + "\"", "$language": "de" } }, { "score": {"$meta": "textScore" } } )
+    results = db.itproject_clean.find( { "region": {"$ne": None}, "bereich": {"$ne": None}, "$text": { "$search": search_term, "$language": "de" } }, { "score": {"$meta": "textScore" } } )
 
     results.sort([('score', {'$meta': 'textScore'}), ("filter_date_post", 1)])
     projects = [p for p in results]
@@ -183,7 +183,7 @@ def location(bundesland):
     parsed = json.loads(json_util.dumps(b))
     page_sanitized = json.dumps(parsed, indent=4)
     return page_sanitized
-@app.route('/api/filters/search/')
+@app.route('/api/search/')
 def v1():
     search_term = request.args.get('search_term')
     bundesland = request.args.get('bundesland')
@@ -208,26 +208,35 @@ def filters():
     group = request.args.get('group')
     groupType = request.args.get('groupType')
     groupStack = request.args.get('groupStack')
+    skill = request.args.get('skill')
     bundesland = request.args.get('bundesland')
     if group and not groupStack and not groupType and not bundesland:
         project = db.itproject_clean.find({"region": {"$ne": None}, "bereich.group": group}).limit(100)
         project1 = db.itproject_clean.find({"region": {"$ne": None}, "bereich.group": group})
-    elif group  and bundesland and not groupStack and not groupType:
+    elif group and bundesland and not groupStack and not groupType:
         project = db.itproject_clean.find({"region": {"$ne": None}, "bereich.group": group, "region.bundesland": bundesland}).limit(100)
         project1 = db.itproject_clean.find({"region": {"$ne": None}, "bereich.group": group, "region.bundesland": bundesland})
-    elif group and groupType and not groupStack and not bundesland:
-        project = db.itproject_clean.find({"region": {"$ne": None}, "bereich.group": group, "bereich.group_type": groupType}).limit(100)
-        project1 = db.itproject_clean.find({"region": {"$ne": None}, "bereich.group": group, "bereich.group_type": groupType})
-    elif group and groupType and bundesland and not groupStack:
-        project = db.itproject_clean.find({"region": {"$ne": None}, "bereich.group": group, "bereich.group_type": groupType, "region.bundesland": bundesland}).limit(100)
-        project1 = db.itproject_clean.find({"region": {"$ne": None}, "bereich.group": group, "bereich.group_type": groupType, "region.bundesland": bundesland})
-    elif group and groupType and groupStack and not bundesland:
-        project = db.itproject_clean.find({"region": {"$ne": None}, "bereich.group": group, "bereich.group_type": groupType}).limit(100)
-        project1 = db.itproject_clean.find({"region": {"$ne": None}, "bereich.group": group, "bereich.group_type": groupType})
-    elif group and groupType and groupStack and bundesland:
-        project = db.itproject_clean.find({"region": {"$ne": None}, "bereich.group": group, "bereich.group_type": groupType, "bereich.group_type_stack": groupStack, "region.bundesland": bundesland}).limit(100)
-        project1 = db.itproject_clean.find({"region": {"$ne": None}, "bereich.group": group, "bereich.group_type": groupType, "bereich.group_type_stack": groupStack, "region.bundesland": bundesland})
-    elif bundesland:
+    elif groupType and not groupStack and not bundesland:
+        project = db.itproject_clean.find({"region": {"$ne": None}, "bereich.group_type": groupType}).limit(100)
+        project1 = db.itproject_clean.find({"region": {"$ne": None}, "bereich.group_type": groupType})
+    elif groupType and bundesland and not groupStack:
+        project = db.itproject_clean.find({"region": {"$ne": None}, "bereich.group_type": groupType, "region.bundesland": bundesland}).limit(100)
+        project1 = db.itproject_clean.find({"region": {"$ne": None}, "bereich.group_type": groupType, "region.bundesland": bundesland})
+    elif groupStack and not bundesland:
+        project = db.itproject_clean.find({"region": {"$ne": None}, "bereich.group_type_stack": groupStack}).limit(100)
+        project1 = db.itproject_clean.find({"region": {"$ne": None}, "bereich.group_type_stack": groupStack})
+    elif groupStack and bundesland:
+        project = db.itproject_clean.find({"region": {"$ne": None}, "bereich.group_type_stack": groupStack, "region.bundesland": bundesland}).limit(100)
+        project1 = db.itproject_clean.find({"region": {"$ne": None}, "bereich.group_type_stack": groupStack, "region.bundesland": bundesland})
+    elif skill and not groupStack and not groupType and not bundesland:
+        project = db.itproject_clean.find({"region": {"$ne": None}, "bereich.skill": skill}).limit(100)
+        project1 = db.itproject_clean.find({"region": {"$ne": None}, "bereich.skill": skill})
+    elif skill and bundesland and not groupStack and not groupType:
+        project = db.itproject_clean.find({"region": {"$ne": None}, "bereich.skill": skill, "region.bundesland": bundesland}).limit(100)
+        project1 = db.itproject_clean.find({"region": {"$ne": None}, "bereich.skill": skill, "region.bundesland": bundesland})
+
+    
+    elif bundesland and not groupStack and not groupType and not group and not skill:
         page_size = 100
         project = db.itproject_clean.find({"region": {"$ne": None},  "region.bundesland": bundesland}).limit(page_size)
         project1 = db.itproject_clean.find({"region": {"$ne": None}, "region.bundesland": bundesland})
@@ -259,7 +268,31 @@ if __name__ == '__main__':
 
 
 
-"""@app.route('/query')
+"""
+
+elif group  and bundesland and not groupStack and not groupType:
+        project = db.itproject_clean.find({"region": {"$ne": None}, "bereich.group": group, "region.bundesland": bundesland}).limit(100)
+        project1 = db.itproject_clean.find({"region": {"$ne": None}, "bereich.group": group, "region.bundesland": bundesland})
+    elif group and groupType and not groupStack and not bundesland:
+        project = db.itproject_clean.find({"region": {"$ne": None}, "bereich.group": group, "bereich.group_type": groupType}).limit(100)
+        project1 = db.itproject_clean.find({"region": {"$ne": None}, "bereich.group": group, "bereich.group_type": groupType})
+    elif group and groupType and bundesland and not groupStack:
+        project = db.itproject_clean.find({"region": {"$ne": None}, "bereich.group": group, "bereich.group_type": groupType, "region.bundesland": bundesland}).limit(100)
+        project1 = db.itproject_clean.find({"region": {"$ne": None}, "bereich.group": group, "bereich.group_type": groupType, "region.bundesland": bundesland})
+    elif group and groupType and groupStack and not bundesland:
+        project = db.itproject_clean.find({"region": {"$ne": None}, "bereich.group": group, "bereich.group_type": groupType, "bereich.group_type_stack": groupStack}).limit(100)
+        project1 = db.itproject_clean.find({"region": {"$ne": None}, "bereich.group": group, "bereich.group_type": groupType, "bereich.group_type_stack": groupStack})
+    elif group and groupType and groupStack and skill and bundesland:
+        project = db.itproject_clean.find({"region": {"$ne": None}, "bereich.group": group, "bereich.group_type": groupType, "bereich.group_type_stack": groupStack, "bereich.skill": skill, "region.bundesland": bundesland}).limit(100)
+        project1 = db.itproject_clean.find({"region": {"$ne": None}, "bereich.group": group, "bereich.group_type": groupType, "bereich.group_type_stack": groupStack, "bereich.skill": skill, "region.bundesland": bundesland})
+
+
+
+
+
+
+
+@app.route('/query')
 def query():
     language = request.args.get('language') #if key doesn't exist, returns None
 

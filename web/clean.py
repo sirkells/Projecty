@@ -18,8 +18,11 @@ db = connect()
 #db.itproject.update({"bereich":{"$exists": True }}, {"$unset":{"bereich": ""}}, multi=True)
 #db.itproject.update({"category":{"$exists": True }}, {"$unset":{"category": ""}}, multi=True)
 
-db.itproject.update({"bundesland":{"$exists": True }}, {"$unset":{"bundesland": ""}}, multi=True)
+db.itproject.update({"region":{"$exists": True }}, {"$unset":{"region": ""}}, multi=True)
 db.itproject.update({"bereich":{"$exists": True }}, {"$unset":{"bereich": ""}}, multi=True)
+db.itproject.update({"skills":{"$exists": True }}, {"$unset":{"skills": ""}}, multi=True)
+db.itproject.update({"tech_summary":{"$exists": True }}, {"$unset":{"tech_summary": ""}}, multi=True)
+db.itproject.update({"summary":{"$exists": True }}, {"$unset":{"summary": ""}}, multi=True)
 #db.itproject.update({"location":{"$regex": r'(?:[\s]|^)' + city + '(?=[\s]|$)'}}, {"$set":{"region.bundesland": [state, city]}}, multi=True)
 
 for city in Baden_Württemberg:
@@ -225,7 +228,7 @@ db.itproject.aggregate(pipeline1)
 
 #unset bereich
 db.itproject.update({"bereich":{"$exists": True }}, {"$unset":{"bereich": ""}}, multi=True)
-db.itproject.update({"region.bundesland":{"$exists": True }}, {"$unset":{"region.bundesland": ""}}, multi=True)
+db.itproject.update({"region":{"$exists": True }}, {"$unset":{"region": ""}}, multi=True)
 db.itproject.update({"bundesland":{"$exists": True }}, {"$unset":{"bundesland": ""}}, multi=True)
 """
 

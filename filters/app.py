@@ -7,6 +7,7 @@ from bson import json_util, ObjectId
 import requests
 from flask_cors import CORS
 from urllib.parse import unquote
+from datetime import datetime
 
 def connect():
     connection = MongoClient('127.0.0.1', 27017)
@@ -21,11 +22,13 @@ jinja_options.update(dict(
     variable_end_string = '%)'
 ))
 app.jinja_options = jinja_options"""
-
+app.config['SECRET_KEY'] = 'password'
+app.config['ELASTICSEARCH_URL'] = 'http://127.0.0.1:9200'
+es =  Elasticsearch([app.config['ELASTICSEARCH_URL']])
 moment = Moment(app)
 CORS(app)
 db = connect()
-#a = db.itproject_clean.find({"region": {"$ne": None}, "bereich.group": "Development"})
+
 category = ["Development", "Infrastructure", "Data Science"]
 lengths = []
 for group in category:
@@ -58,7 +61,115 @@ def home():
     return page_sanitized
 
     #return render_template('home.html', projects=projects, amount=amount, amounts=amounts)
+@app.route('/es')
+def elas():
+    body = {
+            "size" : 100,
+            "sort": [
+            {
+              "filter_date_post": {
+                "order": "desc"
+              }
+            },
+            "_score"
+        ]
+    }
+    result = es.search(
+        index='projectfinder',
+        doc_type = 'itproject_clean',
+        body=body
+        )
+    #print(all[1:20]['_source']['region'])
+    try:
+        # clean up
+        docs = [{
+            'source': doc['_source'],
+            'score': doc['_score'],
+            'id': doc['_id']
+        } for doc in result['hits']['hits'] if 'region' in doc['_source']]
+    except KeyError:
+        # return message
+        return render_template('noresult.html')
+    
+    
+    projects = [{
+        'id': hit['id'],
+        'title': hit['source']['title'],
+        'description': hit['source']['description'],
+        'filter_date_post': datetime.strptime(hit['source']['filter_date_post'], '%Y-%m-%dT%H:%M:%S') if hit['source']['filter_date_post'] else datetime.utcnow(),
+        #'cockpit': True if hit['id'] in cockpit_set else False,
+        'url': hit['source']['url'],
+        'count': hit['source']['person_count'],
+        'duration': hit['source']['duration'],
+        'region': hit['source']['region'],
+        'bereich': hit['source']['bereich'],
+        'source': hit['source']['source'],
+        'score': hit['score']
+                } for hit in docs]
+    projects = sorted(projects, key=lambda p: p['filter_date_post'], reverse=True)
+    #res = es.search(index="projectfinder", body=body)
+    amounts = result['hits']['total']
+    b = {"amount": amounts, "amount2": lengths}
+    b.update({"project_lists": projects})
+    parsed = json.loads(json_util.dumps(b))
+    page_sanitized = json.dumps(parsed, indent=4)
+    return page_sanitized
 
+@app.route('/es/search/', methods=['GET', 'POST']) 
+def search_request():
+    global search_term
+    search_term = request.args["search_term"]
+    body = {
+            "size" : 100,
+            "query": {
+              "multi_match": {
+                "query": search_term,
+                "operator": "and",
+                "fields": ["title^5", "description"],
+                "fuzziness" : "AUTO",
+                "prefix_length" : 2
+              }
+            }
+          }
+    result = es.search(
+        index='projectfinder',
+        doc_type = 'itproject_clean',
+        body=body
+        )
+    try:
+        # clean up
+        docs = [{
+            'source': doc['_source'],
+            'score': doc['_score'],
+            'id': doc['_id']
+        } for doc in result['hits']['hits'] if 'region' in doc['_source']]
+    except KeyError:
+        # return message
+        return render_template('noresult.html')
+    projects = [{
+        'id': hit['id'],
+        'title': hit['source']['title'],
+        'description': hit['source']['description'],
+        'filter_date_post': datetime.strptime(hit['source']['filter_date_post'], '%Y-%m-%dT%H:%M:%S') if hit['source']['filter_date_post'] else datetime.utcnow(),
+        #'cockpit': True if hit['id'] in cockpit_set else False,
+        'url': hit['source']['url'],
+        'count': hit['source']['person_count'],
+        'duration': hit['source']['duration'],
+        'region': hit['source']['region'],
+        'bereich': hit['source']['bereich'],
+        'source': hit['source']['source'],
+        'score': hit['score']
+                } for hit in docs]
+    projects = sorted(projects, key=lambda p: p['score'], reverse=True)
+    #remove duplicates
+    projects_unique = { d['title']:d for d in projects }.values()
+    amounts = result['hits']['total']
+    b = {"amount": amounts, "amount2": lengths}
+    b.update({"project_lists": projects_unique})
+    parsed = json.loads(json_util.dumps(b))
+    page_sanitized = json.dumps(parsed, indent=4)
+    return page_sanitized
+    
 @app.route('/query/<search_term>')
 def search_query(search_term):
     #search_term = request.args.get('search') #if key doesn't exist, returns None

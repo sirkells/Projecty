@@ -36,7 +36,7 @@ for group in category:
     lengths.append(a)
 
 @app.route('/api/')
-def elas():
+def api():
     group = request.args.get('group')
     groupType = request.args.get('groupType')
     groupStack = request.args.get('groupStack')

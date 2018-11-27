@@ -34,46 +34,148 @@ lengths = []
 for group in category:
     a = db.itproject_clean.find({"region": {"$ne": None}, "bereich.group": group}).count()
     lengths.append(a)
-@app.route('/go')
-def index():
-    return render_template('index2.html')
 
-
-@app.route('/')
-@app.route('/home')
-def home():
-    page_size = 100
-    project = db.itproject_clean.find({"region": {"$ne": None}, "bereich": {"$ne": None} }).limit(page_size)
-    project1 = db.itproject_clean.find({"region": {"$ne": None}, "bereich": {"$ne": None} })
-    projects1 = sorted(project1, key=lambda p: p['filter_date_post'], reverse=True)
-    projects = sorted(project, key=lambda p: p['filter_date_post'], reverse=True)
-    #amount = project.count()
-    amounts = len(projects1)
-    #amount2 = len(project)
-    #ab = {"amount": amounts, "amount2": lengths}
-    #projects.insert(0,ab)
-    #print(type(projects))
-    b = {"amount": amounts, "amount2": lengths}
-    b.update({"project_lists": projects})
-    parsed = json.loads(json_util.dumps(b))
-    page_sanitized = json.dumps(parsed, indent=4)
-    #print(type(page_sanitized))
-    return page_sanitized
-
-    #return render_template('home.html', projects=projects, amount=amount, amounts=amounts)
-@app.route('/es')
+@app.route('/api/')
 def elas():
-    body = {
-            "size" : 100,
-            "sort": [
-            {
-              "filter_date_post": {
-                "order": "desc"
-              }
-            },
-            "_score"
-        ]
-    }
+    group = request.args.get('group')
+    groupType = request.args.get('groupType')
+    groupStack = request.args.get('groupStack')
+    skill = request.args.get('skill')
+    bundesland = request.args.get('bundesland')
+    if group and not groupStack and not groupType and not bundesland:
+        body = {
+                "size" : 100,
+                "query": {
+                    "bool": {
+                        "must": [
+                            {"match": {"bereich.group": group}}
+                        ]
+                    }
+                }
+            }
+    elif group and bundesland and not groupStack and not groupType:
+        body = {
+                "size" : 100,
+                "query": {
+                    "bool": {
+                        "must": [
+                            {"match": {"bereich.group": group}}
+                        ],
+                        "filter": {
+                            "term": {
+                                "region.bundesland.keyword": bundesland
+                            }
+                        }
+                    }
+                }
+            }
+        
+    elif groupType and not groupStack and not bundesland:
+        body = {
+                "size" : 100,
+                "query": {
+                    "bool": {
+                        "must": [
+                            {"match": {"bereich.group_type": groupType}}
+                        ]
+                    }
+                }
+            }
+       
+    elif groupType and bundesland and not groupStack:
+        body = {
+                "size" : 100,
+                "query": {
+                    "bool": {
+                        "must": [
+                            {"match": {"bereich.group_type": groupType}}
+                        ],
+                        "filter": {
+                            "term": {
+                                "region.bundesland.keyword": bundesland
+                            }
+                        }
+                    }
+                }
+            }
+    elif groupStack and not bundesland:
+        body = {
+                "size" : 100,
+                "query": {
+                    "bool": {
+                        "must": [
+                            {"match": {"bereich.group_type_stack": groupStack}}
+                        ]
+                    }
+                }
+            }
+    elif groupStack and bundesland:
+        body = {
+                "size" : 100,
+                "query": {
+                    "bool": {
+                        "must": [
+                            {"match": {"bereich.group_type_stack": groupStack}}
+                        ],
+                        "filter": {
+                            "term": {
+                                "region.bundesland.keyword": bundesland
+                            }
+                        }
+                    }
+                }
+            }
+    elif skill and not groupStack and not groupType and not bundesland:
+        body = {
+                "size" : 100,
+                "query": {
+                    "bool": {
+                        "must": [
+                            {"match": {"bereich.skill": skill}}
+                        ]
+                    }
+                }
+            }
+    elif skill and bundesland and not groupStack and not groupType:
+        body = {
+                "size" : 100,
+                "query": {
+                    "bool": {
+                        "must": [
+                            {"match": {"bereich.skill": skill}}
+                        ],
+                        "filter": {
+                            "term": {
+                                "region.bundesland.keyword": bundesland
+                            }
+                        }
+                    }
+                }
+            }
+    
+    elif bundesland and not groupStack and not groupType and not group and not skill:
+        body = {
+                "size" : 100,
+                "query": {
+                    "bool": {
+                        "must": [
+                            {"match": {"region.bundesland": bundesland}}
+                        ]
+                    }
+                }
+            }
+    else:
+        body = {
+                "size" : 500,
+                "sort": [
+                {
+                    "filter_date_post": {
+                    "order": "desc"
+                    }
+                },
+                "_score"
+            ]
+        }
     result = es.search(
         index='projectfinder',
         doc_type = 'itproject_clean',
@@ -115,12 +217,12 @@ def elas():
     page_sanitized = json.dumps(parsed, indent=4)
     return page_sanitized
 
-@app.route('/es/search/', methods=['GET', 'POST']) 
+@app.route('/api/search/', methods=['GET', 'POST']) 
 def search_request():
     global search_term
     search_term = request.args["search_term"]
     body = {
-            "size" : 100,
+            "size" : 500,
             "query": {
               "multi_match": {
                 "query": search_term,
@@ -169,208 +271,6 @@ def search_request():
     parsed = json.loads(json_util.dumps(b))
     page_sanitized = json.dumps(parsed, indent=4)
     return page_sanitized
-    
-@app.route('/query/<search_term>')
-def search_query(search_term):
-    #search_term = request.args.get('search') #if key doesn't exist, returns None
-
-
-    #framework = request.args['framework'] #if key doesn't exist, returns a 400, bad request error
-    #website = request.args.get('website')
-    results = db.itproject_clean.find( { "region": {"$ne": None}, "bereich": {"$ne": None}, "$text": { "$search": search_term, "$language": "de" } }, { "score": {"$meta": "textScore" } } )
-
-    results.sort([('score', {'$meta': 'textScore'}), ("filter_date_post", 1)])
-    projects = [p for p in results]
-    #sorted(results, key=lambda p: p['filter_date_post'], reverse=True)
-    print(type(projects))
-    amounts = len(projects)
-    b = {"amount": amounts, "amount2": lengths}
-    b.update({"project_lists": projects})
-    parsed = json.loads(json_util.dumps(b))
-    page_sanitized = json.dumps(parsed, indent=4)
-
-    return page_sanitized
-
-@app.route('/<group>')
-def dev(group):
-    page_size = 100
-    global pro
-    project = db.itproject_clean.find({"region": {"$ne": None}, "bereich.group": group}).limit(page_size)
-    project1 = db.itproject_clean.find({"region": {"$ne": None}, "bereich.group": group})
-    projects1 = sorted(project1, key=lambda p: p['filter_date_post'], reverse=True)
-    pro = len(projects1)
-    projects = sorted(project, key=lambda p: p['filter_date_post'], reverse=True)
-    #amount = project.count()
-    #amounts = len(projects)
-    #amount2 = len(project)
-    #ab = {"amount": amounts, "amount2": page_size}
-    #projects.insert(0,ab)
-    #print(type(projects))
-    amounts = len(projects1)
-    b = {"amount": amounts, "amount2": page_size}
-    b.update({"project_lists": projects})
-    parsed = json.loads(json_util.dumps(b))
-    page_sanitized = json.dumps(parsed, indent=4)
-    return page_sanitized
-
-
-@app.route('/<group>/<groupType>')
-def bereich_group_type(group, groupType):
-    page_size = 100
-    project = db.itproject_clean.find({"region": {"$ne": None}, "bereich.group": group, "bereich.group_type": groupType}).limit(page_size)
-    project1 = db.itproject_clean.find({"region": {"$ne": None}, "bereich.group": group, "bereich.group_type": groupType})
-    projects1 = sorted(project1, key=lambda p: p['filter_date_post'], reverse=True)
-    projects = sorted(project, key=lambda p: p['filter_date_post'], reverse=True)
-    #amount = project.count()
-    #amounts = len(projects)
-    amounts = len(projects1)
-    #amount2 = len(project)
-    #ab = {"amount": amounts, "amount2": page_size}
-    #projects.insert(0,ab)
-    #print(type(projects))
-    b = {"amount": amounts, "amount2": page_size}
-    b.update({"project_lists": projects})
-    parsed = json.loads(json_util.dumps(b))
-    page_sanitized = json.dumps(parsed, indent=4)
-    return page_sanitized
-    #return render_template('home.html', projects=projects, amount=amount, amounts=amounts)
-
-@app.route('/<group>/<groupType>/<groupStack>')
-def bereich_group_type_stack(group, groupType, groupStack):
-    page_size = 100
-    project = db.itproject_clean.find({"region": {"$ne": None}, "bereich.group": group, "bereich.group_type": groupType, "bereich.group_type_stack": groupStack}).limit(page_size)
-    project1 = db.itproject_clean.find({"region": {"$ne": None}, "bereich.group": group, "bereich.group_type": groupType, "bereich.group_type_stack": groupStack})
-    projects1 = sorted(project1, key=lambda p: p['filter_date_post'], reverse=True)
-    projects = sorted(project, key=lambda p: p['filter_date_post'], reverse=True)
-    #amount = project.count()
-    #amounts = len(projects)
-    amounts = len(projects1)
-    #amount2 = len(project)
-    #projects.insert(0,ab)
-    #print(type(projects))
-    b = {"amount": amounts, "amount2": page_size}
-    b.update({"project_lists": projects})
-    parsed = json.loads(json_util.dumps(b))
-    page_sanitized = json.dumps(parsed, indent=4)
-
-    return page_sanitized
-
-@app.route('/skill/<groupSkill>')
-
-def bereich_skill(groupSkill):
-    page_size = 100
-    #the_decoded_string = unquote(groupSkill)
-    #print(the_decoded_string)
-    project = db.itproject_clean.find({"region": {"$ne": None},  "bereich.skill": groupSkill}).limit(page_size)
-    project1 = db.itproject_clean.find({"region": {"$ne": None}, "bereich.skill": groupSkill})
-    projects1 = sorted(project1, key=lambda p: p['filter_date_post'], reverse=True)
-    projects = sorted(project, key=lambda p: p['filter_date_post'], reverse=True)
-    #amount = project.count()
-    #amounts = len(projects)
-    amounts = len(projects1)
-    #amount2 = len(project)
-    #projects.insert(0,ab)
-    #print(type(projects))
-    b = {"amount": amounts, "amount2": page_size}
-    b.update({"project_lists": projects})
-    parsed = json.loads(json_util.dumps(b))
-    page_sanitized = json.dumps(parsed, indent=4)
-    return page_sanitized
-@app.route('/location/<bundesland>')
-def location(bundesland):
-    page_size = 100
-    project = db.itproject_clean.find({"region": {"$ne": None},  "region.bundesland": bundesland}).limit(page_size)
-    project1 = db.itproject_clean.find({"region": {"$ne": None}, "region.bundesland": bundesland})
-    projects1 = sorted(project1, key=lambda p: p['filter_date_post'], reverse=True)
-    projects = sorted(project, key=lambda p: p['filter_date_post'], reverse=True)
-    #amount = project.count()
-    #amounts = len(projects)
-    amounts = len(projects1)
-    #amount2 = len(project)
-    #projects.insert(0,ab)
-    #print(type(projects))
-    b = {"amount": amounts, "amount2": page_size}
-    b.update({"project_lists": projects})
-    parsed = json.loads(json_util.dumps(b))
-    page_sanitized = json.dumps(parsed, indent=4)
-    return page_sanitized
-@app.route('/api/search/')
-def v1():
-    search_term = request.args.get('search_term')
-    bundesland = request.args.get('bundesland')
-    if search_term and not bundesland:
-        results = db.itproject_clean.find( { "region": {"$ne": None}, "bereich": {"$ne": None}, "$text": { "$search":  search_term, "$language": "de" } }, { "score": {"$meta": "textScore" } } )
-    elif search_term and bundesland:
-        results = db.itproject_clean.find( { "region.bundesland": bundesland, "bereich": {"$ne": None}, "$text": { "$search": search_term, "$language": "de" } }, { "score": {"$meta": "textScore" } } )
-
-    results.sort([('score', {'$meta': 'textScore'}), ("filter_date_post", 1)])
-    projects = [p for p in results]
-    #sorted(results, key=lambda p: p['filter_date_post'], reverse=True)
-    print(type(projects))
-    amounts = len(projects)
-    b = {"amount": amounts, "amount2": lengths}
-    b.update({"project_lists": projects})
-    parsed = json.loads(json_util.dumps(b))
-    page_sanitized = json.dumps(parsed, indent=4)
-    return page_sanitized
-    
-@app.route('/api/')
-def filters():
-    group = request.args.get('group')
-    groupType = request.args.get('groupType')
-    groupStack = request.args.get('groupStack')
-    skill = request.args.get('skill')
-    bundesland = request.args.get('bundesland')
-    if group and not groupStack and not groupType and not bundesland:
-        project = db.itproject_clean.find({"region": {"$ne": None}, "bereich.group": group}).limit(100)
-        project1 = db.itproject_clean.find({"region": {"$ne": None}, "bereich.group": group})
-    elif group and bundesland and not groupStack and not groupType:
-        project = db.itproject_clean.find({"region": {"$ne": None}, "bereich.group": group, "region.bundesland": bundesland}).limit(100)
-        project1 = db.itproject_clean.find({"region": {"$ne": None}, "bereich.group": group, "region.bundesland": bundesland})
-    elif groupType and not groupStack and not bundesland:
-        project = db.itproject_clean.find({"region": {"$ne": None}, "bereich.group_type": groupType}).limit(100)
-        project1 = db.itproject_clean.find({"region": {"$ne": None}, "bereich.group_type": groupType})
-    elif groupType and bundesland and not groupStack:
-        project = db.itproject_clean.find({"region": {"$ne": None}, "bereich.group_type": groupType, "region.bundesland": bundesland}).limit(100)
-        project1 = db.itproject_clean.find({"region": {"$ne": None}, "bereich.group_type": groupType, "region.bundesland": bundesland})
-    elif groupStack and not bundesland:
-        project = db.itproject_clean.find({"region": {"$ne": None}, "bereich.group_type_stack": groupStack}).limit(100)
-        project1 = db.itproject_clean.find({"region": {"$ne": None}, "bereich.group_type_stack": groupStack})
-    elif groupStack and bundesland:
-        project = db.itproject_clean.find({"region": {"$ne": None}, "bereich.group_type_stack": groupStack, "region.bundesland": bundesland}).limit(100)
-        project1 = db.itproject_clean.find({"region": {"$ne": None}, "bereich.group_type_stack": groupStack, "region.bundesland": bundesland})
-    elif skill and not groupStack and not groupType and not bundesland:
-        project = db.itproject_clean.find({"region": {"$ne": None}, "bereich.skill": skill}).limit(100)
-        project1 = db.itproject_clean.find({"region": {"$ne": None}, "bereich.skill": skill})
-    elif skill and bundesland and not groupStack and not groupType:
-        project = db.itproject_clean.find({"region": {"$ne": None}, "bereich.skill": skill, "region.bundesland": bundesland}).limit(100)
-        project1 = db.itproject_clean.find({"region": {"$ne": None}, "bereich.skill": skill, "region.bundesland": bundesland})
-
-    
-    elif bundesland and not groupStack and not groupType and not group and not skill:
-        page_size = 100
-        project = db.itproject_clean.find({"region": {"$ne": None},  "region.bundesland": bundesland}).limit(page_size)
-        project1 = db.itproject_clean.find({"region": {"$ne": None}, "region.bundesland": bundesland})
-    else:
-        project = db.itproject_clean.find({"region": {"$ne": None}, "bereich": {"$ne": None} }).limit(100)
-        project1 = db.itproject_clean.find({"region": {"$ne": None}, "bereich": {"$ne": None} })
-
-    projects1 = sorted(project1, key=lambda p: p['filter_date_post'], reverse=True)
-    pro = len(projects1)
-    projects = sorted(project, key=lambda p: p['filter_date_post'], reverse=True)
-    #amount = project.count()
-    #amounts = len(projects)
-    #amount2 = len(project)
-    #ab = {"amount": amounts, "amount2": page_size}
-    #projects.insert(0,ab)
-    #print(type(projects))
-    amounts = len(projects1)
-    b = {"amount": amounts, "amount2": 100}
-    b.update({"project_lists": projects})
-    parsed = json.loads(json_util.dumps(b))
-    page_sanitized = json.dumps(parsed, indent=4)
-    return page_sanitized
-    
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -166,6 +166,53 @@ def api():
             }
     else:
         body = {
+                "size": 500,
+                "query": {
+                    "multi_match": {
+                    "query": "big data",
+                    "operator": "and",
+                    "fields": [
+                        "title^4",
+                        "description"
+                    ],
+                    "fuzziness": "AUTO",
+                    "prefix_length": 2
+                    }
+                },
+                "aggs": {
+                    "Group": {
+                        "terms": {
+                            "field": "bereich.group.keyword",
+                            "size": 10
+                        }
+                    },
+                    "Group Type": {
+                        "terms": {
+                            "field": "bereich.group_type.keyword",
+                            "size": 10
+                        }
+                    },
+                    "Group Stack": {
+                        "terms": {
+                            "field": "bereich.group_type_stack.keyword",
+                            "size": 10
+                        }
+                    },
+                    "Skill Filter": {
+                        "terms": {
+                            "field": "skill_summary.keyword",
+                            "size": 10
+                        }
+                    },
+                    "Region Filter": {
+                        "terms": {
+                            "field": "region.bundesland.keyword",
+                            "size": 10
+                        }
+                    }
+                }
+            }
+        """body = {
                 "size" : 500,
                 "sort": [
                 {
@@ -175,7 +222,7 @@ def api():
                 },
                 "_score"
             ]
-        }
+        }"""
     result = es.search(
         index='projectfinder',
         doc_type = 'itproject_clean',
@@ -208,10 +255,15 @@ def api():
         'source': hit['source']['source'],
         'score': hit['score']
                 } for hit in docs]
+    agg = [{
+        'key': hit['key'],
+        'count': hit['doc_count']
+    } for hit in result['aggregations']['Region Filter']['buckets']]
+    print(agg)
     projects = sorted(projects, key=lambda p: p['filter_date_post'], reverse=True)
     #res = es.search(index="projectfinder", body=body)
     amounts = result['hits']['total']
-    b = {"amount": amounts, "amount2": lengths}
+    b = {"amount": amounts, "amount2": lengths, "aggs": agg}
     b.update({"project_lists": projects})
     parsed = json.loads(json_util.dumps(b))
     page_sanitized = json.dumps(parsed, indent=4)
@@ -220,7 +272,7 @@ def api():
 @app.route('/api/search/', methods=['GET', 'POST']) 
 def search_request():
     global search_term
-    search_term = request.args["search_term"]
+    search_term = request.args.get("search_term")
     body = {
             "size" : 500,
             "query": {

@@ -34,6 +34,41 @@ lengths = []
 for group in category:
     a = db.itproject_clean.find({"region": {"$ne": None}, "bereich.group": group}).count()
     lengths.append(a)
+default = {
+            "size": 500,
+            "aggs": {
+                "Group": {
+                    "terms": {
+                        "field": "bereich.group.keyword",
+                        "size": 10
+                    }
+                },
+                "Group Type": {
+                    "terms": {
+                        "field": "bereich.group_type.keyword",
+                        "size": 10
+                    }
+                },
+                "Group Stack": {
+                    "terms": {
+                        "field": "bereich.group_type_stack.keyword",
+                        "size": 10
+                    }
+                },
+                "Skill Filter": {
+                    "terms": {
+                        "field": "skill_summary.keyword",
+                        "size": 10
+                    }
+                },
+                "Region Filter": {
+                    "terms": {
+                        "field": "region.bundesland.keyword",
+                        "size": 10
+                    }
+                }
+            }
+         }
 
 @app.route('/api/')
 def api():
@@ -43,49 +78,48 @@ def api():
     skill = request.args.get('skill')
     bundesland = request.args.get('bundesland')
     if group and not groupStack and not groupType and not bundesland:
-        body = {
-                "size" : 100,
-                "query": {
+        if 'sort' in default:
+            del default['sort']
+        default['query'] = {
                     "bool": {
                         "must": [
                             {"match": {"bereich.group": group}}
                         ]
                     }
                 }
-            }
-    elif group and bundesland and not groupStack and not groupType:
-        body = {
-                "size" : 100,
-                "query": {
-                    "bool": {
-                        "must": [
-                            {"match": {"bereich.group": group}}
-                        ],
-                        "filter": {
-                            "term": {
-                                "region.bundesland.keyword": bundesland
-                            }
-                        }
-                    }
-                }
-            }
+        body = default
         
+    elif group and bundesland and not groupStack and not groupType:
+        if 'sort' in default:
+            del default['sort']
+        default['query'] = {
+                    "bool": {
+                        "must": [
+                            {"match": {"bereich.group": group}}
+                        ],
+                        "filter": {
+                            "term": {
+                                "region.bundesland.keyword": bundesland
+                            }
+                        }
+                    }
+                }
+        body = default
     elif groupType and not groupStack and not bundesland:
-        body = {
-                "size" : 100,
-                "query": {
+        if 'sort' in default:
+            del default['sort']
+        default['query'] = {
                     "bool": {
                         "must": [
                             {"match": {"bereich.group_type": groupType}}
                         ]
                     }
                 }
-            }
-       
+        body = default
     elif groupType and bundesland and not groupStack:
-        body = {
-                "size" : 100,
-                "query": {
+        if 'sort' in default:
+            del default['sort']
+        default['query'] = {
                     "bool": {
                         "must": [
                             {"match": {"bereich.group_type": groupType}}
@@ -97,22 +131,22 @@ def api():
                         }
                     }
                 }
-            }
+        body = default
     elif groupStack and not bundesland:
-        body = {
-                "size" : 100,
-                "query": {
+        if 'sort' in default:
+            del default['sort']
+        default['query'] = {
                     "bool": {
                         "must": [
                             {"match": {"bereich.group_type_stack": groupStack}}
                         ]
                     }
                 }
-            }
+        body = default
     elif groupStack and bundesland:
-        body = {
-                "size" : 100,
-                "query": {
+        if 'sort' in default:
+            del default['sort']
+        default['query'] = {
                     "bool": {
                         "must": [
                             {"match": {"bereich.group_type_stack": groupStack}}
@@ -124,22 +158,22 @@ def api():
                         }
                     }
                 }
-            }
+        body = default
     elif skill and not groupStack and not groupType and not bundesland:
-        body = {
-                "size" : 100,
-                "query": {
+        if 'sort' in default:
+            del default['sort']
+        default['query'] = {
                     "bool": {
                         "must": [
                             {"match": {"bereich.skill": skill}}
                         ]
                     }
                 }
-            }
+        body = default
     elif skill and bundesland and not groupStack and not groupType:
-        body = {
-                "size" : 100,
-                "query": {
+        if 'sort' in default:
+            del default['sort']
+        default['query'] = {
                     "bool": {
                         "must": [
                             {"match": {"bereich.skill": skill}}
@@ -151,63 +185,30 @@ def api():
                         }
                     }
                 }
-            }
-    
+        body = default
     elif bundesland and not groupStack and not groupType and not group and not skill:
-        body = {
-                "size" : 100,
-                "query": {
+        if 'sort' in default:
+            del default['sort']
+        default['query'] = {
                     "bool": {
                         "must": [
                             {"match": {"region.bundesland": bundesland}}
                         ]
                     }
                 }
-            }
+        body = default
     else:
-        body = {
-                "size": 500,
-                "sort": [
-                            {
-                                "filter_date_post": {
-                                "order": "desc"
-                                }
-                            },
-                            "_score"
-                        ],
-                "aggs": {
-                    "Group": {
-                        "terms": {
-                            "field": "bereich.group.keyword",
-                            "size": 10
-                        }
-                    },
-                    "Group Type": {
-                        "terms": {
-                            "field": "bereich.group_type.keyword",
-                            "size": 10
-                        }
-                    },
-                    "Group Stack": {
-                        "terms": {
-                            "field": "bereich.group_type_stack.keyword",
-                            "size": 10
-                        }
-                    },
-                    "Skill Filter": {
-                        "terms": {
-                            "field": "skill_summary.keyword",
-                            "size": 10
-                        }
-                    },
-                    "Region Filter": {
-                        "terms": {
-                            "field": "region.bundesland.keyword",
-                            "size": 10
-                        }
-                    }
-                }
-            }
+        if 'query' in default:
+            del default['query']
+        default['sort'] =  [
+                        {
+                            "filter_date_post": {
+                            "order": "desc"
+                            }
+                        },
+                        "_score"
+                    ]
+        body = default
         """body = {
                 "size" : 500,
                 "sort": [
@@ -256,11 +257,11 @@ def api():
         'count': hit['doc_count']
     } for hit in result['aggregations']['Region Filter']['buckets']]
     print(agg)
+    print(default)
     projects = sorted(projects, key=lambda p: p['filter_date_post'], reverse=True)
     #res = es.search(index="projectfinder", body=body)
     amounts = result['hits']['total']
-    b = {"amount": amounts, "amount2": lengths, "aggs": agg}
-    b.update({"project_lists": projects})
+    b = {"amount": amounts, "amount2": lengths, "project_lists": projects, "aggs": agg}
     parsed = json.loads(json_util.dumps(b))
     page_sanitized = json.dumps(parsed, indent=4)
     return page_sanitized
@@ -269,9 +270,9 @@ def api():
 def search_request():
     global search_term
     search_term = request.args.get("search_term")
-    body = {
-            "size" : 500,
-            "query": {
+    if 'sort' in default:
+        del default['sort']
+    default['query'] = {
               "multi_match": {
                 "query": search_term,
                 "operator": "and",
@@ -280,7 +281,7 @@ def search_request():
                 "prefix_length" : 2
               }
             }
-          }
+    body = default
     result = es.search(
         index='projectfinder',
         doc_type = 'itproject_clean',
@@ -314,8 +315,7 @@ def search_request():
     #remove duplicates
     projects_unique = { d['title']:d for d in projects }.values()
     amounts = result['hits']['total']
-    b = {"amount": amounts, "amount2": lengths}
-    b.update({"project_lists": projects_unique})
+    b = {"amount": amounts, "amount2": lengths, "project_lists": projects_unique, "aggs": agg}
     parsed = json.loads(json_util.dumps(b))
     page_sanitized = json.dumps(parsed, indent=4)
     return page_sanitized

@@ -252,16 +252,58 @@ def api():
         'source': hit['source']['source'],
         'score': hit['score']
                 } for hit in docs]
-    agg = [{
-        'key': hit['key'],
-        'count': hit['doc_count']
-    } for hit in result['aggregations']['Region Filter']['buckets']]
-    print(agg)
+    regionAgg = [{
+        'title': "Bundesland",
+        'items': [
+            {
+            'key': hit['key'],
+            'count': hit['doc_count']
+            }
+        for hit in result['aggregations']['Region Filter']['buckets']]
+    } ]
+    groupAgg = [{
+        'title': "Category",
+        'items': [
+            {
+            'key': hit['key'],
+            'count': hit['doc_count']
+            }
+        for hit in result['aggregations']['Group']['buckets']]
+    } ]
+    groupTypeAgg = [{
+        'title': "Sub-Category",
+        'items': [
+            {
+            'key': hit['key'],
+            'count': hit['doc_count']
+            }
+        for hit in result['aggregations']['Group Type']['buckets']]
+    }]
+    groupStackAgg = [{
+        'title': "Stack",
+        'items': [
+            {
+            'key': hit['key'],
+            'count': hit['doc_count']
+            }
+        for hit in result['aggregations']['Group Stack']['buckets']]
+    } ]
+    skillAgg = [{
+        'title': "Skills",
+        'items': [
+            {
+            'key': hit['key'],
+            'count': hit['doc_count']
+            }
+        for hit in result['aggregations']['Skill Filter']['buckets']]
+    } ]
+    allAggs = groupAgg + groupTypeAgg + groupStackAgg + skillAgg + regionAgg 
+    print(regionAgg)
     print(default)
     projects = sorted(projects, key=lambda p: p['filter_date_post'], reverse=True)
     #res = es.search(index="projectfinder", body=body)
     amounts = result['hits']['total']
-    b = {"amount": amounts, "amount2": lengths, "project_lists": projects, "aggs": agg}
+    b = {"amount": amounts, "amount2": lengths, "project_lists": projects, "AllAggs": allAggs}
     parsed = json.loads(json_util.dumps(b))
     page_sanitized = json.dumps(parsed, indent=4)
     return page_sanitized
@@ -311,11 +353,57 @@ def search_request():
         'source': hit['source']['source'],
         'score': hit['score']
                 } for hit in docs]
+    regionAgg = [{
+        'title': "Bundesland",
+        'items': [
+            {
+            'key': hit['key'],
+            'count': hit['doc_count']
+            }
+        for hit in result['aggregations']['Region Filter']['buckets']]
+    } ]
+    groupAgg = [{
+        'title': "Category",
+        'items': [
+            {
+            'key': hit['key'],
+            'count': hit['doc_count']
+            }
+        for hit in result['aggregations']['Group']['buckets']]
+    } ]
+    groupTypeAgg = [{
+        'title': "Sub-Category",
+        'items': [
+            {
+            'key': hit['key'],
+            'count': hit['doc_count']
+            }
+        for hit in result['aggregations']['Group Type']['buckets']]
+    }]
+    groupStackAgg = [{
+        'title': "Stack",
+        'items': [
+            {
+            'key': hit['key'],
+            'count': hit['doc_count']
+            }
+        for hit in result['aggregations']['Group Stack']['buckets']]
+    } ]
+    skillAgg = [{
+        'title': "Skills",
+        'items': [
+            {
+            'key': hit['key'],
+            'count': hit['doc_count']
+            }
+        for hit in result['aggregations']['Skill Filter']['buckets']]
+    } ]
+    allAggs = groupAgg + groupTypeAgg + groupStackAgg + skillAgg + regionAgg 
     projects = sorted(projects, key=lambda p: p['score'], reverse=True)
     #remove duplicates
     projects_unique = { d['title']:d for d in projects }.values()
     amounts = result['hits']['total']
-    b = {"amount": amounts, "amount2": lengths, "project_lists": projects_unique, "aggs": agg}
+    b = {"amount": amounts, "amount2": lengths, "project_lists": projects_unique, "AllAggs": allAggs}
     parsed = json.loads(json_util.dumps(b))
     page_sanitized = json.dumps(parsed, indent=4)
     return page_sanitized

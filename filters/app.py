@@ -167,18 +167,14 @@ def api():
     else:
         body = {
                 "size": 500,
-                "query": {
-                    "multi_match": {
-                    "query": "big data",
-                    "operator": "and",
-                    "fields": [
-                        "title^4",
-                        "description"
-                    ],
-                    "fuzziness": "AUTO",
-                    "prefix_length": 2
-                    }
-                },
+                "sort": [
+                            {
+                                "filter_date_post": {
+                                "order": "desc"
+                                }
+                            },
+                            "_score"
+                        ],
                 "aggs": {
                     "Group": {
                         "terms": {

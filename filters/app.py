@@ -297,13 +297,36 @@ def api():
             }
         for hit in result['aggregations']['Skill Filter']['buckets']]
     } ]
-    allAggs = groupAgg + groupTypeAgg + groupStackAgg + skillAgg + regionAgg 
-    print(regionAgg)
+    aa = [a['items'] for a in regionAgg]
+    sk = [a['items'] for a in skillAgg]
+
+    ab = []
+    ba = []
+    for b in aa:
+        for c in b:
+            a = c['key'] + '(' + str(c['count']) + ')'
+            ab.append(c)
+            ba.append(a)
+            for d,num in zip(ab,ba):
+                d['land'] = num
+    print(ab)
+
+    ab1 = []
+    ba1 = []
+    for b in sk:
+        for c in b:
+            a = c['key'] + '(' + str(c['count']) + ')'
+            ab1.append(c)
+            ba1.append(a)
+            for d,num in zip(ab1,ba1):
+                d['land'] = num
+    allAggs = groupAgg + groupTypeAgg + groupStackAgg + skillAgg + regionAgg
+   
     print(default)
     projects = sorted(projects, key=lambda p: p['filter_date_post'], reverse=True)
     #res = es.search(index="projectfinder", body=body)
     amounts = result['hits']['total']
-    b = {"amount": amounts, "amount2": lengths, "project_lists": projects, "AllAggs": allAggs}
+    b = {"amount": amounts, "amount2": lengths, "project_lists": projects, "AllAggs": allAggs, "aggRegion": regionAgg, "Allregion": ab, "Allskill": ab1}
     parsed = json.loads(json_util.dumps(b))
     page_sanitized = json.dumps(parsed, indent=4)
     return page_sanitized
@@ -398,12 +421,158 @@ def search_request():
             }
         for hit in result['aggregations']['Skill Filter']['buckets']]
     } ]
-    allAggs = groupAgg + groupTypeAgg + groupStackAgg + skillAgg + regionAgg 
+    aa = [a['items'] for a in regionAgg]
+    sk = [a['items'] for a in skillAgg]
+
+    ab = []
+    ba = []
+    for b in aa:
+        for c in b:
+            a = c['key'] + '(' + str(c['count']) + ')'
+            ab.append(c)
+            ba.append(a)
+            for d,num in zip(ab,ba):
+                d['land'] = num
+    print(ab)
+
+    ab1 = []
+    ba1 = []
+    for b in sk:
+        for c in b:
+            a = c['key'] + '(' + str(c['count']) + ')'
+            ab1.append(c)
+            ba1.append(a)
+            for d,num in zip(ab1,ba1):
+                d['land'] = num
+    allAggs = groupAgg + groupTypeAgg + groupStackAgg + skillAgg + regionAgg
     projects = sorted(projects, key=lambda p: p['score'], reverse=True)
     #remove duplicates
     projects_unique = { d['title']:d for d in projects }.values()
     amounts = result['hits']['total']
-    b = {"amount": amounts, "amount2": lengths, "project_lists": projects_unique, "AllAggs": allAggs}
+    b = {"amount": amounts, "amount2": lengths, "project_lists": projects_unique, "AllAggs": allAggs, "Allregion": ab, "Allskill": ab1}
+    parsed = json.loads(json_util.dumps(b))
+    page_sanitized = json.dumps(parsed, indent=4)
+    return page_sanitized
+@app.route('/api/filter/', methods=['GET', 'POST']) 
+def filter_request():
+    global filter_list
+    filter_list = request.args.get("filter_list")
+    if 'sort' in default:
+        del default['sort']
+    default['query'] = {
+              "multi_match": {
+                "query": filter_list,
+                "operator": "and",
+                "fields": ["title^5", "description"],
+                "fuzziness" : "AUTO",
+                "prefix_length" : 2
+              }
+            }
+    body = default
+    result = es.search(
+        index='projectfinder',
+        doc_type = 'itproject_clean',
+        body=body
+        )
+    try:
+        # clean up
+        docs = [{
+            'source': doc['_source'],
+            'score': doc['_score'],
+            'id': doc['_id']
+        } for doc in result['hits']['hits'] if 'region' in doc['_source']]
+    except KeyError:
+        # return message
+        return render_template('noresult.html')
+    projects = [{
+        'id': hit['id'],
+        'title': hit['source']['title'],
+        'description': hit['source']['description'],
+        'filter_date_post': datetime.strptime(hit['source']['filter_date_post'], '%Y-%m-%dT%H:%M:%S') if hit['source']['filter_date_post'] else datetime.utcnow(),
+        #'cockpit': True if hit['id'] in cockpit_set else False,
+        'url': hit['source']['url'],
+        'count': hit['source']['person_count'],
+        'duration': hit['source']['duration'],
+        'region': hit['source']['region'],
+        'bereich': hit['source']['bereich'],
+        'source': hit['source']['source'],
+        'score': hit['score']
+                } for hit in docs]
+    regionAgg = [{
+        'title': "Bundesland",
+        'items': [
+            {
+            'key': hit['key'],
+            'count': hit['doc_count']
+            }
+        for hit in result['aggregations']['Region Filter']['buckets']]
+    } ]
+    groupAgg = [{
+        'title': "Category",
+        'items': [
+            {
+            'key': hit['key'],
+            'count': hit['doc_count']
+            }
+        for hit in result['aggregations']['Group']['buckets']]
+    } ]
+    groupTypeAgg = [{
+        'title': "Sub-Category",
+        'items': [
+            {
+            'key': hit['key'],
+            'count': hit['doc_count']
+            }
+        for hit in result['aggregations']['Group Type']['buckets']]
+    }]
+    groupStackAgg = [{
+        'title': "Stack",
+        'items': [
+            {
+            'key': hit['key'],
+            'count': hit['doc_count']
+            }
+        for hit in result['aggregations']['Group Stack']['buckets']]
+    } ]
+    skillAgg = [{
+        'title': "Skills",
+        'items': [
+            {
+            'key': hit['key'],
+            'count': hit['doc_count']
+            }
+        for hit in result['aggregations']['Skill Filter']['buckets']]
+    } ]
+    aa = [a['items'] for a in regionAgg]
+    sk = [a['items'] for a in skillAgg]
+
+    ab = []
+    ba = []
+    for b in aa:
+        for c in b:
+            a = c['key'] + '(' + str(c['count']) + ')'
+            ab.append(c)
+            ba.append(a)
+            for d,num in zip(ab,ba):
+                d['land'] = num
+    print(ab)
+
+    ab1 = []
+    ba1 = []
+    for b in sk:
+        for c in b:
+            a = c['key'] + '(' + str(c['count']) + ')'
+            ab1.append(c)
+            ba1.append(a)
+            for d,num in zip(ab1,ba1):
+                d['land'] = num
+    print(ab1)
+    allAggs = groupAgg + groupTypeAgg + groupStackAgg + skillAgg + regionAgg
+    projects = sorted(projects, key=lambda p: p['score'], reverse=True)
+    #remove duplicates
+    projects_unique = { d['title']:d for d in projects }.values()
+    amounts = result['hits']['total']
+    b = {"amount": amounts, "amount2": lengths, "project_lists": projects_unique, "AllAggs": allAggs, "aggRegion": regionAgg, "Allregion": ab, "Allskill": ab1 }
     parsed = json.loads(json_util.dumps(b))
     page_sanitized = json.dumps(parsed, indent=4)
     return page_sanitized

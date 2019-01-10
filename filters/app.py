@@ -577,6 +577,52 @@ def filter_request():
     page_sanitized = json.dumps(parsed, indent=4)
     return page_sanitized
 
+@app.route('/login', methods=['GET', 'POST']) 
+def login():
+    response_object = {'status': 'success'}
+    if request.method == 'POST':
+        post_data = request.get_json()
+        users = db.Users
+        users.insert({
+            'title': post_data.get('title'),
+            'author': post_data.get('author'),
+            'read': post_data.get('read')
+            })
+        response_object['message'] = 'User added!'
+    else:
+        response_object['user'] = users
+    return jsonify(response_object)
+@app.route('/api/cockpit', methods=['GET', 'POST']) 
+def cockpit():
+    response_object = {'status': 'success'}
+    
+    if request.method == 'POST':
+        post_data = request.get_json()
+        cockpit = db.Cockpit
+        projects = ({
+        'id': post_data.get('id'),
+        'title':post_data.get('title') ,
+        'description':post_data.get('description') ,
+        #'cockpit': True if hit['id'] in cockpit_set else False,
+        'url': post_data.get('url'),
+        'region': post_data.get('region'),
+        'bereich': post_data.get('bereich'),
+        'source':post_data.get('source') ,
+        'score': post_data.get('score')
+                } )
+        cockpit.insert(projects)
+        response_object['message'] = 'Project added!'
+        return jsonify(response_object)
+    else:
+
+        page_size = 30
+        project = db.Cockpit.find().limit(page_size)
+        #projects = sorted(project, key=lambda p: p['title'], reverse=True)
+        #count = db.Cockpit.find().count()
+        results = [p for p in project]
+        b = {"project_lists": results}
+        page_sanitized = json.dumps(json.loads(json_util.dumps(b)))
+        return page_sanitized
 if __name__ == '__main__':
     app.run(debug=True)
 

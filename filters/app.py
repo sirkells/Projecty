@@ -76,8 +76,9 @@ def api():
     groupType = request.args.get('groupType')
     groupStack = request.args.get('groupStack')
     skill = request.args.get('skill')
+    skill_summary = request.args.get('skill_summary')
     bundesland = request.args.get('bundesland')
-    if group and not groupStack and not groupType and not bundesland:
+    if group and not groupStack and not groupType and not bundesland and not skill_summary:
         if 'sort' in default:
             del default['sort']
         default['query'] = {
@@ -89,12 +90,70 @@ def api():
                 }
         body = default
         
-    elif group and bundesland and not groupStack and not groupType:
+    elif group and bundesland and not groupStack and not groupType and not skill_summary:
         if 'sort' in default:
             del default['sort']
         default['query'] = {
                     "bool": {
                         "must": [
+                            {"match": {"bereich.group": group}}
+                        ],
+                        "filter": {
+                            "term": {
+                                "region.bundesland.keyword": bundesland
+                            }
+                        }
+                    }
+                }
+        body = default
+    
+    elif skill_summary and not groupStack and not bundesland and not groupType and not group:
+        if 'sort' in default:
+            del default['sort']
+        default['query'] = {
+                    "bool": {
+                        "must": [
+                            {"match": {"skill_summary.keyword": skill_summary}}
+                        ]
+                    }
+                }
+        body = default
+    elif skill_summary and bundesland and not group and not groupStack and not groupType:
+        if 'sort' in default:
+            del default['sort']
+        default['query'] = {
+                    "bool": {
+                        "must": [
+                            {"match": {"skill_summary.keyword": skill_summary}}
+                        ],
+                        "filter": {
+                            "term": {
+                                "region.bundesland.keyword": bundesland
+                            }
+                        }
+                    }
+                }
+        body = default
+    elif skill_summary and group and not bundesland and not groupStack and not groupType:
+        if 'sort' in default:
+            del default['sort']
+        default['query'] = {
+                    "bool": {
+                        "must": [
+                            {"match": {"skill_summary.keyword": skill_summary}},
+                            {"match": {"bereich.group": group}}
+                            
+                        ]
+                    }
+                }
+        body = default
+    elif skill_summary and bundesland and group and not groupStack and not groupType:
+        if 'sort' in default:
+            del default['sort']
+        default['query'] = {
+                    "bool": {
+                        "must": [
+                            {"match": {"skill_summary.keyword": skill_summary}},
                             {"match": {"bereich.group": group}}
                         ],
                         "filter": {
@@ -170,7 +229,7 @@ def api():
                     }
                 }
         body = default
-    elif skill and bundesland and not groupStack and not groupType:
+    elif skill and bundesland and group and not groupStack and not groupType:
         if 'sort' in default:
             del default['sort']
         default['query'] = {

@@ -78,7 +78,9 @@ def api():
     skill = request.args.get('skill')
     skill_summary = request.args.get('skill_summary')
     bundesland = request.args.get('bundesland')
-    if group and not groupStack and not groupType and not bundesland and not skill_summary:
+    platform = request.args.get('platform')
+    platform_name = request.args.get('platform_name')
+    if group and not groupStack and not groupType and not bundesland and not skill_summary and not skill and not platform and not platform_name:
         if 'sort' in default:
             del default['sort']
         default['query'] = {
@@ -90,7 +92,7 @@ def api():
                 }
         body = default
         
-    elif group and bundesland and not groupStack and not groupType and not skill_summary:
+    elif group and bundesland and not groupStack and not groupType and not skill_summary and not platform and not platform_name:
         if 'sort' in default:
             del default['sort']
         default['query'] = {
@@ -106,7 +108,41 @@ def api():
                     }
                 }
         body = default
-    
+    elif group and bundesland and groupType and not groupStack and not skill_summary and not platform and not platform_name:
+        if 'sort' in default:
+            del default['sort']
+        default['query'] = {
+                    "bool": {
+                        "must": [
+                            {"match": {"bereich.group": group}},
+                            {"match": {"bereich.group_type": groupType}}
+                        ],
+                        "filter": {
+                            "term": {
+                                "region.bundesland.keyword": bundesland
+                            }
+                        }
+                    }
+                }
+        body = default
+    elif group and bundesland and groupStack and groupType and not skill_summary and not platform and not platform_name:
+        if 'sort' in default:
+            del default['sort']
+        default['query'] = {
+                    "bool": {
+                        "must": [
+                            {"match": {"bereich.group": group}},
+                            {"match": {"bereich.group_type": groupType}},
+                            {"match": {"bereich.group_type_stack": groupStack}}
+                        ],
+                        "filter": {
+                            "term": {
+                                "region.bundesland.keyword": bundesland
+                            }
+                        }
+                    }
+                }
+        body = default
     elif skill_summary and not groupStack and not bundesland and not groupType and not group:
         if 'sort' in default:
             del default['sort']
@@ -155,6 +191,70 @@ def api():
                         "must": [
                             {"match": {"skill_summary.keyword": skill_summary}},
                             {"match": {"bereich.group": group}}
+                        ],
+                        "filter": {
+                            "term": {
+                                "region.bundesland.keyword": bundesland
+                            }
+                        }
+                    }
+                }
+        body = default
+    elif skill_summary and not bundesland and group and groupType and not groupStack:
+        if 'sort' in default:
+            del default['sort']
+        default['query'] = {
+                    "bool": {
+                        "must": [
+                            {"match": {"skill_summary.keyword": skill_summary}},
+                            {"match": {"bereich.group": group}},
+                            {"match": {"bereich.group_type": groupType}}
+                        ]
+                    }
+                }
+        body = default
+    elif skill_summary and bundesland and group and groupType and not groupStack:
+        if 'sort' in default:
+            del default['sort']
+        default['query'] = {
+                    "bool": {
+                        "must": [
+                            {"match": {"skill_summary.keyword": skill_summary}},
+                            {"match": {"bereich.group": group}},
+                            {"match": {"bereich.group_type": groupType}}
+                        ],
+                        "filter": {
+                            "term": {
+                                "region.bundesland.keyword": bundesland
+                            }
+                        }
+                    }
+                }
+        body = default
+    elif skill_summary and not bundesland and group and groupType and groupStack:
+        if 'sort' in default:
+            del default['sort']
+        default['query'] = {
+                    "bool": {
+                        "must": [
+                            {"match": {"skill_summary.keyword": skill_summary}},
+                            {"match": {"bereich.group": group}},
+                            {"match": {"bereich.group_type": groupType}},
+                            {"match": {"bereich.group_type_stack": groupStack}}
+                        ]
+                    }
+                }
+        body = default
+    elif skill_summary and bundesland and group and groupType and groupStack:
+        if 'sort' in default:
+            del default['sort']
+        default['query'] = {
+                    "bool": {
+                        "must": [
+                            {"match": {"skill_summary.keyword": skill_summary}},
+                            {"match": {"bereich.group": group}},
+                            {"match": {"bereich.group_type": groupType}},
+                            {"match": {"bereich.group_type_stack": groupStack}}
                         ],
                         "filter": {
                             "term": {
@@ -368,8 +468,6 @@ def api():
             ba.append(a)
             for d,num in zip(ab,ba):
                 d['land'] = num
-    print(ab)
-
     ab1 = []
     ba1 = []
     for b in sk:
@@ -381,7 +479,7 @@ def api():
                 d['land'] = num
     allAggs = groupAgg + groupTypeAgg + groupStackAgg + skillAgg + regionAgg
    
-    print(default)
+    #print(default)
     projects = sorted(projects, key=lambda p: p['filter_date_post'], reverse=True)
     #res = es.search(index="projectfinder", body=body)
     amounts = result['hits']['total']

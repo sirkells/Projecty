@@ -8,13 +8,12 @@ import requests
 from flask_cors import CORS
 from urllib.parse import unquote
 from datetime import datetime
-
+from werkzeug.security import generate_password_hash, check_password_hash
+import bcrypt
 def connect():
     connection = MongoClient('127.0.0.1', 27017)
     handle = connection["projectfinder"]
     return handle
-
-
 app = Flask(__name__)
 """jinja_options = app.jinja_options.copy()
 jinja_options.update(dict(
@@ -28,6 +27,7 @@ es =  Elasticsearch([app.config['ELASTICSEARCH_URL']])
 moment = Moment(app)
 CORS(app)
 db = connect()
+users = db.Users
 
 category = ["Development", "Infrastructure", "Data Science"]
 lengths = []
@@ -69,7 +69,102 @@ default = {
                 }
             }
          }
+def UserExist(username):
+    #return false if user doesnt exist
+    if users.find({"Username":username}).count() == 0:
+        return False
+    #return true if it does
+    else:
+        return True
 
+#func for json status code and msg
+def getStatusMsg(status, message):
+    retJson = {
+        "status": status,
+        "message": message
+    }
+    return retJson
+
+#function to verify pwd match with user
+def verifyPw(username, password):
+    #gets the pwd of the corresponding username and save it as hashed_pw
+    hashed_pw = users.find({
+        "Username": username
+    })[0]["Password"]
+    #hashes the given pwd by the user and compares it with the saved hashed pwd. ret true if equal
+    if bcrypt.hashpw(password.encode('utf8'), hashed_pw) == hashed_pw:
+        return True
+    else:
+        return False
+#verify logindetails: returns  true is theres an error status message and False with NOne status msg
+def verifyLoginDetails(username, password):
+    if not UserExist(username):
+        return getStatusMsg(301, "Username doesnt exist"), True
+    correct_pw = verifyPw(username, password)
+    if not correct_pw:
+        return getStatusMsg(302, "Incorrect password" ), True
+
+    return None, False
+@app.route('/api/login', methods=['GET', 'POST']) 
+def login():
+    postedData = request.get_json()
+    username = postedData["username"]
+    password = postedData["password"]
+    retJson, error = verifyLoginDetails(username, password)
+    if error:
+        return jsonify(retJson)
+    #the value 0 means that mongodb should exclude password and _id when showing the user
+    retJson = users.find({"Username": username}, {"Password": 0, "_id": 0})[0]
+    retJson.update({"message": "Welcome Kelechi", "auth": True})
+    return jsonify(retJson)
+@app.route('/api/register', methods=['POST', 'GET'])
+def register():
+        #get data from user
+        postedData = request.get_json()
+        username = postedData["username"]
+        password = postedData["password"]
+        #check if user exist
+        if UserExist(username):
+            return jsonify(getStatusMsg(301, "username already taken"))
+            #if user doesnt exist, hash password
+        hashedpw = bcrypt.hashpw(password.encode('utf8'), bcrypt.gensalt())
+
+        #insert user in db
+        users.insert({
+            "Username": username,
+            "Password": hashedpw,
+        })
+        return jsonify(getStatusMsg(200, "account succesfully created"))
+@app.route('/api/cockpit', methods=['GET', 'POST']) 
+def cockpit():
+    response_object = {'status': 'success'}
+    
+    if request.method == 'POST':
+        post_data = request.get_json()
+        cockpit = db.Cockpit
+        projects = ({
+        'id': post_data.get('id'),
+        'title':post_data.get('title') ,
+        'description':post_data.get('description') ,
+        #'cockpit': True if hit['id'] in cockpit_set else False,
+        'url': post_data.get('url'),
+        'region': post_data.get('region'),
+        'bereich': post_data.get('bereich'),
+        'source':post_data.get('source') ,
+        'score': post_data.get('score')
+                } )
+        cockpit.insert(projects)
+        response_object['message'] = 'Project added!'
+        return jsonify(response_object)
+    else:
+        page_size = 30
+        project = db.Cockpit.find().limit(page_size)
+        #projects = sorted(project, key=lambda p: p['title'], reverse=True)
+        #count = db.Cockpit.find().count()
+        results = [p for p in project]
+        b = {"project_lists": results}
+        page_sanitized = json.dumps(json.loads(json_util.dumps(b)))
+        return page_sanitized
 @app.route('/api/')
 def api():
     group = request.args.get('group')
@@ -734,52 +829,6 @@ def filter_request():
     page_sanitized = json.dumps(parsed, indent=4)
     return page_sanitized
 
-@app.route('/login', methods=['GET', 'POST']) 
-def login():
-    response_object = {'status': 'success'}
-    if request.method == 'POST':
-        post_data = request.get_json()
-        users = db.Users
-        users.insert({
-            'title': post_data.get('title'),
-            'author': post_data.get('author'),
-            'read': post_data.get('read')
-            })
-        response_object['message'] = 'User added!'
-    else:
-        response_object['user'] = users
-    return jsonify(response_object)
-@app.route('/api/cockpit', methods=['GET', 'POST']) 
-def cockpit():
-    response_object = {'status': 'success'}
-    
-    if request.method == 'POST':
-        post_data = request.get_json()
-        cockpit = db.Cockpit
-        projects = ({
-        'id': post_data.get('id'),
-        'title':post_data.get('title') ,
-        'description':post_data.get('description') ,
-        #'cockpit': True if hit['id'] in cockpit_set else False,
-        'url': post_data.get('url'),
-        'region': post_data.get('region'),
-        'bereich': post_data.get('bereich'),
-        'source':post_data.get('source') ,
-        'score': post_data.get('score')
-                } )
-        cockpit.insert(projects)
-        response_object['message'] = 'Project added!'
-        return jsonify(response_object)
-    else:
-
-        page_size = 30
-        project = db.Cockpit.find().limit(page_size)
-        #projects = sorted(project, key=lambda p: p['title'], reverse=True)
-        #count = db.Cockpit.find().count()
-        results = [p for p in project]
-        b = {"project_lists": results}
-        page_sanitized = json.dumps(json.loads(json_util.dumps(b)))
-        return page_sanitized
 if __name__ == '__main__':
     app.run(debug=True)
 

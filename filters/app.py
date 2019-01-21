@@ -180,7 +180,7 @@ def register():
         return jsonify(getStatusMsg(200, "account succesfully created"))
 @app.route('/api/cockpit', methods=['GET', 'POST']) 
 @token_required
-def cockpit():
+def cockpit(user):
     response_object = {'status': 'success'}
     if request.method == 'POST':
         post_data = request.get_json()
@@ -231,7 +231,10 @@ def api(user):
     bundesland = request.args.get('bundesland')
     platform = request.args.get('platform')
     platform_name = request.args.get('platform_name')
-    if group and not groupStack and not groupType and not bundesland and not skill_summary and not skill and not platform and not platform_name:
+    search_term = request.args.get("search_term")
+    allGroups = (group and groupType and groupStack)
+    group_gtype = (group and groupType)
+    if group and not groupType and not groupStack and not bundesland and not skill_summary and not skill and not platform and not platform_name and not search_term:
         if 'sort' in default:
             del default['sort']
         default['query'] = {
@@ -242,8 +245,9 @@ def api(user):
                     }
                 }
         body = default
+        print(1)
         
-    elif group and bundesland and not groupStack and not groupType and not skill_summary and not platform and not platform_name:
+    elif group and bundesland and not groupType and not groupStack and not skill_summary and not skill and not platform and not platform_name and not search_term:
         if 'sort' in default:
             del default['sort']
         default['query'] = {
@@ -259,7 +263,21 @@ def api(user):
                     }
                 }
         body = default
-    elif group and bundesland and groupType and not groupStack and not skill_summary and not platform and not platform_name:
+        print(2)
+    elif group_gtype and not bundesland  and not groupStack and not skill_summary and not skill and not platform and not platform_name and not search_term:
+        if 'sort' in default:
+            del default['sort']
+        default['query'] = {
+                    "bool": {
+                        "must": [
+                            {"match": {"bereich.group": group}},
+                            {"match": {"bereich.group_type": groupType}}
+                        ]
+                    }
+                }
+        body = default
+        print(3)
+    elif group_gtype and bundesland  and not groupStack and not skill_summary and not skill and not platform and not platform_name and not search_term:
         if 'sort' in default:
             del default['sort']
         default['query'] = {
@@ -276,7 +294,41 @@ def api(user):
                     }
                 }
         body = default
-    elif group and bundesland and groupStack and groupType and not skill_summary and not platform and not platform_name:
+        print(4)
+    elif group_gtype and platform and not bundesland  and not groupStack and not skill_summary and not search_term:
+        if 'sort' in default:
+            del default['sort']
+        default['query'] = {
+                    "bool": {
+                        "must": [
+                            {"match": {"bereich.group": group}},
+                            {"match": {"bereich.group_type": groupType}},
+                            {"match": {"bereich.platform": platform}}
+                        ]
+                    }
+                }
+        body = default
+        print(5)
+    elif group_gtype and platform and bundesland and not groupStack and not skill_summary and not search_term:
+        if 'sort' in default:
+            del default['sort']
+        default['query'] = {
+                    "bool": {
+                        "must": [
+                            {"match": {"bereich.group": group}},
+                            {"match": {"bereich.group_type": groupType}},
+                            {"match": {"bereich.platform": platform}}
+                        ],
+                        "filter": {
+                            "term": {
+                                "region.bundesland.keyword": bundesland
+                            }
+                        }
+                    }
+                }
+        body = default
+        print(6)
+    elif allGroups and bundesland and not skill_summary and not skill and not platform and not platform_name and not search_term:
         if 'sort' in default:
             del default['sort']
         default['query'] = {
@@ -294,7 +346,22 @@ def api(user):
                     }
                 }
         body = default
-    elif skill_summary and not groupStack and not bundesland and not groupType and not group:
+        print(7)
+    elif allGroups and not bundesland and not skill_summary and not skill and not platform and not platform_name and not search_term:
+        if 'sort' in default:
+            del default['sort']
+        default['query'] = {
+                    "bool": {
+                        "must": [
+                            {"match": {"bereich.group": group}},
+                            {"match": {"bereich.group_type": groupType}},
+                            {"match": {"bereich.group_type_stack": groupStack}}
+                        ]
+                    }
+                }
+        body = default
+        print(8)
+    elif skill_summary and not bundesland and not group and not groupType and not groupStack and not skill and not platform and not platform_name and not search_term:
         if 'sort' in default:
             del default['sort']
         default['query'] = {
@@ -305,7 +372,8 @@ def api(user):
                     }
                 }
         body = default
-    elif skill_summary and bundesland and not group and not groupStack and not groupType:
+        print(9)
+    elif skill_summary and bundesland and not group and not groupType and not groupStack and not skill and not platform and not platform_name and not search_term:
         if 'sort' in default:
             del default['sort']
         default['query'] = {
@@ -321,7 +389,8 @@ def api(user):
                     }
                 }
         body = default
-    elif skill_summary and group and not bundesland and not groupStack and not groupType:
+        print(10)
+    elif skill_summary and group and not groupType and not groupStack and not skill and not platform and not platform_name and not search_term and not bundesland:
         if 'sort' in default:
             del default['sort']
         default['query'] = {
@@ -334,7 +403,8 @@ def api(user):
                     }
                 }
         body = default
-    elif skill_summary and bundesland and group and not groupStack and not groupType:
+        print(11)
+    elif skill_summary and bundesland and group and not groupType and not groupStack and not skill and not platform and not platform_name and not search_term:
         if 'sort' in default:
             del default['sort']
         default['query'] = {
@@ -351,7 +421,8 @@ def api(user):
                     }
                 }
         body = default
-    elif skill_summary and not bundesland and group and groupType and not groupStack:
+        print(12)
+    elif skill_summary and group_gtype and not bundesland and not groupStack:
         if 'sort' in default:
             del default['sort']
         default['query'] = {
@@ -364,7 +435,8 @@ def api(user):
                     }
                 }
         body = default
-    elif skill_summary and bundesland and group and groupType and not groupStack:
+        print(13)
+    elif skill_summary and group_gtype and bundesland and not groupStack:
         if 'sort' in default:
             del default['sort']
         default['query'] = {
@@ -382,21 +454,8 @@ def api(user):
                     }
                 }
         body = default
-    elif skill_summary and not bundesland and group and groupType and groupStack:
-        if 'sort' in default:
-            del default['sort']
-        default['query'] = {
-                    "bool": {
-                        "must": [
-                            {"match": {"skill_summary.keyword": skill_summary}},
-                            {"match": {"bereich.group": group}},
-                            {"match": {"bereich.group_type": groupType}},
-                            {"match": {"bereich.group_type_stack": groupStack}}
-                        ]
-                    }
-                }
-        body = default
-    elif skill_summary and bundesland and group and groupType and groupStack:
+        print(14)
+    elif skill_summary and allGroups and not bundesland:
         if 'sort' in default:
             del default['sort']
         default['query'] = {
@@ -406,59 +465,20 @@ def api(user):
                             {"match": {"bereich.group": group}},
                             {"match": {"bereich.group_type": groupType}},
                             {"match": {"bereich.group_type_stack": groupStack}}
-                        ],
-                        "filter": {
-                            "term": {
-                                "region.bundesland.keyword": bundesland
-                            }
-                        }
-                    }
-                }
-        body = default
-    elif groupType and not groupStack and not bundesland:
-        if 'sort' in default:
-            del default['sort']
-        default['query'] = {
-                    "bool": {
-                        "must": [
-                            {"match": {"bereich.group_type": groupType}}
                         ]
                     }
                 }
         body = default
-    elif groupType and bundesland and not groupStack:
+        print(15)
+    elif skill_summary and allGroups and bundesland:
         if 'sort' in default:
             del default['sort']
         default['query'] = {
                     "bool": {
                         "must": [
-                            {"match": {"bereich.group_type": groupType}}
-                        ],
-                        "filter": {
-                            "term": {
-                                "region.bundesland.keyword": bundesland
-                            }
-                        }
-                    }
-                }
-        body = default
-    elif groupStack and not bundesland:
-        if 'sort' in default:
-            del default['sort']
-        default['query'] = {
-                    "bool": {
-                        "must": [
-                            {"match": {"bereich.group_type_stack": groupStack}}
-                        ]
-                    }
-                }
-        body = default
-    elif groupStack and bundesland:
-        if 'sort' in default:
-            del default['sort']
-        default['query'] = {
-                    "bool": {
-                        "must": [
+                            {"match": {"skill_summary.keyword": skill_summary}},
+                            {"match": {"bereich.group": group}},
+                            {"match": {"bereich.group_type": groupType}},
                             {"match": {"bereich.group_type_stack": groupStack}}
                         ],
                         "filter": {
@@ -469,7 +489,66 @@ def api(user):
                     }
                 }
         body = default
-    elif skill and not groupStack and not groupType and not bundesland:
+        print(16)
+    elif groupType and not group and not groupStack and not skill and not platform and not platform_name and not search_term and not bundesland and not skill_summary:
+        if 'sort' in default:
+            del default['sort']
+        default['query'] = {
+                    "bool": {
+                        "must": [
+                            {"match": {"bereich.group_type": groupType}}
+                        ]
+                    }
+                }
+        body = default
+        print(17)
+    elif groupType and bundesland and not group and not groupStack and not skill and not platform and not platform_name and not search_term and not skill_summary:
+        if 'sort' in default:
+            del default['sort']
+        default['query'] = {
+                    "bool": {
+                        "must": [
+                            {"match": {"bereich.group_type": groupType}}
+                        ],
+                        "filter": {
+                            "term": {
+                                "region.bundesland.keyword": bundesland
+                            }
+                        }
+                    }
+                }
+        body = default
+        print(18)
+    elif groupStack and not skill and not platform and not platform_name and not search_term and not bundesland and not skill_summary:
+        if 'sort' in default:
+            del default['sort']
+        default['query'] = {
+                    "bool": {
+                        "must": [
+                            {"match": {"bereich.group_type_stack": groupStack}}
+                        ]
+                    }
+                }
+        body = default
+        print(19)
+    elif groupStack and bundesland and not skill and not platform and not platform_name and not search_term and not skill_summary:
+        if 'sort' in default:
+            del default['sort']
+        default['query'] = {
+                    "bool": {
+                        "must": [
+                            {"match": {"bereich.group_type_stack": groupStack}}
+                        ],
+                        "filter": {
+                            "term": {
+                                "region.bundesland.keyword": bundesland
+                            }
+                        }
+                    }
+                }
+        body = default
+        print(20)
+    elif skill and not platform and not platform_name and not search_term and not bundesland and not skill_summary:
         if 'sort' in default:
             del default['sort']
         default['query'] = {
@@ -480,13 +559,15 @@ def api(user):
                     }
                 }
         body = default
-    elif skill and bundesland and group and not groupStack and not groupType:
+        print(21)
+    elif skill and group and bundesland and not platform and not platform_name and not search_term and not skill_summary:
         if 'sort' in default:
             del default['sort']
         default['query'] = {
                     "bool": {
                         "must": [
-                            {"match": {"bereich.skill": skill}}
+                            {"match": {"bereich.skill": skill}},
+                            {"match": {"bereich.group": group}}
                         ],
                         "filter": {
                             "term": {
@@ -496,7 +577,8 @@ def api(user):
                     }
                 }
         body = default
-    elif bundesland and not groupStack and not groupType and not group and not skill:
+        print(22)
+    elif bundesland and not group and not groupType and not groupStack and not skill and not platform and not platform_name and not search_term and not skill_summary:
         if 'sort' in default:
             del default['sort']
         default['query'] = {
@@ -507,6 +589,144 @@ def api(user):
                     }
                 }
         body = default
+        print(23)
+    elif search_term and not group and not groupType and not groupStack and not skill and not platform and not platform_name and not bundesland and not skill_summary:
+        if 'sort' in default:
+            del default['sort']
+        default['query'] = {
+                "multi_match": {
+                    "query": search_term,
+                    "operator": "and",
+                    "fields": ["title^5", "description"],
+                    "fuzziness" : "AUTO",
+                    "prefix_length" : 2
+                }
+                }
+        body = default
+        print(24)
+    elif search_term and group and not groupType and not groupStack and not skill and not platform and not platform_name and not bundesland and not skill_summary:
+        if 'sort' in default:
+            del default['sort']
+        default['query'] = {
+                    "bool": {
+                    "must": [
+                        {
+                            "multi_match": {
+                            "query": search_term,
+                            "operator": "and",
+                            "fields": [
+                            "title^5",
+                            "description"
+                            ],
+                            "fuzziness": "AUTO",
+                            "prefix_length": 2
+                        }
+                        },
+                        {
+                        "match": {
+                            "bereich.group": group
+                        }
+                        }
+                    ]
+                    }
+                }
+        body = default
+        print(25)
+    elif search_term and group and bundesland and not groupType and not groupStack and not skill and not platform and not platform_name and not skill_summary:
+        if 'sort' in default:
+            del default['sort']
+        default['query'] = {
+                    "bool": {
+                    "must": [
+                        {
+                            "multi_match": {
+                            "query": search_term,
+                            "operator": "and",
+                            "fields": [
+                            "title^5",
+                            "description"
+                            ],
+                            "fuzziness": "AUTO",
+                            "prefix_length": 2
+                        }
+                        },
+                        {"match": {"bereich.group": group}}
+                    ],
+                    "filter": {
+                            "term": {
+                            "region.bundesland.keyword": bundesland
+                            }
+                        }
+                    }
+                }
+        body = default
+        print(26)
+    elif search_term and group_gtype and bundesland and not groupStack and not skill and not platform and not platform_name and not skill_summary:
+        if 'sort' in default:
+            del default['sort']
+        default['query'] = {
+                    "bool": {
+                    "must": [{"multi_match": {"query": search_term, "operator": "and", "fields": ["title^5","description"],
+                            "fuzziness": "AUTO", "prefix_length": 2}},
+                            {"match": {"bereich.group": group}},{"match": {"bereich.group_type": groupType}}],
+                    "filter": {"term": {"region.bundesland.keyword": bundesland}}
+                    }
+                }
+        body = default
+        print(27)
+    elif search_term and skill_summary and bundesland and not group and not groupType and not groupStack and not skill and not platform and not platform_name:
+        if 'sort' in default:
+            del default['sort']
+        default['query'] = {
+                    "bool": {
+                    "must": [
+                        {
+                            "multi_match": {
+                            "query": search_term,
+                            "operator": "and",
+                            "fields": [
+                            "title^5",
+                            "description"
+                            ],
+                            "fuzziness": "AUTO",
+                            "prefix_length": 2
+                        }
+                        },
+                        {"match": {"skill_summary.keyword": skill_summary}}
+                    ],
+                    "filter": {
+                            "term": {
+                            "region.bundesland.keyword": bundesland
+                            }
+                        }
+                    }
+                }
+        body = default
+        print(28)
+    elif search_term and skill_summary and not bundesland and not group and not groupType and not groupStack and not skill and not platform and not platform_name:
+        if 'sort' in default:
+            del default['sort']
+        default['query'] = {
+                    "bool": {
+                    "must": [
+                        {
+                            "multi_match": {
+                            "query": search_term,
+                            "operator": "and",
+                            "fields": [
+                            "title^5",
+                            "description"
+                            ],
+                            "fuzziness": "AUTO",
+                            "prefix_length": 2
+                        }
+                        },
+                        {"match": {"skill_summary.keyword": skill_summary}}
+                    ]
+                    }
+                }
+        body = default
+        print(29)
     else:
         if 'query' in default:
             del default['query']
@@ -535,6 +755,7 @@ def api(user):
         doc_type = 'itproject_clean',
         body=body
         )
+    print(result['hits']['total'])
     try:
         # clean up
         docs = [{
@@ -606,34 +827,34 @@ def api(user):
             }
         for hit in result['aggregations']['Skill Filter']['buckets']]
     } ]
-    aa = [a['items'] for a in regionAgg]
-    sk = [a['items'] for a in skillAgg]
+    # aa = [a['items'] for a in regionAgg]
+    # sk = [a['items'] for a in skillAgg]
 
-    ab = []
-    ba = []
-    for b in aa:
-        for c in b:
-            a = c['key'] + '(' + str(c['count']) + ')'
-            ab.append(c)
-            ba.append(a)
-            for d,num in zip(ab,ba):
-                d['land'] = num
-    ab1 = []
-    ba1 = []
-    for b in sk:
-        for c in b:
-            a = c['key'] + '(' + str(c['count']) + ')'
-            ab1.append(c)
-            ba1.append(a)
-            for d,num in zip(ab1,ba1):
-                d['land'] = num
+    # ab = []
+    # ba = []
+    # for b in aa:
+    #     for c in b:
+    #         a = c['key'] + '(' + str(c['count']) + ')'
+    #         ab.append(c)
+    #         ba.append(a)
+    #         for d,num in zip(ab,ba):
+    #             d['land'] = num
+    # ab1 = []
+    # ba1 = []
+    # for b in sk:
+    #     for c in b:
+    #         a = c['key'] + '(' + str(c['count']) + ')'
+    #         ab1.append(c)
+    #         ba1.append(a)
+    #         for d,num in zip(ab1,ba1):
+    #             d['land'] = num
     allAggs = groupAgg + groupTypeAgg + groupStackAgg + skillAgg + regionAgg
    
     #print(default)
     projects = sorted(projects, key=lambda p: p['filter_date_post'], reverse=True)
     #res = es.search(index="projectfinder", body=body)
     amounts = result['hits']['total']
-    b = {"amount": amounts, "amount2": lengths, "project_lists": projects, "AllAggs": allAggs, "aggRegion": regionAgg, "Allregion": ab, "Allskill": ab1}
+    b = {"amount": amounts, "amount2": lengths, "project_lists": projects, "AllAggs": allAggs}
     parsed = json.loads(json_util.dumps(b))
     page_sanitized = json.dumps(parsed, indent=4)
     return page_sanitized

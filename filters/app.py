@@ -594,16 +594,53 @@ def api(user):
         if 'sort' in default:
             del default['sort']
         default['query'] = {
-                "multi_match": {
-                    "query": search_term,
-                    "operator": "and",
-                    "fields": ["title^5", "description"],
-                    "fuzziness" : "AUTO",
-                    "prefix_length" : 2
-                }
+                    "bool": {
+                    "must": [
+                        {
+                            "multi_match": {
+                            "query": search_term,
+                            "operator": "and",
+                            "fields": [
+                            "title^5",
+                            "description"
+                            ],
+                            "fuzziness": "AUTO",
+                            "prefix_length": 2
+                        }
+                        },
+                    ]
+                    }
                 }
         body = default
         print(24)
+    elif search_term and bundesland and not group and not groupType and not groupStack and not skill and not platform and not platform_name and not skill_summary:
+        if 'sort' in default:
+            del default['sort']
+        default['query'] = {
+                    "bool": {
+                    "must": [
+                        {
+                            "multi_match": {
+                            "query": search_term,
+                            "operator": "and",
+                            "fields": [
+                            "title^5",
+                            "description"
+                            ],
+                            "fuzziness": "AUTO",
+                            "prefix_length": 2
+                        }
+                        },
+                    ],
+                    "filter": {
+                            "term": {
+                            "region.bundesland.keyword": bundesland
+                            }
+                        }
+                    }
+                }
+        body = default
+        print(244)
     elif search_term and group and not groupType and not groupStack and not skill and not platform and not platform_name and not bundesland and not skill_summary:
         if 'sort' in default:
             del default['sort']

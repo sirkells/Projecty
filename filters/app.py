@@ -181,7 +181,7 @@ def register():
 @app.route('/api/cockpit', methods=['POST']) 
 @token_required
 def postCockpitData(user):
-    response_object = {'status': 'success'}
+    responseStatus = {'status': 'success'}
     post_data = request.get_json()
     cockpit = db.Cockpit
     projects = ({
@@ -198,31 +198,42 @@ def postCockpitData(user):
     'date_added': post_data.get('date_added')
             } )
     cockpit.insert(projects)
-    response_object['message'] = 'Project added!'
-    return jsonify(response_object)
+    responseStatus['message'] = 'Project added!'
+    return jsonify(responseStatus)
+    
+# Get all project stored in cockpit
 @app.route('/api/cockpit', methods=['GET']) 
 @token_required
 def getCockpitData(user):
     userid = user['Username']
     project = db.Cockpit.find({'user': userid})
-    #projects = sorted(project, key=lambda p: p['title'], reverse=True)
-    #count = db.Cockpit.find().count()
+    
     results = [p for p in project]
     b = {"project_lists": results}
     page_sanitized = json.dumps(json.loads(json_util.dumps(b)))
     return page_sanitized
+
+#Delete project from cockpit
+@app.route('/api/cockpit/<dataId>', methods=['DELETE']) 
+@token_required
+def deleteCockpitData(user, dataId):
+    responseStatus = {'status': 'success'}
+    userid = user['Username']
+    project = db.Cockpit.delete_one({'id': dataId, 'user': userid})
+    responseStatus['message'] = 'Project deleted!'
+    return jsonify(responseStatus)
 @app.route('/')
 @app.route('/api/logout', methods=['GET', 'POST'])
 def index():
-    response_object = {'status': 'success'}
+    responseStatus = {'status': 'success'}
     if request.method == 'POST':
         post_data = request.get_data(cache=False)
         print(post_data)
-        response_object = {'status': 'success'}
-        return jsonify(response_object)
+        responseStatus = {'status': 'success'}
+        return jsonify(responseStatus)
     else:
-        response_object = {'status': 'Unauthorised'}
-        return jsonify(response_object)
+        responseStatus = {'status': 'Unauthorised'}
+        return jsonify(responseStatus)
 @app.route('/api/')
 @token_required
 def api(user):

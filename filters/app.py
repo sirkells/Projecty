@@ -178,36 +178,41 @@ def register():
             "Password": hashedpw,
         })
         return jsonify(getStatusMsg(200, "account succesfully created"))
-@app.route('/api/cockpit', methods=['GET', 'POST']) 
+@app.route('/api/cockpit', methods=['POST']) 
 @token_required
-def cockpit(user):
+def postCockpitData(user):
     response_object = {'status': 'success'}
-    if request.method == 'POST':
-        post_data = request.get_json()
-        cockpit = db.Cockpit
-        projects = ({
-        'id': post_data.get('id'),
-        'title':post_data.get('title') ,
-        'description':post_data.get('description') ,
-        #'cockpit': True if hit['id'] in cockpit_set else False,
-        'url': post_data.get('url'),
-        'region': post_data.get('region'),
-        'bereich': post_data.get('bereich'),
-        'source':post_data.get('source') ,
-        'score': post_data.get('score')
-                } )
-        cockpit.insert(projects)
-        response_object['message'] = 'Project added!'
-        return jsonify(response_object)
-    else:
-        page_size = 30
-        project = db.Cockpit.find().limit(page_size)
-        #projects = sorted(project, key=lambda p: p['title'], reverse=True)
-        #count = db.Cockpit.find().count()
-        results = [p for p in project]
-        b = {"project_lists": results}
-        page_sanitized = json.dumps(json.loads(json_util.dumps(b)))
-        return page_sanitized
+    post_data = request.get_json()
+    global logged_username
+    logged_username = post_data.get('user')
+    cockpit = db.Cockpit
+    projects = ({
+    'id': post_data.get('id'),
+    'title':post_data.get('title') ,
+    'description':post_data.get('description') ,
+    #'cockpit': True if hit['id'] in cockpit_set else False,
+    'url': post_data.get('url'),
+    'region': post_data.get('region'),
+    'bereich': post_data.get('bereich'),
+    'source':post_data.get('source') ,
+    'score': post_data.get('score'),
+    'user': user['Username'],
+    'date_added': post_data.get('date_added')
+            } )
+    cockpit.insert(projects)
+    response_object['message'] = 'Project added!'
+    return jsonify(response_object)
+@app.route('/api/cockpit', methods=['GET']) 
+@token_required
+def getCockpitData(user):
+    userid = user['Username']
+    project = db.Cockpit.find({'user': userid})
+    #projects = sorted(project, key=lambda p: p['title'], reverse=True)
+    #count = db.Cockpit.find().count()
+    results = [p for p in project]
+    b = {"project_lists": results}
+    page_sanitized = json.dumps(json.loads(json_util.dumps(b)))
+    return page_sanitized
 @app.route('/')
 @app.route('/api/logout', methods=['GET', 'POST'])
 def index():
@@ -894,7 +899,8 @@ def api(user):
         'region': hit['source']['region'],
         'bereich': hit['source']['bereich'],
         'source': hit['source']['source'],
-        'score': hit['score']
+        'score': hit['score'],
+        'date_post': hit['source']['date_post']
                 } for hit in docs]
     regionAgg = [{
         'title': "Bundesland",

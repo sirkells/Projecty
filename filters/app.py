@@ -183,8 +183,6 @@ def register():
 def postCockpitData(user):
     response_object = {'status': 'success'}
     post_data = request.get_json()
-    global logged_username
-    logged_username = post_data.get('user')
     cockpit = db.Cockpit
     projects = ({
     'id': post_data.get('id'),

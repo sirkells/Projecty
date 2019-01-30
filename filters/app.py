@@ -200,7 +200,7 @@ def postCockpitData(user):
     cockpit.insert(projects)
     responseStatus['message'] = 'Project added!'
     return jsonify(responseStatus)
-    
+
 # Get all project stored in cockpit
 @app.route('/api/cockpit', methods=['GET']) 
 @token_required
@@ -469,7 +469,20 @@ def api(user):
                 }
         body = default
         print(14)
-    elif skill_summary and allGroups and not bundesland:
+    elif skill_summary and groupStack and not bundesland and not group and not groupType:
+        if 'sort' in default:
+            del default['sort']
+        default['query'] = {
+                    "bool": {
+                        "must": [
+                            {"match": {"skill_summary.keyword": skill_summary}},
+                            {"match": {"bereich.group_type_stack": groupStack}}
+                        ]
+                    }
+                }
+        body = default
+        print(1111)
+    elif skill_summary and group and groupType and groupStack and not bundesland:
         if 'sort' in default:
             del default['sort']
         default['query'] = {
@@ -504,6 +517,26 @@ def api(user):
                 }
         body = default
         print(16)
+    elif skill_summary and allGroups and bundesland and skill:
+        if 'sort' in default:
+            del default['sort']
+        default['query'] = {
+                    "bool": {
+                        "must": [
+                            {"match": {"skill_summary.keyword": skill_summary}},
+                            {"match": {"bereich.group": group}},
+                            {"match": {"bereich.group_type": groupType}},
+                            {"match": {"bereich.group_type_stack": groupStack}},
+                            {"match": {"bereich.skill": skill}}
+                        ],
+                        "filter": {
+                            "term": {
+                                "region.bundesland.keyword": bundesland
+                            }
+                        }
+                    }
+                }
+        body = default
     elif groupType and not group and not groupStack and not skill and not platform and not platform_name and not search_term and not bundesland and not skill_summary:
         if 'sort' in default:
             del default['sort']

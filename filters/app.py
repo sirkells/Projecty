@@ -184,22 +184,30 @@ def postCockpitData(user):
     responseStatus = {'status': 'success'}
     post_data = request.get_json()
     cockpit = db.Cockpit
-    projects = ({
-    'id': post_data.get('id'),
-    'title':post_data.get('title') ,
-    'description':post_data.get('description') ,
-    #'cockpit': True if hit['id'] in cockpit_set else False,
-    'url': post_data.get('url'),
-    'region': post_data.get('region'),
-    'bereich': post_data.get('bereich'),
-    'source':post_data.get('source') ,
-    'score': post_data.get('score'),
-    'user': user['Username'],
-    'date_added': post_data.get('date_added')
-            } )
-    cockpit.insert(projects)
-    responseStatus['message'] = 'Project added!'
-    return jsonify(responseStatus)
+    itemId = post_data.get('id')
+    userid = user['Username']
+    if cockpit.find_one({'id': itemId, 'user': userid}):
+        responseStatus['message'] = 'Duplicate Found!'
+        responseStatus['status'] = 600
+        print('Duplicate found')
+        return jsonify(responseStatus)
+    else:
+        projects = ({
+        'id': post_data.get('id'),
+        'title':post_data.get('title') ,
+        'description':post_data.get('description') ,
+        #'cockpit': True if hit['id'] in cockpit_set else False,
+        'url': post_data.get('url'),
+        'region': post_data.get('region'),
+        'bereich': post_data.get('bereich'),
+        'source':post_data.get('source') ,
+        'score': post_data.get('score'),
+        'user': user['Username'],
+        'date_added': post_data.get('date_added')
+                } )
+        cockpit.insert(projects)
+        responseStatus['message'] = 'Project added!'
+        return jsonify(responseStatus)
 
 # Get all project stored in cockpit
 @app.route('/api/cockpit', methods=['GET']) 

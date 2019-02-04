@@ -153,7 +153,7 @@ def login():
     token = jwt.encode({
     'sub': username,
     'iat':datetime.utcnow(),
-    'exp': datetime.utcnow() + timedelta(hours=8)},
+    'exp': datetime.utcnow() + timedelta(minutes=10)},
     app.config['SECRET_KEY'])
     # print(a)
     # retJson = users.find({"Username": username}, {"Password": 0, "_id": 0})[0]
@@ -227,7 +227,7 @@ def getCockpitData(user):
 def deleteCockpitData(user, dataId):
     responseStatus = {'status': 'success'}
     userid = user['Username']
-    project = db.Cockpit.delete_one({'id': dataId, 'user': userid})
+    db.Cockpit.delete_one({'id': dataId, 'user': userid})
     responseStatus['message'] = 'Project deleted!'
     return jsonify(responseStatus)
 @app.route('/')
@@ -894,6 +894,13 @@ def api(user):
                     ]
                     }
                 }
+        default['sort'] =  [
+                        {
+                            "_score": {
+                            "order": "desc"
+                            }
+                        },
+                    ]
         body = default
         print(299)
     else:
@@ -954,6 +961,7 @@ def api(user):
                 } for hit in docs]
     regionAgg = [{
         'title': "Bundesland",
+        'path': '&bundesland=',
         'items': [
             {
             'key': hit['key'],
@@ -963,6 +971,7 @@ def api(user):
     } ]
     groupAgg = [{
         'title': "Category",
+        'path': '&group=',
         'items': [
             {
             'key': hit['key'],
@@ -972,6 +981,7 @@ def api(user):
     } ]
     groupTypeAgg = [{
         'title': "Sub-Category",
+        'path': '&groupType=',
         'items': [
             {
             'key': hit['key'],
@@ -981,6 +991,7 @@ def api(user):
     }]
     groupStackAgg = [{
         'title': "Stack",
+        'path': '&groupStack=',
         'items': [
             {
             'key': hit['key'],
@@ -990,6 +1001,7 @@ def api(user):
     } ]
     skillAgg = [{
         'title': "Skills",
+        'path': '&skill_summary=',
         'items': [
             {
             'key': hit['key'],

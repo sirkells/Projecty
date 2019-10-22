@@ -29,7 +29,7 @@ MarkupSafe==1.0
 mccabe==0.6.1
 mongo-connector==2.5.1
 mongoengine==0.15.0
-Pillow==5.1.0
+Pillow==6.2.0
 pyasn1==0.4.3
 pycparser==2.18
 pylint==2.0.0
